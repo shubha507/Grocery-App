@@ -7,18 +7,25 @@
 
 import UIKit
 
-class MainViewController: MyCustomTabBarController {
+class MainViewController: UITabBarController, UITabBarControllerDelegate {
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        self.delegate = self
+        self.selectedIndex = 2
         ConfigureViewController()
         
-    }
+        }
     
     func ConfigureViewController(){
+        
+        tabBar.barTintColor = UIColor(named: "mygreen")
+        tabBar.tintColor = UIColor.white
+        tabBar.unselectedItemTintColor = UIColor(named: "mylightgreen")
+        
         
         let home = HomeViewController()
         home.tabBarItem.image = #imageLiteral(resourceName: "noun_menu_3127023")
