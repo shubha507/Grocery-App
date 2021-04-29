@@ -10,6 +10,8 @@ import FirebaseAuth
 
 class LoginScreenController: UIViewController {
     
+    var alertController : UIAlertController?
+    
     private let continueWithPhoneLbl : UILabel = {
         let lbl = UILabel()
         lbl.text = "Continue With Phone"
@@ -79,6 +81,11 @@ class LoginScreenController: UIViewController {
         configureUI()
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+      //  numberTextField.text = "+"
+    }
 
     func configureUI(){
         
@@ -123,6 +130,9 @@ class LoginScreenController: UIViewController {
     }
     
     @objc func continueButtonPushed(){
+        if numberTextField.text?.count == 13 {
+        numberTextField.endEditing(true)
+            
         guard let phnNumber = numberTextField.text else { return }
         PhoneAuthProvider.provider().verifyPhoneNumber(phnNumber, uiDelegate: nil) { (verificationID, error) in
           if let error = error {
@@ -137,6 +147,15 @@ class LoginScreenController: UIViewController {
             self.present(controller, animated: true, completion: nil)
           }
         }
+        }else{
+            alertController = UIAlertController(title: nil, message: "Too Short Phone Number", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default, handler: { (dismissAction: UIAlertAction!) in self.alertController?.dismiss(animated: true, completion: nil) })
+            alertController?.modalPresentationStyle = .custom
+            alertController?.addAction(action)
+            self.present(alertController!,
+                                           animated: true,
+                                           completion: nil)
+        }
         
     }
     
@@ -144,13 +163,14 @@ class LoginScreenController: UIViewController {
 
 extension LoginScreenController : UITextFieldDelegate {
     
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        if textField.text!.count <= 12{
-//            return true
-//        }else{
-//            return false
-//        }
-//    }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return range.location <= 12
+    }
+    
+    
+   
+    
+    
     
     
         

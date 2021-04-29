@@ -18,6 +18,9 @@ class CustomTextField : UITextField {
         backgroundColor = UIColor(named: "buttoncolor")
         textAlignment = .center
         setDimensions(height: 50, width: 50)
+        layer.shadowOpacity = 0.5
+        layer.shadowColor = UIColor.blue.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 2)
     }
     
     required init?(coder: NSCoder) {

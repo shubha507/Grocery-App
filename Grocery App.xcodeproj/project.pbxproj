@@ -8,19 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		2467AD5B315B3AB0875600A6 /* Pods_Grocery_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C695C44EAA4F5B4508F9F65D /* Pods_Grocery_App.framework */; };
-		B22A27792632A7E600E617CD /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22A27782632A7E600E617CD /* OrderViewController.swift */; };
-		B22A277C2632A84C00E617CD /* OfferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22A277B2632A84C00E617CD /* OfferViewController.swift */; };
-		B22A277F2632A89400E617CD /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22A277E2632A89400E617CD /* CartViewController.swift */; };
-		B22A27822632A8A800E617CD /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22A27812632A8A800E617CD /* MoreViewController.swift */; };
+		B20C2B9A263939E60001B9FA /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2B99263939E60001B9FA /* CustomTabBar.swift */; };
+		B20C2BAF263974860001B9FA /* CustomTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BAE263974860001B9FA /* CustomTabBarViewController.swift */; };
+		B20C2BB826397F9F0001B9FA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BB726397F9F0001B9FA /* HomeViewController.swift */; };
+		B20C2BBB263991F00001B9FA /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BBA263991F00001B9FA /* OrderViewController.swift */; };
+		B20C2BBE263992580001B9FA /* OfferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BBD263992580001B9FA /* OfferViewController.swift */; };
+		B20C2BC1263992930001B9FA /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BC0263992930001B9FA /* CartViewController.swift */; };
+		B20C2BC4263992D10001B9FA /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BC3263992D10001B9FA /* MoreViewController.swift */; };
 		B22A43E42637E0C5001F1AC2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22A43E32637E0C5001F1AC2 /* CustomTextField.swift */; };
 		B22A43E72637EE55001F1AC2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B22A43E62637EE55001F1AC2 /* GoogleService-Info.plist */; };
 		B2536E892631E6C400EADC0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2536E882631E6C400EADC0C /* AppDelegate.swift */; };
 		B2536E8B2631E6C400EADC0C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2536E8A2631E6C400EADC0C /* SceneDelegate.swift */; };
-		B2536E8D2631E6C400EADC0C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2536E8C2631E6C400EADC0C /* MainViewController.swift */; };
 		B2536E902631E6C400EADC0C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2536E8E2631E6C400EADC0C /* Main.storyboard */; };
 		B2536E922631E6C800EADC0C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2536E912631E6C800EADC0C /* Assets.xcassets */; };
 		B2536E952631E6C800EADC0C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2536E932631E6C800EADC0C /* LaunchScreen.storyboard */; };
-		B2C1DD4E2632A6F500913F66 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C1DD4D2632A6F500913F66 /* HomeViewController.swift */; };
 		B2E901032636916500A24E89 /* LoginScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E901022636916500A24E89 /* LoginScreenController.swift */; };
 		B2E90108263698E600A24E89 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E90107263698E600A24E89 /* Utility.swift */; };
 		B2E9010B2636CE5E00A24E89 /* VerificationScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E9010A2636CE5E00A24E89 /* VerificationScreenController.swift */; };
@@ -29,22 +30,23 @@
 /* Begin PBXFileReference section */
 		18A7324169AE42BDD20703FF /* Pods-Grocery App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grocery App.debug.xcconfig"; path = "Target Support Files/Pods-Grocery App/Pods-Grocery App.debug.xcconfig"; sourceTree = "<group>"; };
 		A9EF7194E3A7173B735F6D76 /* Pods-Grocery App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grocery App.release.xcconfig"; path = "Target Support Files/Pods-Grocery App/Pods-Grocery App.release.xcconfig"; sourceTree = "<group>"; };
-		B22A27782632A7E600E617CD /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
-		B22A277B2632A84C00E617CD /* OfferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferViewController.swift; sourceTree = "<group>"; };
-		B22A277E2632A89400E617CD /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
-		B22A27812632A8A800E617CD /* MoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
+		B20C2B99263939E60001B9FA /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
+		B20C2BAE263974860001B9FA /* CustomTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarViewController.swift; sourceTree = "<group>"; };
+		B20C2BB726397F9F0001B9FA /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		B20C2BBA263991F00001B9FA /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
+		B20C2BBD263992580001B9FA /* OfferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferViewController.swift; sourceTree = "<group>"; };
+		B20C2BC0263992930001B9FA /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
+		B20C2BC3263992D10001B9FA /* MoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		B22A43E32637E0C5001F1AC2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		B22A43E62637EE55001F1AC2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B22A44032637F655001F1AC2 /* Grocery App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Grocery App.entitlements"; sourceTree = "<group>"; };
 		B2536E852631E6C400EADC0C /* Grocery App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Grocery App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2536E882631E6C400EADC0C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2536E8A2631E6C400EADC0C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B2536E8C2631E6C400EADC0C /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		B2536E8F2631E6C400EADC0C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B2536E912631E6C800EADC0C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2536E942631E6C800EADC0C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B2536E962631E6C800EADC0C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B2C1DD4D2632A6F500913F66 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B2E901022636916500A24E89 /* LoginScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenController.swift; sourceTree = "<group>"; };
 		B2E90107263698E600A24E89 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		B2E9010A2636CE5E00A24E89 /* VerificationScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationScreenController.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				B22A43E32637E0C5001F1AC2 /* CustomTextField.swift */,
+				B20C2B99263939E60001B9FA /* CustomTabBar.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -127,14 +130,14 @@
 		B2C1DD502632A70000913F66 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				B2536E8C2631E6C400EADC0C /* MainViewController.swift */,
-				B2C1DD4D2632A6F500913F66 /* HomeViewController.swift */,
-				B22A27782632A7E600E617CD /* OrderViewController.swift */,
-				B22A277B2632A84C00E617CD /* OfferViewController.swift */,
-				B22A277E2632A89400E617CD /* CartViewController.swift */,
-				B22A27812632A8A800E617CD /* MoreViewController.swift */,
 				B2E901022636916500A24E89 /* LoginScreenController.swift */,
 				B2E9010A2636CE5E00A24E89 /* VerificationScreenController.swift */,
+				B20C2BAE263974860001B9FA /* CustomTabBarViewController.swift */,
+				B20C2BB726397F9F0001B9FA /* HomeViewController.swift */,
+				B20C2BBA263991F00001B9FA /* OrderViewController.swift */,
+				B20C2BBD263992580001B9FA /* OfferViewController.swift */,
+				B20C2BC0263992930001B9FA /* CartViewController.swift */,
+				B20C2BC3263992D10001B9FA /* MoreViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -254,18 +257,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B20C2BBE263992580001B9FA /* OfferViewController.swift in Sources */,
+				B20C2BC4263992D10001B9FA /* MoreViewController.swift in Sources */,
 				B2E90108263698E600A24E89 /* Utility.swift in Sources */,
-				B2536E8D2631E6C400EADC0C /* MainViewController.swift in Sources */,
-				B22A277C2632A84C00E617CD /* OfferViewController.swift in Sources */,
+				B20C2BBB263991F00001B9FA /* OrderViewController.swift in Sources */,
+				B20C2B9A263939E60001B9FA /* CustomTabBar.swift in Sources */,
+				B20C2BC1263992930001B9FA /* CartViewController.swift in Sources */,
 				B2E901032636916500A24E89 /* LoginScreenController.swift in Sources */,
-				B22A277F2632A89400E617CD /* CartViewController.swift in Sources */,
 				B2E9010B2636CE5E00A24E89 /* VerificationScreenController.swift in Sources */,
-				B22A27792632A7E600E617CD /* OrderViewController.swift in Sources */,
 				B2536E892631E6C400EADC0C /* AppDelegate.swift in Sources */,
+				B20C2BB826397F9F0001B9FA /* HomeViewController.swift in Sources */,
 				B22A43E42637E0C5001F1AC2 /* CustomTextField.swift in Sources */,
-				B22A27822632A8A800E617CD /* MoreViewController.swift in Sources */,
 				B2536E8B2631E6C400EADC0C /* SceneDelegate.swift in Sources */,
-				B2C1DD4E2632A6F500913F66 /* HomeViewController.swift in Sources */,
+				B20C2BAF263974860001B9FA /* CustomTabBarViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
