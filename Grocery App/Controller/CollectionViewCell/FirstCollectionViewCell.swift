@@ -14,6 +14,7 @@ class FirstCollectionViewCell : UICollectionViewCell {
         iv.backgroundColor = UIColor(named: "cellgreen")
         iv.layer.cornerRadius = 20
         iv.clipsToBounds = true
+        iv.contentMode = .scaleAspectFit
         return iv
     }()
     

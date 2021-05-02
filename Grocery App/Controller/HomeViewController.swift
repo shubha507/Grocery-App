@@ -10,8 +10,6 @@ import FirebaseAuth
 
 class HomeViewController : UIViewController, UITableViewDelegate {
     
-    
-    
     private let imageView : UIImageView = {
         let iv = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         iv.image = UIImage(named: "bird2")
@@ -68,7 +66,7 @@ class HomeViewController : UIViewController, UITableViewDelegate {
         tv.register(FirstTableViewCell.self, forCellReuseIdentifier: "cell")
         tv.layer.cornerRadius = 30
         tv.register(SecondTableViewCell.self, forCellReuseIdentifier: "cell1")
-        
+        tv.alwaysBounceVertical = false
         return tv
     }()
 
@@ -78,10 +76,15 @@ class HomeViewController : UIViewController, UITableViewDelegate {
         view.backgroundColor = UIColor(named: "mygreen")
         tblView.delegate = self
         tblView.dataSource = self
-        tblView.alwaysBounceVertical = false
         configureUI()
         
         
+    }
+    
+    @objc func seeDetailView(){
+        let controller = CategoriesViewController()
+        controller.modalPresentationStyle = .fullScreen
+        self.present(controller, animated: true, completion: nil)
     }
     
     func configureUI(){
@@ -112,12 +115,13 @@ class HomeViewController : UIViewController, UITableViewDelegate {
 extension HomeViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row%2 == 0 {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! FirstTableViewCell
+            cell.seeAllButton.addTarget(self, action: #selector(seeDetailView), for: .touchUpInside)
             cell.firstCellCollection.reloadData()
         return cell
         }else{
@@ -131,7 +135,7 @@ extension HomeViewController : UITableViewDataSource {
         if indexPath.row%2 == 0{
            return 250
         }else {
-            return 200
+            return 180
         }
         
     }

@@ -9,7 +9,7 @@ import UIKit
 
 class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
     
-    let array = ["Vegetables","Fruits","Meat"]
+    let array = ["Vegetables","Fruits","Meat","Egg"]
     
     private let cellView : UIView = {
         let cv = UIView()
@@ -26,15 +26,15 @@ class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
         return lbl
     }()
     
-    private let seeAllButton : UIButton = {
-        let button = UIButton(type : .system)
+     let seeAllButton : UIButton = {
+        let button = UIButton(type : .custom)
         let atts: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor(named : "mygreen"), .font: UIFont.systemFont(ofSize: 17)]
         let attributedTitle = NSMutableAttributedString(string: "See all", attributes: atts)
-        
         button.setAttributedTitle(attributedTitle, for: .normal)
         return button
     }()
     
+        
      let firstCellCollection : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -59,7 +59,7 @@ class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
     
     func configureUI(){
         
-        addSubview(cellView)
+        contentView.addSubview(cellView)
         cellView.setDimensions(height: 235, width: 360)
         cellView.anchor(top: topAnchor, left : leftAnchor, paddingTop: 17, paddingLeft: 15)
         backgroundColor = UIColor(named: "buttoncolor")
@@ -69,12 +69,13 @@ class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
         
         cellView.addSubview(seeAllButton)
         seeAllButton.anchor(top: cellView.topAnchor, right: cellView.rightAnchor, paddingTop: 15, paddingRight: 20)
-        
+
         createLine()
         
         cellView.addSubview(firstCellCollection)
         firstCellCollection.anchor(top: categoryLabel.bottomAnchor, left: cellView.leftAnchor, bottom: cellView.bottomAnchor, right: cellView.rightAnchor, paddingTop: 23, paddingLeft: 0, paddingBottom: 25, paddingRight: 0)
-        firstCellCollection.setHeight(135)
+        firstCellCollection.setDimensions(height: 135, width: cellView.frame.width)
+        //firstCellCollection.frame(forAlignmentRect: <#T##CGRect#>)
    }
     
     
@@ -102,7 +103,7 @@ class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
 extension FirstTableViewCell : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -125,5 +126,9 @@ extension FirstTableViewCell : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 15
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
     }
 }
