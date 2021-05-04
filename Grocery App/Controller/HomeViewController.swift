@@ -16,6 +16,8 @@ class HomeViewController : UIViewController, UITableViewDelegate {
     
     private var category = [Categories]()
     
+    private var sortedCategory = [Categories]()
+    
     private let imageView : UIImageView = {
         let iv = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         iv.image = UIImage(named: "bird2")
@@ -103,7 +105,7 @@ class HomeViewController : UIViewController, UITableViewDelegate {
     
     @objc func seeDetailView(){
         let categoryVC = CategoriesViewController()
-        categoryVC.dataArray = category
+        categoryVC.dataArray = sortedCategory
         self.navigationController?.pushViewController(categoryVC, animated: true)
     }
     
@@ -137,8 +139,10 @@ class HomeViewController : UIViewController, UITableViewDelegate {
         if let err = err {
             print("Error getting documents: \(err)")
         } else {
+            self.category = []
             for document in querySnapshot!.documents {
                 print("\(document.documentID) => \(document.data()["rank"] as! Int)")
+                let num = document.data()["rank"] as! Int
              let data = document.data()
              let name = data["name"] as? String ?? " "
              let rank = data["rank"] as? Int ?? 0
@@ -147,9 +151,12 @@ class HomeViewController : UIViewController, UITableViewDelegate {
              self.category.append(newCategory)
             }
             self.tblView.reloadData()
+            self.sortedCategory = self.category.sorted(by: { $0.rank! < $1.rank! })
+            print(self.sortedCategory)
         }
     }
 }
+    
 }
 
 extension HomeViewController : UITableViewDataSource {
@@ -161,7 +168,7 @@ extension HomeViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row%2 == 0 {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! FirstTableViewCell
-            cell.collectionViewData(array: category)
+            cell.collectionViewData(array: sortedCategory)
             cell.seeAllButton.addTarget(self, action: #selector(seeDetailView), for: .touchUpInside)
             
         return cell
