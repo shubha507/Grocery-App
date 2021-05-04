@@ -130,7 +130,7 @@ class LoginScreenController: UIViewController {
     }
     
     @objc func continueButtonPushed(){
-        if numberTextField.text?.count == 13 {
+        if (numberTextField.text?.contains("+91") == true) && numberTextField.text?.count == 13 {
         numberTextField.endEditing(true)
             
         guard let phnNumber = numberTextField.text else { return }
@@ -143,12 +143,20 @@ class LoginScreenController: UIViewController {
             UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
             let controller = VerificationScreenController()
             controller.modalPresentationStyle = .fullScreen
-           // controller.modalTransitionStyle = .flipHorizontal
+            controller.mobNo = self.numberTextField.text?.replacingOccurrences(of: "+91", with: "")
             self.present(controller, animated: true, completion: nil)
           }
         }
-        }else{
+        }else if (numberTextField.text?.contains("+91") == true) && numberTextField.text!.count < 13 {
             alertController = UIAlertController(title: nil, message: "Too Short Phone Number", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default, handler: { (dismissAction: UIAlertAction!) in self.alertController?.dismiss(animated: true, completion: nil) })
+            alertController?.modalPresentationStyle = .custom
+            alertController?.addAction(action)
+            self.present(alertController!,
+                                           animated: true,
+                                           completion: nil)
+        }else if (numberTextField.text?.contains("+91") == false) {
+            alertController = UIAlertController(title: nil, message: "Please add country code +91 and 10 digit phone number", preferredStyle: .alert)
             let action = UIAlertAction(title: "Ok", style: .default, handler: { (dismissAction: UIAlertAction!) in self.alertController?.dismiss(animated: true, completion: nil) })
             alertController?.modalPresentationStyle = .custom
             alertController?.addAction(action)

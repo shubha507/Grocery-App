@@ -12,6 +12,8 @@ import FirebaseFirestore
 
 class VerificationScreenController : UIViewController {
     
+    var mobNo : String?
+    
     private let arrowButton : UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "arrow.left" , withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold, scale: .large)), for: .normal)
@@ -36,7 +38,6 @@ class VerificationScreenController : UIViewController {
     
     private let codeSentLbl : UILabel = {
         let lbl = UILabel()
-        lbl.text = "Code is sent to 8945346789"
         lbl.font = UIFont.systemFont(ofSize: 20)
         lbl.textAlignment = .center
         lbl.textColor = .darkGray
@@ -122,7 +123,8 @@ class VerificationScreenController : UIViewController {
         view.addSubview(codeSentLbl)
         codeSentLbl.centerX(inView: view)
         codeSentLbl.anchor(top:verifyPhoneLbl.bottomAnchor, paddingTop: 30)
-        
+        codeSentLbl.text = "Code is sent to \(self.mobNo!)"
+
         setupStack()
         
         view.addSubview(getCallButton)
