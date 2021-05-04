@@ -7,8 +7,14 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseCore
+import FirebaseFirestore
 
 class HomeViewController : UIViewController, UITableViewDelegate {
+    
+    var alertControler : UIAlertController?
+    
+    private var category = [Categories]()
     
     private let imageView : UIImageView = {
         let iv = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
@@ -44,12 +50,25 @@ class HomeViewController : UIViewController, UITableViewDelegate {
     }()
     
     @objc func profileButtonTapped(){
-        let firebaseAuth = Auth.auth()
-       do {
-         try firebaseAuth.signOut()
-       } catch let signOutError as NSError {
-         print ("Error signing out: %@", signOutError)
-       }
+        alertControler = UIAlertController(title: nil, message: "Do you want to logout?", preferredStyle: .alert)
+        let actionYes = UIAlertAction(title: "Yes", style: .default) { (action) in
+            let firebaseAuth = Auth.auth()
+           do {
+             try firebaseAuth.signOut()
+           } catch let signOutError as NSError {
+             print ("Error signing out: %@", signOutError)
+           }
+        }
+        
+        let actionNo = UIAlertAction(title: "No", style: .default) { (action) in
+            self.alertControler?.dismiss(animated: true, completion: nil)
+        }
+        
+        alertControler?.addAction(actionYes)
+        alertControler?.addAction(actionNo)
+        
+        self.present(alertControler!, animated: true, completion: nil)
+        
     }
     
     private let searchTextField : UISearchTextField = {
@@ -77,14 +96,15 @@ class HomeViewController : UIViewController, UITableViewDelegate {
         tblView.delegate = self
         tblView.dataSource = self
         configureUI()
-        
+        self.navigationController?.navigationBar.isHidden = true
+        fetchData()
         
     }
     
     @objc func seeDetailView(){
-        let controller = CategoriesViewController()
-        controller.modalPresentationStyle = .fullScreen
-        self.present(controller, animated: true, completion: nil)
+        let categoryVC = CategoriesViewController()
+        categoryVC.dataArray = category
+        self.navigationController?.pushViewController(categoryVC, animated: true)
     }
     
     func configureUI(){
@@ -99,7 +119,7 @@ class HomeViewController : UIViewController, UITableViewDelegate {
         hiLabel.anchor(top: view.topAnchor, left: view.leftAnchor, paddingTop: 60, paddingLeft: 30,width: view.frame.width - 100, height: 25)
         
         view.addSubview(searchFoodLabel)
-        searchFoodLabel.anchor(top: hiLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 0, paddingLeft: 30,width: view.frame.width - 90, height: 25)
+        searchFoodLabel.anchor(top: hiLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 0, paddingLeft: 30, width: view.frame.width - 90, height: 25)
         
         view.addSubview(searchTextField)
         searchTextField.anchor(top: searchFoodLabel.bottomAnchor, left: view.leftAnchor, paddingTop : 25, paddingLeft: 30, width: view.frame.width - 60, height: 55)
@@ -110,6 +130,26 @@ class HomeViewController : UIViewController, UITableViewDelegate {
         tblView.allowsSelection = false
         
     }
+    
+    func fetchData(){
+        let db = Firestore.firestore()
+        db.collection("categories").getDocuments() { (querySnapshot, err) in
+        if let err = err {
+            print("Error getting documents: \(err)")
+        } else {
+            for document in querySnapshot!.documents {
+                print("\(document.documentID) => \(document.data()["rank"] as! Int)")
+             let data = document.data()
+             let name = data["name"] as? String ?? " "
+             let rank = data["rank"] as? Int ?? 0
+             let url = data["url"] as? String ?? " "
+             let newCategory = Categories(Name: name, Rank: rank, Url: url)
+             self.category.append(newCategory)
+            }
+            self.tblView.reloadData()
+        }
+    }
+}
 }
 
 extension HomeViewController : UITableViewDataSource {
@@ -121,8 +161,9 @@ extension HomeViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row%2 == 0 {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! FirstTableViewCell
+            cell.collectionViewData(array: category)
             cell.seeAllButton.addTarget(self, action: #selector(seeDetailView), for: .touchUpInside)
-            cell.firstCellCollection.reloadData()
+            
         return cell
         }else{
             let cell1 = tableView.dequeueReusableCell(withIdentifier: "cell1") as! SecondTableViewCell

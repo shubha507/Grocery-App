@@ -23,7 +23,6 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         self.selectedIndex = 0
         setupMiddleButton()
         ConfigureViewController()
-        
     }
     
     func ConfigureViewController(){
@@ -37,7 +36,6 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         tabBar.items?[3].image = #imageLiteral(resourceName: "noun_Gift_1546455")
         tabBar.items?[4].image = #imageLiteral(resourceName: "noun_slider_125134")
         tabBar.items?[2].title = nil
-        
         
     }
     

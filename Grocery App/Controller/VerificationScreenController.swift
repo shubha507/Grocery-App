@@ -7,7 +7,8 @@
 
 import UIKit
 import FirebaseAuth
-import Firebase
+import FirebaseCore
+import FirebaseFirestore
 
 class VerificationScreenController : UIViewController {
     
@@ -208,7 +209,7 @@ class VerificationScreenController : UIViewController {
           if let error = error {
             print(error.localizedDescription)
           }else{
-            print("sign in....")
+            self.present(HomeViewController(), animated: true, completion: nil)
           }
     }
     }

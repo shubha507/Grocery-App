@@ -9,7 +9,11 @@ import UIKit
 
 class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
     
-    let array = ["Vegetables","Fruits","Meat","Egg"]
+    let dataManager = DataManager()
+    
+    var array1 = [Categories]()
+    
+    var array = ["Vegetables","Fruits","Meat","Egg"]
     
     private let cellView : UIView = {
         let cv = UIView()
@@ -41,15 +45,22 @@ class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
         let fc = UICollectionView(frame: .zero, collectionViewLayout: layout)
         fc.register(FirstCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell")
         fc.backgroundColor = .white
+        fc.showsHorizontalScrollIndicator = false
         return fc
     }()
+    
+    //created function to pass data from tableview to collectionview
+    func collectionViewData(array : [Categories]){
+        self.array1 = array
+        firstCellCollection.reloadData()
+       // print(self.array1)
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         firstCellCollection.delegate = self
         firstCellCollection.dataSource = self
-        
         configureUI()
     }
     
@@ -103,13 +114,15 @@ class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
 extension FirstTableViewCell : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return array1.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! FirstCollectionViewCell
-        cell.cellLabel.text = "\(array[indexPath.row])"
-        cell.cellImage.image = UIImage(named: "\(array[indexPath.row])")
+        cell.cellLabel.text = "\(array1[indexPath.row].name!)"
+ //       print(array1[indexPath.row].name)
+       // cell.cellImage.image = UIImage(named: "\(array[indexPath.row])")
+        dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage)
         return cell
     }
 }
