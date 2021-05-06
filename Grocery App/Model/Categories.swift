@@ -14,10 +14,29 @@ struct Categories {
     var url : String?
     
     
-    init(Name : String?,Rank : Int?, Url : String?) {
-        self.name = Name
-        self.rank = Rank
-        self.url = Url
+    init(name : String?,rank : Int?, url : String?) {
+        self.name = name
+        self.rank = rank
+        self.url = url
+    }
+}
+
+struct Product{
+    
+    var active : Bool?
+    var categoryId : String?
+    var description : String?
+    var price : Int?
+    var name : String?
+    var tags : [String]?
+    
+    init(active : Bool? , categoryId : String?, description : String?,price : Int?, name : String?,tags : [String]?){
+        self.active = active
+        self.categoryId = categoryId
+        self.description = description
+        self.price = price
+        self.name = name
+        self.tags = tags
     }
 }
 

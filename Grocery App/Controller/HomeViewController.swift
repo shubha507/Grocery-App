@@ -12,9 +12,14 @@ import FirebaseFirestore
 
 class HomeViewController : UIViewController, UITableViewDelegate {
     
+    //Mark :- Properties
     var alertControler : UIAlertController?
     
     private var category = [Categories]()
+    
+    private var dict = [Int : String]()
+    
+    private var sortedDict = [Int : String]()
     
     private var sortedCategory = [Categories]()
     
@@ -51,6 +56,92 @@ class HomeViewController : UIViewController, UITableViewDelegate {
         return button
     }()
     
+    private let searchTextField : UISearchTextField = {
+        let stf = UISearchTextField()
+        stf.layer.cornerRadius = 20
+        stf.placeholder = "Search your daily grocery food..."
+        stf.backgroundColor = .white
+        return stf
+    }()
+    
+    private let tblView : UITableView = {
+        let tv = UITableView()
+        tv.backgroundColor = UIColor(named: "buttoncolor")
+        tv.register(FirstTableViewCell.self, forCellReuseIdentifier: "cell")
+        tv.layer.cornerRadius = 30
+        tv.register(SecondTableViewCell.self, forCellReuseIdentifier: "cell1")
+        tv.showsVerticalScrollIndicator = false
+        tv.bounces = false
+        return tv
+    }()
+   
+    //Mark :- Lifecycle Method
+
+    override func viewDidLoad() {
+        super .viewDidLoad()
+        
+        view.backgroundColor = UIColor(named: "mygreen")
+        tblView.delegate = self
+        tblView.dataSource = self
+        configureUI()
+        self.navigationController?.navigationBar.isHidden = true
+        fetchData()
+    }
+    
+    //Mark :- Helper function
+
+func configureUI(){
+        view.addSubview(profileButton)
+        profileButton.setDimensions(height: 50, width: 50)
+        profileButton.addSubview(imageView)
+        profileButton.anchor(top: view.topAnchor, right: view.rightAnchor, paddingTop: 60, paddingRight: 30)
+        profileButton.layer.cornerRadius = 25
+        imageView.anchor(top: profileButton.topAnchor, left: profileButton.leftAnchor, bottom: profileButton.bottomAnchor, right: profileButton.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
+        
+        view.addSubview(hiLabel)
+        hiLabel.anchor(top: view.topAnchor, left: view.leftAnchor, paddingTop: 60, paddingLeft: 30,width: view.frame.width - 100, height: 25)
+        
+        view.addSubview(searchFoodLabel)
+        searchFoodLabel.anchor(top: hiLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 0, paddingLeft: 30, width: view.frame.width - 90, height: 25)
+        
+        view.addSubview(searchTextField)
+        searchTextField.anchor(top: searchFoodLabel.bottomAnchor, left: view.leftAnchor, paddingTop : 25, paddingLeft: 30, width: view.frame.width - 60, height: 55)
+        
+        view.addSubview(tblView)
+    tblView.anchor(top: searchTextField.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
+        tblView.separatorStyle = .none
+        tblView.allowsSelection = false
+    //to show all cells above tabbar
+        tblView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 130, right: 0)
+        
+    }
+    
+    //fetching data from firestore
+    func fetchData(){
+        let db = Firestore.firestore()
+        db.collection("categories").getDocuments() { (querySnapshot, err) in
+        if let err = err {
+            print("Error getting documents: \(err)")
+        } else {
+            self.category = []
+            for document in querySnapshot!.documents {
+                print("\(document.documentID) => \(document.data()["rank"] as! Int)")
+             let data = document.data()
+             let name = data["name"] as? String ?? " "
+             let rank = data["rank"] as? Int ?? 0
+             let url = data["url"] as? String ?? " "
+             let newCategory = Categories(name: name, rank: rank, url: url)
+             self.category.append(newCategory)
+             self.dict.updateValue(document.documentID, forKey: rank)
+            }
+            self.tblView.reloadData()
+            //sorting category cells according to rank
+            self.sortedCategory = self.category.sorted(by: { $0.rank! < $1.rank! })
+            print(self.dict)
+        }
+    }
+}
+    
     @objc func profileButtonTapped(){
         alertControler = UIAlertController(title: nil, message: "Do you want to logout?", preferredStyle: .alert)
         let actionYes = UIAlertAction(title: "Yes", style: .default) { (action) in
@@ -73,90 +164,13 @@ class HomeViewController : UIViewController, UITableViewDelegate {
         
     }
     
-    private let searchTextField : UISearchTextField = {
-        let stf = UISearchTextField()
-        stf.layer.cornerRadius = 20
-        stf.placeholder = "Search your daily grocery food..."
-        stf.backgroundColor = .white
-        return stf
-    }()
-    
-    private let tblView : UITableView = {
-        let tv = UITableView()
-        tv.backgroundColor = UIColor(named: "buttoncolor")
-        tv.register(FirstTableViewCell.self, forCellReuseIdentifier: "cell")
-        tv.layer.cornerRadius = 30
-        tv.register(SecondTableViewCell.self, forCellReuseIdentifier: "cell1")
-        tv.alwaysBounceVertical = false
-        return tv
-    }()
-
-    override func viewDidLoad() {
-        super .viewDidLoad()
-        
-        view.backgroundColor = UIColor(named: "mygreen")
-        tblView.delegate = self
-        tblView.dataSource = self
-        configureUI()
-        self.navigationController?.navigationBar.isHidden = true
-        fetchData()
-        
-    }
-    
     @objc func seeDetailView(){
         let categoryVC = CategoriesViewController()
         categoryVC.dataArray = sortedCategory
+        categoryVC.dictDocumentID = dict
         self.navigationController?.pushViewController(categoryVC, animated: true)
     }
-    
-    func configureUI(){
-        view.addSubview(profileButton)
-        profileButton.setDimensions(height: 50, width: 50)
-        profileButton.addSubview(imageView)
-        profileButton.anchor(top: view.topAnchor, right: view.rightAnchor, paddingTop: 60, paddingRight: 30)
-        profileButton.layer.cornerRadius = 25
-        imageView.anchor(top: profileButton.topAnchor, left: profileButton.leftAnchor, bottom: profileButton.bottomAnchor, right: profileButton.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
-        
-        view.addSubview(hiLabel)
-        hiLabel.anchor(top: view.topAnchor, left: view.leftAnchor, paddingTop: 60, paddingLeft: 30,width: view.frame.width - 100, height: 25)
-        
-        view.addSubview(searchFoodLabel)
-        searchFoodLabel.anchor(top: hiLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 0, paddingLeft: 30, width: view.frame.width - 90, height: 25)
-        
-        view.addSubview(searchTextField)
-        searchTextField.anchor(top: searchFoodLabel.bottomAnchor, left: view.leftAnchor, paddingTop : 25, paddingLeft: 30, width: view.frame.width - 60, height: 55)
-        
-        view.addSubview(tblView)
-        tblView.anchor(top: searchTextField.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
-        tblView.separatorStyle = .none
-        tblView.allowsSelection = false
-        
-    }
-    
-    func fetchData(){
-        let db = Firestore.firestore()
-        db.collection("categories").getDocuments() { (querySnapshot, err) in
-        if let err = err {
-            print("Error getting documents: \(err)")
-        } else {
-            self.category = []
-            for document in querySnapshot!.documents {
-                print("\(document.documentID) => \(document.data()["rank"] as! Int)")
-                let num = document.data()["rank"] as! Int
-             let data = document.data()
-             let name = data["name"] as? String ?? " "
-             let rank = data["rank"] as? Int ?? 0
-             let url = data["url"] as? String ?? " "
-             let newCategory = Categories(Name: name, Rank: rank, Url: url)
-             self.category.append(newCategory)
-            }
-            self.tblView.reloadData()
-            self.sortedCategory = self.category.sorted(by: { $0.rank! < $1.rank! })
-            print(self.sortedCategory)
-        }
-    }
-}
-    
+
 }
 
 extension HomeViewController : UITableViewDataSource {

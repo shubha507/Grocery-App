@@ -7,9 +7,11 @@
 
 import UIKit
 
-class CategoriesViewController : UIViewController, UICollectionViewDelegate {
+class CategoriesViewController : UIViewController {
     
     var dataArray = [Categories]()
+    
+    var dictDocumentID = [Int : String]()
     
     let dataManager = DataManager()
     
@@ -51,6 +53,7 @@ class CategoriesViewController : UIViewController, UICollectionViewDelegate {
        fc.backgroundColor = .white
        fc.showsVerticalScrollIndicator = false
        fc.layer.cornerRadius = 30
+       fc.bounces = false
        return fc
    }()
     
@@ -75,9 +78,19 @@ class CategoriesViewController : UIViewController, UICollectionViewDelegate {
         
         backView.addSubview(cellCollectionVw)
         cellCollectionVw.anchor(top: backView.topAnchor, left: backView.leftAnchor, bottom: backView.bottomAnchor, right: backView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 10)
+        cellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
     }
     
+
+}
+
+extension CategoriesViewController : UICollectionViewDelegate{
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+       print("dict \(dictDocumentID[dataArray[indexPath.row].rank!]!)")
+       let controller = ProductsViewController()
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 extension CategoriesViewController : UICollectionViewDataSource {
@@ -93,6 +106,7 @@ extension CategoriesViewController : UICollectionViewDataSource {
         dataManager.getImageFrom(url: "\(dataArray[indexPath.row].url!)", imageView: cell.cellImage)
         return cell
     }
+    
 }
 
 extension CategoriesViewController : UICollectionViewDelegateFlowLayout {
@@ -112,5 +126,7 @@ extension CategoriesViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 15, left: 10, bottom: 0, right: 10)
     }
+    
+    
 }
 

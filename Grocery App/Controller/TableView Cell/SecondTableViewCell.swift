@@ -16,6 +16,7 @@ class SecondTableViewCell : UITableViewCell, UICollectionViewDelegate {
        fc.register(SecondCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell1")
        fc.backgroundColor = UIColor(named: "buttoncolor")
        fc.showsHorizontalScrollIndicator = false
+       fc.bounces = false
        return fc
    }()
     

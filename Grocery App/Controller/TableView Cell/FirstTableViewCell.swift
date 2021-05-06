@@ -46,6 +46,7 @@ class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
         fc.register(FirstCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell")
         fc.backgroundColor = .white
         fc.showsHorizontalScrollIndicator = false
+        fc.bounces = false
         return fc
     }()
     
@@ -72,7 +73,7 @@ class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
         
         contentView.addSubview(cellView)
         cellView.setDimensions(height: 235, width: 360)
-        cellView.anchor(top: topAnchor, left : leftAnchor, paddingTop: 17, paddingLeft: 15)
+        cellView.anchor(top: topAnchor, left : leftAnchor,right: rightAnchor, paddingTop: 17, paddingLeft: 15,paddingRight: 15)
         backgroundColor = UIColor(named: "buttoncolor")
         
         cellView.addSubview(categoryLabel)
@@ -107,6 +108,10 @@ class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
         // Add that `CAShapeLayer` to your view's layer:
 
         layer.addSublayer(shapeLayer)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(array1[indexPath.row].rank!)
     }
 
 }
