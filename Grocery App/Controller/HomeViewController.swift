@@ -14,14 +14,16 @@ class HomeViewController : UIViewController, UITableViewDelegate {
     
     //Mark :- Properties
     var alertControler : UIAlertController?
+    var dataManager = DataManager()
+    var productArray = [Product]()
+    var category = [Categories]()
+    var sortedCategory = [Categories]()
+    var dict = [Int : String]()
+    var discount = [Discount]()
+    var sortedDiscount = [Discount]()
+    var deals = [Deals]()
+    var sortedDeals = [Deals]()
     
-    private var category = [Categories]()
-    
-    private var dict = [Int : String]()
-    
-    private var sortedDict = [Int : String]()
-    
-    private var sortedCategory = [Categories]()
     
     private let imageView : UIImageView = {
         let iv = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
@@ -67,9 +69,10 @@ class HomeViewController : UIViewController, UITableViewDelegate {
     private let tblView : UITableView = {
         let tv = UITableView()
         tv.backgroundColor = UIColor(named: "buttoncolor")
-        tv.register(FirstTableViewCell.self, forCellReuseIdentifier: "cell")
+        tv.register(CategoriesTableViewCell.self, forCellReuseIdentifier: "cell")
         tv.layer.cornerRadius = 30
-        tv.register(SecondTableViewCell.self, forCellReuseIdentifier: "cell1")
+        tv.register(DiscountTableViewCell.self, forCellReuseIdentifier: "cell1")
+        tv.register(PopularDealsTableViewCell.self,forCellReuseIdentifier: "cell2")
         tv.showsVerticalScrollIndicator = false
         tv.bounces = false
         return tv
@@ -85,7 +88,10 @@ class HomeViewController : UIViewController, UITableViewDelegate {
         tblView.dataSource = self
         configureUI()
         self.navigationController?.navigationBar.isHidden = true
-        fetchData()
+        fetchCategoryData()
+      
+      fetchDiscountData()
+      fetchDealsData()
     }
     
     //Mark :- Helper function
@@ -116,8 +122,7 @@ func configureUI(){
         
     }
     
-    //fetching data from firestore
-    func fetchData(){
+    func fetchCategoryData(){
         let db = Firestore.firestore()
         db.collection("categories").getDocuments() { (querySnapshot, err) in
         if let err = err {
@@ -125,22 +130,81 @@ func configureUI(){
         } else {
             self.category = []
             for document in querySnapshot!.documents {
-                print("\(document.documentID) => \(document.data()["rank"] as! Int)")
+               // print("\(document.documentID) => \(document.data()["rank"] as! Int)")
              let data = document.data()
              let name = data["name"] as? String ?? " "
              let rank = data["rank"] as? Int ?? 0
              let url = data["url"] as? String ?? " "
              let newCategory = Categories(name: name, rank: rank, url: url)
              self.category.append(newCategory)
-             self.dict.updateValue(document.documentID, forKey: rank)
+            self.dict.updateValue(document.documentID, forKey: rank)
             }
             self.tblView.reloadData()
+            print("category \(self.category)")
             //sorting category cells according to rank
             self.sortedCategory = self.category.sorted(by: { $0.rank! < $1.rank! })
-            print(self.dict)
+           // print(self.dict)
         }
     }
 }
+    
+    func fetchDiscountData(){
+        let db = Firestore.firestore()
+        db.collection("discounts").getDocuments() { (querySnapshot, err) in
+        if let err = err {
+            print("Error getting documents: \(err)")
+        } else {
+            self.discount = []
+            for document in querySnapshot!.documents {
+               print("\(document.documentID) => \(document.data()["rank"] as! Int)")
+             let data = document.data()
+             let name = data["name"] as? String ?? " "
+             let rank = data["rank"] as? Int ?? 0
+             let url = data["url"] as? String ?? " "
+             let id = data["id"] as? String ?? " "
+             let discount = data["discount"] as? String ?? " "
+             let createdAt = data["created_at"] as? String ?? " "
+             let newDiscount = Discount(createdAt: createdAt, discount: discount, url: url, id: id, name: name, rank: rank )
+             self.discount.append(newDiscount)
+            // self.dict.updateValue(document.documentID, forKey: rank)
+            }
+            self.tblView.reloadData()
+            //sorting category cells according to rank
+            self.sortedDiscount = self.discount.sorted(by: { $0.rank! < $1.rank! })
+           // print("arr \(self.sortedDiscount.count)")
+        }
+    }
+}
+    
+    func fetchDealsData(){
+        let db = Firestore.firestore()
+        db.collection("deals").getDocuments() { (querySnapshot, err) in
+        if let err = err {
+            print("Error getting documents: \(err)")
+        } else {
+            self.deals = []
+            for document in querySnapshot!.documents {
+               print("\(document.documentID) => \(document.data()["rank"] as! Int)")
+             let data = document.data()
+             let name = data["name"] as? String ?? " "
+             let rank = data["rank"] as? Int ?? 0
+             let url = data["url"] as? String ?? " "
+             let id = data["id"] as? String ?? " "
+             let discount = data["discount"] as? String ?? " "
+             let createdAt = data["created_at"] as? String ?? " "
+             let newDeals = Deals(createdAt: createdAt, discount: discount, url: url, id: id, name: name, rank: rank )
+             self.deals.append(newDeals)
+            // self.dict.updateValue(document.documentID, forKey: rank)
+            }
+            self.tblView.reloadData()
+            //sorting category cells according to rank
+            self.sortedDeals = self.deals.sorted(by: { $0.rank! < $1.rank! })
+            print("arrdeal \(self.sortedDeals)")
+        }
+    }
+}
+    
+    
     
     @objc func profileButtonTapped(){
         alertControler = UIAlertController(title: nil, message: "Do you want to logout?", preferredStyle: .alert)
@@ -180,24 +244,31 @@ extension HomeViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row%2 == 0 {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! FirstTableViewCell
+        if indexPath.row == 0 {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CategoriesTableViewCell
             cell.collectionViewData(array: sortedCategory)
             cell.seeAllButton.addTarget(self, action: #selector(seeDetailView), for: .touchUpInside)
             
         return cell
-        }else{
-            let cell1 = tableView.dequeueReusableCell(withIdentifier: "cell1") as! SecondTableViewCell
+        }else if indexPath.row == 1{
+            let cell1 = tableView.dequeueReusableCell(withIdentifier: "cell1") as! DiscountTableViewCell
+            cell1.collectionViewData(array:sortedDiscount)
             return cell1
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell2") as! PopularDealsTableViewCell
+            cell.collectionViewData(array: sortedDeals)
+                
+            return cell
         }
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row%2 == 0{
+        if indexPath.row == 0{
            return 250
-        }else {
+        }else if indexPath.row == 1{
             return 180
+        }else{
+            return 300
         }
         
     }

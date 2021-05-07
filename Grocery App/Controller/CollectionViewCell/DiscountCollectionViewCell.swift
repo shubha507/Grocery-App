@@ -7,23 +7,27 @@
 
 import UIKit
 
-class SecondCollectionViewCell : UICollectionViewCell {
+class DiscountCollectionViewCell : UICollectionViewCell {
     
-    private let basketImageView : UIImageView = {
+    let dataManager = DataManager()
+    
+     private let basketImageView : UIImageView = {
         let iv = UIImageView(image: UIImage(named: "fruitBasket"))
+        iv.contentMode = .scaleAspectFit
         return iv
     }()
     
-    private let discountLabel : UILabel = {
+     private let discountLabel : UILabel = {
         let lbl = UILabel()
         lbl.text = "30% Discount"
-        lbl.font = UIFont.boldSystemFont(ofSize: 28)
+        lbl.font = UIFont.boldSystemFont(ofSize: 18)
         lbl.textColor = UIColor(named: "mygreen")
+        lbl.numberOfLines = 0
         lbl.textAlignment = .left
         return lbl
     }()
     
-    private let discountDescriptionLabel : UILabel = {
+     private let discountDescriptionLabel : UILabel = {
         let lbl = UILabel()
         lbl.text = "Order any food from app and get the discount"
         lbl.font = UIFont.systemFont(ofSize: 15)
@@ -38,7 +42,7 @@ class SecondCollectionViewCell : UICollectionViewCell {
         lbl.text = "Order Now"
         lbl.textColor = UIColor(named: "mygreen")
         lbl.font = UIFont.boldSystemFont(ofSize: 15)
-        lbl.textAlignment = .center
+        lbl.textAlignment = .left
         return lbl
     }()
 
@@ -51,8 +55,8 @@ class SecondCollectionViewCell : UICollectionViewCell {
         layer.cornerRadius = 30
         
         addSubview(basketImageView)
-        basketImageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor,paddingTop: 15, paddingLeft: 15, paddingBottom: 15)
-        basketImageView.setDimensions(height: 50, width: 80)
+        basketImageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor,paddingTop: 15, paddingLeft: 10, paddingBottom: 15)
+        basketImageView.setDimensions(height: 110, width: 110)
         
         configureStack()
     }
@@ -64,11 +68,17 @@ class SecondCollectionViewCell : UICollectionViewCell {
         
         addSubview(stack)
 
-        stack.anchor(top: topAnchor,left: basketImageView.rightAnchor, paddingTop: 15,paddingLeft: 15)
-        stack.setDimensions(height: 120, width: 185)
+        stack.anchor(top: topAnchor,left: basketImageView.rightAnchor, paddingTop: 15,paddingLeft: 10)
+        stack.setDimensions(height: 135, width: 200)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configureUI(discountLbl : String?, discountDescriptionLbl : String?, url : String?){
+        self.discountLabel.text = discountLbl
+        self.discountDescriptionLabel.text = discountDescriptionLbl
+        dataManager.getImageFrom(url: url, imageView: basketImageView,defaultImage: "fruitBasket")
     }
 }

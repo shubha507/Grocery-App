@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
+class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
     
     let dataManager = DataManager()
     
@@ -22,7 +22,7 @@ class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
         return cv
     }()
     
-    private let categoryLabel : UILabel = {
+     let categoryLabel : UILabel = {
         let lbl = UILabel()
         lbl.text = "Categories"
         lbl.font = UIFont.boldSystemFont(ofSize: 18)
@@ -39,29 +39,30 @@ class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
     }()
     
         
-     let firstCellCollection : UICollectionView = {
+     let categoriesCellCollection : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let fc = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        fc.register(FirstCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell")
+        fc.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell")
         fc.backgroundColor = .white
         fc.showsHorizontalScrollIndicator = false
         fc.bounces = false
+        fc.allowsMultipleSelection = false
         return fc
     }()
     
     //created function to pass data from tableview to collectionview
     func collectionViewData(array : [Categories]){
         self.array1 = array
-        firstCellCollection.reloadData()
+        categoriesCellCollection.reloadData()
        // print(self.array1)
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        firstCellCollection.delegate = self
-        firstCellCollection.dataSource = self
+        categoriesCellCollection.delegate = self
+        categoriesCellCollection.dataSource = self
         configureUI()
     }
     
@@ -84,9 +85,9 @@ class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
 
         createLine()
         
-        cellView.addSubview(firstCellCollection)
-        firstCellCollection.anchor(top: categoryLabel.bottomAnchor, left: cellView.leftAnchor, bottom: cellView.bottomAnchor, right: cellView.rightAnchor, paddingTop: 23, paddingLeft: 0, paddingBottom: 25, paddingRight: 0)
-        firstCellCollection.setDimensions(height: 135, width: cellView.frame.width)
+        cellView.addSubview(categoriesCellCollection)
+        categoriesCellCollection.anchor(top: categoryLabel.bottomAnchor, left: cellView.leftAnchor, bottom: cellView.bottomAnchor, right: cellView.rightAnchor, paddingTop: 23, paddingLeft: 0, paddingBottom: 25, paddingRight: 0)
+        categoriesCellCollection.setDimensions(height: 135, width: cellView.frame.width)
         //firstCellCollection.frame(forAlignmentRect: <#T##CGRect#>)
    }
     
@@ -116,23 +117,23 @@ class FirstTableViewCell : UITableViewCell, UICollectionViewDelegate {
 
 }
 
-extension FirstTableViewCell : UICollectionViewDataSource {
+extension CategoriesTableViewCell : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return array1.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! FirstCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! CategoryCollectionViewCell
         cell.cellLabel.text = "\(array1[indexPath.row].name!)"
  //       print(array1[indexPath.row].name)
        // cell.cellImage.image = UIImage(named: "\(array[indexPath.row])")
-        dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage)
+        dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage, defaultImage: "Vegetables")
         return cell
     }
 }
 
-extension FirstTableViewCell : UICollectionViewDelegateFlowLayout {
+extension CategoriesTableViewCell : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width:110, height: 135 )

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FirstCollectionViewCell : UICollectionViewCell {
+class CategoryCollectionViewCell : UICollectionViewCell {
     
      let cellImage : UIImageView = {
         let iv = UIImageView()
@@ -28,7 +28,7 @@ class FirstCollectionViewCell : UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+          
       //  backgroundColor = UIColor(named: "cellgreen")
         addSubview(cellImage)
         cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0, width: 110, height: 110)

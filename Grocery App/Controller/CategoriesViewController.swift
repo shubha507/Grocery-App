@@ -6,14 +6,21 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseCore
+import FirebaseFirestore
 
 class CategoriesViewController : UIViewController {
+    
+    var productArray = [Product]()
     
     var dataArray = [Categories]()
     
     var dictDocumentID = [Int : String]()
     
     let dataManager = DataManager()
+    
+  //  var productArray = [Product]()
     
     private let backButton : UIButton = {
         let button = UIButton(type: .system)
@@ -49,7 +56,7 @@ class CategoriesViewController : UIViewController {
        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
        let fc = UICollectionView(frame: .zero, collectionViewLayout: layout)
-       fc.register(FirstCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell")
+       fc.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell")
        fc.backgroundColor = .white
        fc.showsVerticalScrollIndicator = false
        fc.layer.cornerRadius = 30
@@ -81,15 +88,50 @@ class CategoriesViewController : UIViewController {
         cellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
     }
     
+    func searchData(selectedId : String?, row : Int?){
+        let db = Firestore.firestore()
+        db.collection("products").whereField("category_id", isEqualTo: selectedId).getDocuments() { [self] (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    print("\(document.documentID) => \(document.data())")
+                    let data = document.data()
+                    let active = data["active"] as? Bool ?? false
+                    let name = data["name"] as? String ?? ""
+                    let categoryId = data["category_id"] as? String ?? ""
+                    let description = data["description"] as? String ?? ""
+                    let tags = data["tags"] as? [String] ?? []
+                    let price = data["price"] as? Int ?? 0
+                    let url = data["url"] as? String ?? ""
+                    let searchKey = data["search_keys"] as? [String] ?? []
+                    if active == true {
+                    let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: tags, url: url,searchKey: searchKey)
+                    self.productArray.append(newProduct)
+                    }
+                }
+              //  self.cellCollectionVw.reloadData()
+                print("productArray \(self.productArray.count) ")
+                    let controller = ProductsViewController()
+                   //  controller.selectedDocumentid = dictDocumentID[dataArray[indexPath.row].rank!]!
+                    controller.pageTitle = dataArray[row!].name!
+                    controller.productArray = self.productArray
+                     self.navigationController?.pushViewController(controller, animated: true)
+                print("array\(self.productArray)")
+            }
+    }
+    }
 
 }
 
 extension CategoriesViewController : UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-       print("dict \(dictDocumentID[dataArray[indexPath.row].rank!]!)")
-       let controller = ProductsViewController()
-        self.navigationController?.pushViewController(controller, animated: true)
+        self.productArray = []
+      // print("dict \(dictDocumentID[dataArray[indexPath.row].rank!]!)")
+//        dataManager.searchData(selectedId: dictDocumentID[dataArray[indexPath.row].rank!]!, title: dataArray[indexPath.row].name!, controller : CategoriesViewController())
+        
+        searchData(selectedId : dictDocumentID[dataArray[indexPath.row].rank!]!, row : indexPath.row)
     }
 }
 
@@ -100,10 +142,10 @@ extension CategoriesViewController : UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! FirstCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! CategoryCollectionViewCell
         cell.cellLabel.text = "\(dataArray[indexPath.row].name!)"
       //  cell.cellImage.image = UIImage(named: "\(array[indexPath.row])")
-        dataManager.getImageFrom(url: "\(dataArray[indexPath.row].url!)", imageView: cell.cellImage)
+        dataManager.getImageFrom(url: "\(dataArray[indexPath.row].url!)", imageView: cell.cellImage, defaultImage: "Vegetables")
         return cell
     }
     
