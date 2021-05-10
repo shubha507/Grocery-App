@@ -120,7 +120,7 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
 extension CategoriesTableViewCell : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return array1.count
+        return array1.count/2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

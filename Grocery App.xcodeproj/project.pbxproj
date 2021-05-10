@@ -15,6 +15,7 @@
 		B20C2BBE263992580001B9FA /* OfferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BBD263992580001B9FA /* OfferViewController.swift */; };
 		B20C2BC1263992930001B9FA /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BC0263992930001B9FA /* CartViewController.swift */; };
 		B20C2BC4263992D10001B9FA /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BC3263992D10001B9FA /* MoreViewController.swift */; };
+		B21D0F1F264703AE00EFE99B /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21D0F1E264703AE00EFE99B /* Extension.swift */; };
 		B22A43E42637E0C5001F1AC2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22A43E32637E0C5001F1AC2 /* CustomTextField.swift */; };
 		B22A43E72637EE55001F1AC2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B22A43E62637EE55001F1AC2 /* GoogleService-Info.plist */; };
 		B22F730B263AC413004CCEF7 /* CategoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22F730A263AC413004CCEF7 /* CategoriesTableViewCell.swift */; };
@@ -48,6 +49,7 @@
 		B20C2BBD263992580001B9FA /* OfferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferViewController.swift; sourceTree = "<group>"; };
 		B20C2BC0263992930001B9FA /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		B20C2BC3263992D10001B9FA /* MoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
+		B21D0F1E264703AE00EFE99B /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		B22A43E32637E0C5001F1AC2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		B22A43E62637EE55001F1AC2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B22F730A263AC413004CCEF7 /* CategoriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesTableViewCell.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				B2536E962631E6C800EADC0C /* Info.plist */,
 				B2E90107263698E600A24E89 /* Utility.swift */,
 				B22A43E62637EE55001F1AC2 /* GoogleService-Info.plist */,
+				B21D0F1E264703AE00EFE99B /* Extension.swift */,
 			);
 			path = "Grocery App";
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 				B22F7312263B01C9004CCEF7 /* DiscountTableViewCell.swift in Sources */,
 				B2E90108263698E600A24E89 /* Utility.swift in Sources */,
 				B20C2BBB263991F00001B9FA /* OrderViewController.swift in Sources */,
+				B21D0F1F264703AE00EFE99B /* Extension.swift in Sources */,
 				B20C2B9A263939E60001B9FA /* CustomTabBar.swift in Sources */,
 				B251F19F26428C10007823AA /* ProductsViewController.swift in Sources */,
 				B22F730B263AC413004CCEF7 /* CategoriesTableViewCell.swift in Sources */,
