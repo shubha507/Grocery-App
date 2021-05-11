@@ -29,14 +29,15 @@ struct Product{
     var price : Int?
     var name : String?
     var tags : [String]?
-    
-    init(active : Bool? , categoryId : String?, description : String?,price : Int?, name : String?,tags : [String]?){
+    var url : String?
+    init(active : Bool? , categoryId : String?, description : String?,price : Int?, name : String?,tags : [String]?, url : String?){
         self.active = active
         self.categoryId = categoryId
         self.description = description
         self.price = price
         self.name = name
         self.tags = tags
+        self.url = url
     }
 }
 

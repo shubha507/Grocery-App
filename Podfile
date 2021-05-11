@@ -10,5 +10,5 @@ target 'Grocery App' do
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
   pod 'FirebaseFirestoreSwift'
-
+  pod 'DropDown'
 end
