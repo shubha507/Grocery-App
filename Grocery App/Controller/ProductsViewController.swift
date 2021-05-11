@@ -18,7 +18,9 @@ class ProductsViewController : UIViewController, UICollectionViewDelegate{
     
     var pageTitle : String?
     
-    var productArray = [Product]()
+   // var productArray = [Product]()
+    
+    var productId : String?
     
     private let backButton : UIButton = {
         let button = UIButton(type: .system)
@@ -101,8 +103,43 @@ class ProductsViewController : UIViewController, UICollectionViewDelegate{
         view.backgroundColor = UIColor(named: "mygreen")
         productCellCollectionVw.delegate = self
         productCellCollectionVw.dataSource = self
-        print("productArray \(productArray)")
+     //   print("productArray \(productArray)")
         
+        
+        
+        
+        self.dataManager.searchData(selectedId: productId) { (error) in
+            print("self.dataManager.productArray \(self.dataManager.productArray)")
+           // self.productArray = self.dataManager.productArray
+           self.productCellCollectionVw.reloadData()
+            self.configureView()
+                    }
+        print("productArray \(self.dataManager.productArray)")
+        configureUI()
+    }
+        
+
+func configureView(){
+    if self.dataManager.productArray.count > 0{
+        self.backView.backgroundColor = UIColor(named: "buttoncolor")
+        self.backView.addSubview(self.productCellCollectionVw)
+        self.productCellCollectionVw.anchor(top: self.backView.topAnchor, left: self.backView.leftAnchor, bottom: self.backView.bottomAnchor, right: self.backView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 10)
+        self.productCellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
+            }else{
+                self.backView.backgroundColor = UIColor(red: 163/255, green: 194/255, blue: 194/255, alpha: 1)
+                self.backView.addSubview(self.noProductView)
+                self.noProductView.anchor(top: self.backView.topAnchor, left: self.backView.leftAnchor, bottom: self.backView.bottomAnchor, right: self.backView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 10)
+                self.noProductView.addSubview(self.noProductImageView)
+                self.noProductImageView.anchor(top: self.noProductView.topAnchor, left: self.noProductView.leftAnchor, right: self.noProductView.rightAnchor, paddingTop: 40, paddingLeft: 20, paddingRight: 20, width: self.noProductView.frame.width - 40, height: 250)
+                self.noProductView.addSubview(self.oopsLbl)
+                self.oopsLbl.anchor(top: self.noProductImageView.bottomAnchor, left: self.noProductView.leftAnchor, right: self.noProductView.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 20, width: self.noProductView.frame.width - 40, height: 40)
+                self.noProductView.addSubview(self.noProductLbl)
+                self.noProductLbl.anchor(top: self.oopsLbl.bottomAnchor, left: self.noProductView.leftAnchor, right: self.noProductView.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 20, width: self.noProductView.frame.width - 40, height: 60)
+                self.noProductLbl.text = "No product available in \(self.pageTitle!) category"
+}
+}
+    
+    func configureUI(){
         view.addSubview(backButton)
         backButton.anchor(top: view.topAnchor, left: view.leftAnchor, paddingTop: 60, paddingLeft: 40)
         
@@ -114,31 +151,20 @@ class ProductsViewController : UIViewController, UICollectionViewDelegate{
         view.addSubview(backView)
         backView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 120, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
         
-        if productArray.count > 0{
-        backView.addSubview(productCellCollectionVw)
-        productCellCollectionVw.anchor(top: backView.topAnchor, left: backView.leftAnchor, bottom: backView.bottomAnchor, right: backView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 10)
-        productCellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
-        }else{
-            backView.addSubview(noProductView)
-            noProductView.anchor(top: backView.topAnchor, left: backView.leftAnchor, bottom: backView.bottomAnchor, right: backView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 10)
-            noProductView.addSubview(noProductImageView)
-            noProductImageView.anchor(top: noProductView.topAnchor, left: noProductView.leftAnchor, right: noProductView.rightAnchor, paddingTop: 40, paddingLeft: 20, paddingRight: 20, width: noProductView.frame.width - 40, height: 250)
-            noProductView.addSubview(oopsLbl)
-            oopsLbl.anchor(top: noProductImageView.bottomAnchor, left: noProductView.leftAnchor, right: noProductView.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 20, width: noProductView.frame.width - 40, height: 40)
-            noProductView.addSubview(noProductLbl)
-            noProductLbl.anchor(top: oopsLbl.bottomAnchor, left: noProductView.leftAnchor, right: noProductView.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 20, width: noProductView.frame.width - 40, height: 60)
-            noProductLbl.text = "No product available in \(self.pageTitle!) category"
-        }
-        
-    }
+}
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let controller = ProductDetailViewController()
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+
 }
 
 extension ProductsViewController : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if self.productArray.count > 0{
-            return self.productArray.count
+        if self.dataManager.productArray.count > 0{
+            return self.dataManager.productArray.count
         }else{
             return 0
         }
@@ -153,11 +179,11 @@ extension ProductsViewController : UICollectionViewDataSource {
             cell.addVerticalView()
             
         }
-        cell.nameLabel.text = "\(productArray[indexPath.row].name!)"
+        cell.nameLabel.text = "\(dataManager.productArray[indexPath.row].name!)"
       //  cell.cellImage.image = UIImage(named: "\(productArray[indexPath.row])")
-        dataManager.getImageFrom(url: "\(productArray[indexPath.row].url!)", imageView: cell.cellImage, defaultImage: "Vegetables")
-        cell.priceLabel.text = "$\(productArray[indexPath.row].price!)"
-        cell.descriptionLabel.text = "\(productArray[indexPath.row].description!)"
+        dataManager.getImageFrom(url: "\(dataManager.productArray[indexPath.row].url!)", imageView: cell.cellImage, defaultImage: "Vegetables")
+        cell.priceLabel.text = "$\(dataManager.productArray[indexPath.row].price!)"
+        cell.descriptionLabel.text = "\(dataManager.productArray[indexPath.row].description!)"
         return cell
     }
     

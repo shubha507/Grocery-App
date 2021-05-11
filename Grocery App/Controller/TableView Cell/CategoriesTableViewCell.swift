@@ -7,9 +7,17 @@
 
 import UIKit
 
+protocol PerformAction {
+    func pushViewController(controller : UIViewController)
+}
+
 class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
     
+    var delegate : PerformAction?
+    
     let dataManager = DataManager()
+    
+    var dictDocumentID = [Int : String]()
     
     var array1 = [Categories]()
     
@@ -112,7 +120,10 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(array1[indexPath.row].rank!)
+        let controller = ProductsViewController()
+        controller.pageTitle = array1[indexPath.row].name!
+        controller.productId = dictDocumentID[array1[indexPath.row].rank!]!
+        delegate?.pushViewController(controller: controller)
     }
 
 }

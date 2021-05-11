@@ -98,6 +98,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
     
     private let cellHorizntalBorderView : UIView = {
         let vw = UIView()
+        vw.backgroundColor?.withAlphaComponent(0.5)
         vw.backgroundColor = .lightGray
         return vw
     }()
@@ -146,12 +147,12 @@ class ProductCollectionViewCell : UICollectionViewCell {
     
     func addVerticalView(){
         contentView.addSubview(cellBorderView)
-        cellBorderView.anchor(top: topAnchor, right: rightAnchor, paddingTop: 0, paddingRight: 0, width: 0.5, height: 300)
+        cellBorderView.anchor(top: topAnchor, right: rightAnchor, paddingTop: 0, paddingRight: 0, width: 0.3, height: 300)
     }
     
     func addHorizontalView(){
         contentView.addSubview(cellHorizntalBorderView)
-        cellHorizntalBorderView.anchor(left: leftAnchor, bottom: bottomAnchor, paddingLeft: 0, paddingBottom: 0, width: frame.width, height: 0.5)
+        cellHorizntalBorderView.anchor(left: leftAnchor, bottom: bottomAnchor, paddingLeft: 0, paddingBottom: 0, width: frame.width, height: 0.3)
     }
     
     @objc func plusButtonTapped(){

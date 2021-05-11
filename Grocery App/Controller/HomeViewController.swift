@@ -10,7 +10,7 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 
-class HomeViewController : UIViewController, UITableViewDelegate {
+class HomeViewController : UIViewController, UITableViewDelegate, PerformAction {
     
     //Mark :- Properties
     var alertControler : UIAlertController?
@@ -88,10 +88,10 @@ class HomeViewController : UIViewController, UITableViewDelegate {
         tblView.dataSource = self
         configureUI()
         self.navigationController?.navigationBar.isHidden = true
+     
+        fetchDealsData()
         fetchCategoryData()
-      
-      fetchDiscountData()
-      fetchDealsData()
+        fetchDiscountData()
     }
     
     //Mark :- Helper function
@@ -146,7 +146,7 @@ func configureUI(){
            // print(self.dict)
         }
     }
-}
+      }
     
     func fetchDiscountData(){
         let db = Firestore.firestore()
@@ -154,7 +154,6 @@ func configureUI(){
         if let err = err {
             print("Error getting documents: \(err)")
         } else {
-            self.discount = []
             for document in querySnapshot!.documents {
                print("\(document.documentID) => \(document.data()["rank"] as! Int)")
              let data = document.data()
@@ -182,7 +181,6 @@ func configureUI(){
         if let err = err {
             print("Error getting documents: \(err)")
         } else {
-            self.deals = []
             for document in querySnapshot!.documents {
                print("\(document.documentID) => \(document.data()["rank"] as! Int)")
              let data = document.data()
@@ -196,15 +194,13 @@ func configureUI(){
              self.deals.append(newDeals)
             // self.dict.updateValue(document.documentID, forKey: rank)
             }
-            self.tblView.reloadData()
             //sorting category cells according to rank
+            self.tblView.reloadData()
             self.sortedDeals = self.deals.sorted(by: { $0.rank! < $1.rank! })
             print("arrdeal \(self.sortedDeals)")
         }
     }
 }
-    
-    
     
     @objc func profileButtonTapped(){
         alertControler = UIAlertController(title: nil, message: "Do you want to logout?", preferredStyle: .alert)
@@ -225,7 +221,6 @@ func configureUI(){
         alertControler?.addAction(actionNo)
         
         self.present(alertControler!, animated: true, completion: nil)
-        
     }
     
     @objc func seeDetailView(){
@@ -233,6 +228,10 @@ func configureUI(){
         categoryVC.dataArray = sortedCategory
         categoryVC.dictDocumentID = dict
         self.navigationController?.pushViewController(categoryVC, animated: true)
+    }
+    
+    func pushViewController(controller: UIViewController) {
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 
 }
@@ -248,11 +247,12 @@ extension HomeViewController : UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CategoriesTableViewCell
             cell.collectionViewData(array: sortedCategory)
             cell.seeAllButton.addTarget(self, action: #selector(seeDetailView), for: .touchUpInside)
-            
+            cell.dictDocumentID = dict
+            cell.delegate = self
         return cell
         }else if indexPath.row == 1{
             let cell1 = tableView.dequeueReusableCell(withIdentifier: "cell1") as! DiscountTableViewCell
-            cell1.collectionViewData(array:sortedDiscount)
+            cell1.collectionViewData(array: sortedDiscount)
             return cell1
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell2") as! PopularDealsTableViewCell

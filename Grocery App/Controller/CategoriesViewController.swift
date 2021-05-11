@@ -12,8 +12,6 @@ import FirebaseFirestore
 
 class CategoriesViewController : UIViewController {
     
-    var productArray = [Product]()
-    
     var dataArray = [Categories]()
     
     var dictDocumentID = [Int : String]()
@@ -87,52 +85,18 @@ class CategoriesViewController : UIViewController {
         cellCollectionVw.anchor(top: backView.topAnchor, left: backView.leftAnchor, bottom: backView.bottomAnchor, right: backView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 10)
         cellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
     }
-    
-    func searchData(selectedId : String?, row : Int?){
-        let db = Firestore.firestore()
-        db.collection("products").whereField("category_id", isEqualTo: selectedId).getDocuments() { [self] (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in querySnapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
-                    let data = document.data()
-                    let active = data["active"] as? Bool ?? false
-                    let name = data["name"] as? String ?? ""
-                    let categoryId = data["category_id"] as? String ?? ""
-                    let description = data["description"] as? String ?? ""
-                    let tags = data["tags"] as? [String] ?? []
-                    let price = data["price"] as? Int ?? 0
-                    let url = data["url"] as? String ?? ""
-                    let searchKey = data["search_keys"] as? [String] ?? []
-                    if active == true {
-                    let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: tags, url: url,searchKey: searchKey)
-                    self.productArray.append(newProduct)
-                    }
-                }
-              //  self.cellCollectionVw.reloadData()
-                print("productArray \(self.productArray.count) ")
-                    let controller = ProductsViewController()
-                   //  controller.selectedDocumentid = dictDocumentID[dataArray[indexPath.row].rank!]!
-                    controller.pageTitle = dataArray[row!].name!
-                    controller.productArray = self.productArray
-                     self.navigationController?.pushViewController(controller, animated: true)
-                print("array\(self.productArray)")
-            }
-    }
-    }
 
 }
 
 extension CategoriesViewController : UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.productArray = []
-      // print("dict \(dictDocumentID[dataArray[indexPath.row].rank!]!)")
-//        dataManager.searchData(selectedId: dictDocumentID[dataArray[indexPath.row].rank!]!, title: dataArray[indexPath.row].name!, controller : CategoriesViewController())
-        
-        searchData(selectedId : dictDocumentID[dataArray[indexPath.row].rank!]!, row : indexPath.row)
-    }
+       let controller = ProductsViewController()
+        controller.pageTitle = dataArray[indexPath.row].name!
+       // print(" url \(dataArray[indexPath.row].url ?? "no url")")
+        controller.productId = dictDocumentID[dataArray[indexPath.row].rank!]!
+        self.navigationController?.pushViewController(controller, animated: true)
+       }
 }
 
 extension CategoriesViewController : UICollectionViewDataSource {

@@ -3,6 +3,7 @@
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -16,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="v7E-7v-y7n"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.90949718035381588" green="0.90795598837200242" blue="0.9040508927408164" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="5u7-V5-Ma6"/>
                 </viewController>
@@ -56,10 +57,13 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="2dN-bz-WlX"/>
+                    <connections>
+                        <segue destination="090-qg-mkl" kind="push" id="wPh-tT-Hm2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RRL-1t-T8s" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2055.3846153846152" y="-298.57819905213267"/>
+            <point key="canvasLocation" x="1909" y="-299"/>
         </scene>
         <!--Item-->
         <scene sceneID="EkY-O5-0cv">
@@ -109,6 +113,44 @@
             </objects>
             <point key="canvasLocation" x="934" y="406"/>
         </scene>
+        <!--Categories View Controller-->
+        <scene sceneID="uaf-aM-waB">
+            <objects>
+                <viewController id="090-qg-mkl" customClass="CategoriesViewController" customModule="Grocery_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Yv8-5w-iaI">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="LlN-og-bvG"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="0hB-3v-2hU"/>
+                    <connections>
+                        <segue destination="zDV-VA-jhd" kind="push" id="gnT-mL-tbk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lq8-Ga-cYX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2760" y="-299"/>
+        </scene>
+        <!--Products View Controller-->
+        <scene sceneID="4rH-ZI-JdO">
+            <objects>
+                <viewController id="zDV-VA-jhd" customClass="ProductsViewController" customModule="Grocery_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zby-cb-LGz">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Edh-1R-mqS"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="QGr-3C-beM"/>
+                    <connections>
+                        <segue destination="ZNE-MG-zFb" kind="push" id="lDn-0B-cIH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h6m-AQ-nGD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3603" y="-299"/>
+        </scene>
         <!--Item-->
         <scene sceneID="mNq-8K-4Qp">
             <objects>
@@ -128,8 +170,27 @@
             </objects>
             <point key="canvasLocation" x="1126.1538461538462" y="-298.57819905213267"/>
         </scene>
+        <!--Product Detail View Controller-->
+        <scene sceneID="HMy-pi-lSQ">
+            <objects>
+                <viewController id="ZNE-MG-zFb" customClass="ProductDetailViewController" customModule="Grocery_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lTf-To-5wi">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="fDQ-Od-KGJ"/>
+                        <color key="backgroundColor" name="mygreen"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Qkt-VS-DFz"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OJh-Sk-idI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4466" y="-317"/>
+        </scene>
     </scenes>
     <resources>
+        <namedColor name="mygreen">
+            <color red="0.33399999141693115" green="0.67299997806549072" blue="0.40799999237060547" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
