@@ -12,8 +12,55 @@ import FirebaseFirestore
 protocol PassAction {
     func addTapped(Name: String)
 }
-class AddCategoryViewController: UIViewController, UITextFieldDelegate {
+class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
+   
+    
+    @IBAction func imagePickerTapped(_ sender: Any) {
+        let imagecontroller = UIImagePickerController()
+        imagecontroller.delegate = self
+        imagecontroller.sourceType = UIImagePickerController.SourceType.photoLibrary
+        //imagecontroller.sourceType = UIImagePickerController.SourceType.camera
+
+        self.present(imagecontroller, animated: true, completion: nil)
+    }
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == newCategoryTxtField {
+            newCategoryTxtField.layer.borderWidth = 2
+            newCategoryTxtField.layer.borderColor = UIColor.systemGreen.cgColor
+        }
+        else if textField == newRankTxtField {
+            newRankTxtField.layer.borderWidth = 2
+            newRankTxtField.layer.borderColor = UIColor.systemGreen.cgColor
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == newCategoryTxtField {
+            newCategoryTxtField.layer.borderWidth = 0
+            newCategoryTxtField.layer.borderColor = UIColor.white.cgColor
+        }
+        else if textField == newRankTxtField {
+            newRankTxtField.layer.borderWidth = 0
+            newRankTxtField.layer.borderColor = UIColor.white.cgColor
+        }
+    }
+    func imagePicker()
+    {
+        let imagecontroller = UIImagePickerController()
+        imagecontroller.delegate = self
+        imagecontroller.sourceType = UIImagePickerController.SourceType.photoLibrary
+        self.present(imagecontroller, animated: true, completion: nil)
+    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        addCategoryImage.image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
+    let dataManager = DataManager()
+    var imageurl = " "
+    @IBOutlet weak var addCategoryImage: UIImageView!
     @IBOutlet weak var newCategoryTxtField: UITextField!
     @IBOutlet weak var newRankTxtField: UITextField!
     var uid = "nil"
@@ -21,7 +68,8 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate {
     var rank = " "
     var selectionDelegate: PassAction!
    
-   
+    @IBOutlet weak var addButton: UIButton!
+    
     func randomString(of length: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         var s = ""
@@ -56,7 +104,10 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+ 
+        addButton.layer.cornerRadius = 5
+        addCategoryImage.layer.cornerRadius = addCategoryImage.frame.size.height/2
+        dataManager.getImageFrom(url: "\(imageurl)", imageView: addCategoryImage)
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Category", style: .plain, target: nil, action: nil)
         newCategoryTxtField.delegate = self
         newRankTxtField.delegate = self

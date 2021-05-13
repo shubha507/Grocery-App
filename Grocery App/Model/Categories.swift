@@ -30,7 +30,7 @@ struct Product{
     var name : String?
     var tags : [String]?
     var url : String?
-    init(active : Bool? , categoryId : String?, description : String?,price : Int?, name : String?,tags : [String]?, url : String?){
+    init(active : Bool? , categoryId : String?, description : String?,price : Int?, name : String?,tags : [String]? , url : String?){
         self.active = active
         self.categoryId = categoryId
         self.description = description

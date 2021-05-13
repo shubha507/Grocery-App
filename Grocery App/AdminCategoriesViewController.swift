@@ -72,7 +72,7 @@ class AdminCategoriesViewController: UIViewController, UICollectionViewDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         //fetchData()
-        
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
         categoriesCollectionView.delegate = self
         categoriesCollectionView.dataSource = self
         fetchData()
@@ -86,6 +86,7 @@ class AdminCategoriesViewController: UIViewController, UICollectionViewDelegate,
         sec.selectionDelegate = self
        // sec.strname = nameTxtField.text
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Category", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationController?.pushViewController(sec, animated: true)
         fetchData()
         self.categoriesCollectionView.reloadData()
@@ -101,7 +102,9 @@ class AdminCategoriesViewController: UIViewController, UICollectionViewDelegate,
         sec.uid = "\(sortedDict[indexPath1.row].stringId ?? "nil")"
         sec.category = "\(sortedCategory[indexPath1.row].name!)"
         sec.rank = "Rank: " + "\(sortedCategory[indexPath1.row].rank!)"
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Category", style: .plain, target: nil, action: nil)
+        sec.imageurl = "\(sortedCategory[indexPath1.row].url!)"
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Edit Category", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationController?.pushViewController(sec, animated: true)
     }
     
@@ -112,6 +115,7 @@ class AdminCategoriesViewController: UIViewController, UICollectionViewDelegate,
         sec.categoryDict = self.dictCat
         sec.categoryDropDown = sortedCategory
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Product", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         
       //  navigationItem.backButtonTitle(image: Image(systemName: "person.crop.circle").imageScale(.large) , style: .plain , target:nil , action: nil)
         //self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "dismiss", style: .plain, target: self, action: #selector(dismissSelf))

@@ -14,6 +14,7 @@
 		9FD092682645246F00A6498C /* AdminProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD092672645246F00A6498C /* AdminProductViewController.swift */; };
 		9FD0926C2646B23400A6498C /* AdminProductCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD0926B2646B23400A6498C /* AdminProductCollectionViewCell.swift */; };
 		9FD09287264849AD00A6498C /* AddProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD09286264849AD00A6498C /* AddProductViewController.swift */; };
+		9FD0928B264B29C500A6498C /* TagsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD0928A264B29C500A6498C /* TagsCollectionViewCell.swift */; };
 		B20C2B9A263939E60001B9FA /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2B99263939E60001B9FA /* CustomTabBar.swift */; };
 		B20C2BAF263974860001B9FA /* CustomTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BAE263974860001B9FA /* CustomTabBarViewController.swift */; };
 		B20C2BB826397F9F0001B9FA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BB726397F9F0001B9FA /* HomeViewController.swift */; };
@@ -50,6 +51,7 @@
 		9FD092672645246F00A6498C /* AdminProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminProductViewController.swift; sourceTree = "<group>"; };
 		9FD0926B2646B23400A6498C /* AdminProductCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminProductCollectionViewCell.swift; sourceTree = "<group>"; };
 		9FD09286264849AD00A6498C /* AddProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewController.swift; sourceTree = "<group>"; };
+		9FD0928A264B29C500A6498C /* TagsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsCollectionViewCell.swift; sourceTree = "<group>"; };
 		A9EF7194E3A7173B735F6D76 /* Pods-Grocery App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grocery App.release.xcconfig"; path = "Target Support Files/Pods-Grocery App/Pods-Grocery App.release.xcconfig"; sourceTree = "<group>"; };
 		B20C2B99263939E60001B9FA /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		B20C2BAE263974860001B9FA /* CustomTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarViewController.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				B2536E8E2631E6C400EADC0C /* Main.storyboard */,
 				9FD092672645246F00A6498C /* AdminProductViewController.swift */,
 				9FD09286264849AD00A6498C /* AddProductViewController.swift */,
+				9FD0928A264B29C500A6498C /* TagsCollectionViewCell.swift */,
 				9FD092602643CEB600A6498C /* AdminCategoriesViewController.swift */,
 				9FD092632643E9AB00A6498C /* AddCategoryViewController.swift */,
 				9FD0925D2643CE9800A6498C /* AdminCategoriesCollectionViewCell.swift */,
@@ -328,6 +331,7 @@
 				B2CAFE5B26402A5F00C75C3E /* DataManager.swift in Sources */,
 				B251F1A426429CEA007823AA /* ProductCollectionViewCell.swift in Sources */,
 				B20C2BBE263992580001B9FA /* OfferViewController.swift in Sources */,
+				9FD0928B264B29C500A6498C /* TagsCollectionViewCell.swift in Sources */,
 				9FD092612643CEB600A6498C /* AdminCategoriesViewController.swift in Sources */,
 				B2CAFE10263E879100C75C3E /* CategoriesViewController.swift in Sources */,
 				B20C2BC4263992D10001B9FA /* MoreViewController.swift in Sources */,

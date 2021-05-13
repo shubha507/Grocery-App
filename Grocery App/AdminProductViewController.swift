@@ -46,6 +46,7 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
         let rightBarButtonItem2 = UIBarButtonItem(title: "magnifyingglass", style: UIBarButtonItem.Style.done, target: self, action: #selector(filter))
         rightBarButtonItem2.image = buttonIcon2
         self.navigationItem.rightBarButtonItems = [rightBarButtonItem, rightBarButtonItem2]
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
         prodcutCollectionView.delegate = self
         prodcutCollectionView.dataSource = self
      
@@ -79,12 +80,13 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
         self.view.addSubview(transparentView)
         tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y , width: frames.width, height: 0)
         self.view.addSubview(tableView)
-        clearButton.frame = CGRect(x: 270, y: 570 , width: 100, height: 50)
+        clearButton.frame = CGRect(x: 270, y: CGFloat( (self.categoryDict[0].count  ) * 50) , width: 100, height: 50)
         tableView.layer.cornerRadius = 5
        
         clearButton.setTitle("Clear", for: .normal)
-        clearButton.setTitleColor(UIColor.black, for: .normal)
-        clearButton.layer.borderColor = UIColor.darkGray.cgColor
+        clearButton.tintColor = UIColor.systemGreen
+        clearButton.setTitleColor(UIColor.systemGreen, for: .normal)
+        clearButton.layer.borderColor = UIColor.black.cgColor
         self.tableView.addSubview(clearButton)
         clearButton.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
         transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
@@ -93,7 +95,7 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
         transparentView.alpha = 0
         UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
             
-            self.tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y , width: frames.width, height: 500)
+            self.tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y , width: frames.width, height: CGFloat( (self.categoryDict[0].count + 3 ) * 50))
             self.transparentView.alpha = 0.5
         }, completion: nil)
     }
@@ -121,6 +123,8 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
         var intRankValue: Int!
         
     }
+    var stringTags = [String]()
+    
        func fetchData(){
            let db = Firestore.firestore()
            db.collection("products").getDocuments() { (querySnapshot, err) in
@@ -135,11 +139,13 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
                 let active = data["active"] as? Bool ?? true
                 let name = data["name"] as? String ?? " "
                 let categoryId = data["category_id"] as? String ?? " "
-                let tags = data["tags"] as? String ?? " "
+                let tags = data["tags"] as? [String] ?? [" "]
                 let description = data["description"] as? String ?? " "
                 let price = data["price"] as? Int ?? 0
                 let url = data["url"] as? String ?? " "
-                let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: [tags], url: url)
+                self.stringTags = tags
+                print("self.stringTags:" , tags)
+                let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: self.stringTags, url: url)
                 self.product.append(newProduct)
                 let newDict = Dict(stringId: document.documentID, intRankValue: price)
                 //self.arrayCategories.append()
@@ -159,7 +165,9 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
         sec.selectionDelegate2 = self
         sec.productCategoryDict = self.categoryDict
        // sec.strname = nameTxtField.text
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Category", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Product", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
+        self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationController?.pushViewController(sec, animated: true)
     }
     
@@ -173,15 +181,18 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
         print("arrayCategories", arrayCategories)
         sec.selectionDelegate2 = self
         sec.productCategoryDict = self.categoryDict
+        sec.productImageid = "\(product[indexPath2.row].url!)"
         sec.uid = "\(sortedDict[indexPath2.row].stringId ?? "nil")"
         sec.categoryIdd = "\(product[indexPath2.row].categoryId!)"
         sec.active = "\(product[indexPath2.row].active!)"
             sec.name = "\(product[indexPath2.row].name!)"
         sec.price = "Price: " + "\(product[indexPath2.row].price!)"
-        sec.tags =  "\(product[indexPath2.row].tags!)"
-        sec.descript = "\(product[indexPath2.row].description!)"
+        print("string tags:" , stringTags)
+        sec.tag = product[indexPath2.row].tags ?? [" "]
+            sec.descript = "\(product[indexPath2.row].description!)"
 
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Category", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Edit Product", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationController?.pushViewController(sec, animated: true)
     }
     
@@ -251,6 +262,9 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
             }
             return cellP
     }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+     return 50
+    }
     
     var i = 0
     var categoryUid: String = ""
@@ -270,7 +284,7 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
              let active = data["active"] as? Bool ?? true
              let name = data["name"] as? String ?? " "
              let categoryId = data["categoryId"] as? String ?? " "
-             let tags = data["tags"] as? String ?? " "
+             let tags = data["tags"] as? [String] ?? [" "]
              let description = data["description"] as? String ?? " "
              let price = data["price"] as? Int ?? 0
              let url = data["url"] as? String ?? " "
@@ -280,7 +294,7 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
                 print("cat id:" , document.get("category_id") ?? "nil")
                 if self.categoryUid == catId {
                     self.removeAlertView()
-             let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: [tags], url: url)
+                    let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags:self.stringTags, url: url)
              self.product.append(newProduct)
                     self.i = self.i+1
                 }
@@ -301,6 +315,7 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
         }
     }
     }
+    
 }
 extension AdminProductViewController: PassActionProtocol
 {
