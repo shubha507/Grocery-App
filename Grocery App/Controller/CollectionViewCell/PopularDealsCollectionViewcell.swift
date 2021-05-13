@@ -26,14 +26,39 @@ class PopularDealsCollectionViewCell : UICollectionViewCell {
        return lbl
    }()
     
+    let discountView : UIView = {
+        let dV = UIView()
+        dV.backgroundColor = UIColor(red: 255/255, green: 0, blue: 0, alpha: 0.5)
+        return dV
+    }()
+    
+    let discountLabel : UILabel = {
+        let dIV = UILabel()
+        dIV.backgroundColor = .clear
+        dIV.font = UIFont.monospacedDigitSystemFont(ofSize: 15, weight: UIFont.Weight(rawValue: 50))
+        dIV.numberOfLines = 0
+        dIV.textColor = .white
+        dIV.textAlignment = .center
+        return dIV
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(cellImage)
+        contentView.addSubview(cellImage)
         cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0, width: 160, height: 160)
+        cellImage.addSubview(discountView)
+        discountView.anchor(top: cellImage.topAnchor, left: cellImage.leftAnchor, paddingTop: -40, paddingLeft: -25, width: 120, height: 120)
+        discountView.layer.masksToBounds = true
+        discountView.layer.cornerRadius = 60
         
-        addSubview(cellLabel)
+        discountView.addSubview(discountLabel)
+        discountLabel.anchor(top: discountView.topAnchor, left: discountView.leftAnchor, paddingTop: 50, paddingLeft: 35,width: 70, height: 50)
+        
+        
+        contentView.addSubview(cellLabel)
         cellLabel.anchor(top: cellImage.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 160, height: 25)
+        
     }
     
     required init?(coder: NSCoder) {

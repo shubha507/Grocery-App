@@ -9,7 +9,7 @@ import UIKit
 
 class ProductCollectionViewCell : UICollectionViewCell {
     
-    var quantity = 01
+    var quantity = 0
     
     let minusButton : UIButton = {
         let uv = UIButton(type: .system)
@@ -158,6 +158,8 @@ class ProductCollectionViewCell : UICollectionViewCell {
     @objc func plusButtonTapped(){
         plusButton.isHidden = true
         greenView.isHidden = false
+        quantity = quantity+1
+        quantityLabel.text = "\(quantity)"
     }
     
     func configureStackView(){
@@ -178,23 +180,27 @@ class ProductCollectionViewCell : UICollectionViewCell {
     }
     
     @objc func decreaseQuantity(){
-        if quantity > 0{
+        if quantity > 1{
         quantity = quantity-1
         quantityLabel.text = "\(quantity)"
+        }else{
+            quantity = 0
+            plusButton.isHidden = false
+            greenView.isHidden = true
         }
     }
     
     
     //to detect touch outside the greenView
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        let touch = touches.first
-            guard let location = touch?.location(in: greenView) else { return }
-            if !contentView.frame.contains(location) {
-                greenView.isHidden = true
-                plusButton.isHidden = false
-            } else {
-                print("Tapped inside the view")
-            }
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        super.touchesBegan(touches, with: event)
+//        let touch = touches.first
+//            guard let location = touch?.location(in: greenView) else { return }
+//            if !contentView.frame.contains(location) {
+//                greenView.isHidden = true
+//                plusButton.isHidden = false
+//            } else {
+//                print("Tapped inside the view")
+//            }
+//    }
 }

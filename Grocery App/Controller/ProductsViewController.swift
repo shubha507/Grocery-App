@@ -146,7 +146,7 @@ func configureView(){
         view.addSubview(productLabel)
         productLabel.centerX(inView: view)
         productLabel.anchor(top: view.topAnchor, paddingTop: 60)
-        productLabel.text = "\(pageTitle!)"
+        productLabel.text = "\(pageTitle ?? "")"
         
         view.addSubview(backView)
         backView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 120, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
@@ -154,8 +154,14 @@ func configureView(){
 }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let controller = ProductDetailViewController()
-        self.navigationController?.pushViewController(controller, animated: true)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+       let productDetailVC = storyboard.instantiateViewController(identifier: "ProductDetailViewController") as! ProductDetailViewController
+       // let productDetailVC = ProductDetailViewController()
+        productDetailVC.url  = dataManager.productArray[indexPath.row].url!
+        productDetailVC.name = dataManager.productArray[indexPath.row].name!
+        productDetailVC.price = "\(dataManager.productArray[indexPath.row].price!)"
+        self.navigationController?.pushViewController(productDetailVC, animated: true)
     }
 
 }

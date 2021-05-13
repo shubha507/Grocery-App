@@ -58,12 +58,124 @@
                     </view>
                     <navigationItem key="navigationItem" id="2dN-bz-WlX"/>
                     <connections>
-                        <segue destination="090-qg-mkl" kind="push" id="wPh-tT-Hm2"/>
+                        <segue destination="8ys-Ei-F6o" kind="push" id="8fb-US-Np2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RRL-1t-T8s" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1909" y="-299"/>
+        </scene>
+        <!--Categories View Controller-->
+        <scene sceneID="7qM-Bg-nnM">
+            <objects>
+                <viewController id="8ys-Ei-F6o" customClass="CategoriesViewController" customModule="Grocery_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VUN-pG-3yb">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="qPt-yz-xLh"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ABe-Cw-yRM"/>
+                    <connections>
+                        <segue destination="by6-Wk-0ZE" kind="push" id="FpN-Ta-qbl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e0b-zW-ORj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2769" y="-282"/>
+        </scene>
+        <!--Products View Controller-->
+        <scene sceneID="Kdn-b5-YM9">
+            <objects>
+                <viewController id="by6-Wk-0ZE" customClass="ProductsViewController" customModule="Grocery_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eRE-YR-5bg">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="dXs-2Y-XC1"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="jmr-K2-TXZ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KId-qH-Hd7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3624" y="-281"/>
+        </scene>
+        <!--Product Detail View Controller-->
+        <scene sceneID="ZhI-hf-X7s">
+            <objects>
+                <viewController storyboardIdentifier="ProductDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="FfE-jk-MyS" customClass="ProductDetailViewController" customModule="Grocery_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1Bh-i7-vLh">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8DA-UY-xEQ">
+                                <rect key="frame" x="50" y="44" width="290" height="200"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="MlM-xL-8h5"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="twf-rn-PSE">
+                                <rect key="frame" x="30" y="54" width="18" height="25"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="chevron.left" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="20" scale="large" weight="semibold"/>
+                                </state>
+                                <connections>
+                                    <action selector="backButton:" destination="FfE-jk-MyS" eventType="touchUpInside" id="GCL-3S-udq"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2DI-Xi-i2e">
+                                <rect key="frame" x="0.0" y="254" width="390" height="590"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="sectionIndexBackgroundColor" name="buttoncolor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="firstCell" rowHeight="54" id="r6V-Wt-QQw" customClass="ProductDetailTableViewCell" customModule="Grocery_App" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="390" height="54"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="r6V-Wt-QQw" id="AGg-JO-yyQ">
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="54"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" name="buttoncolor"/>
+                                    </tableViewCell>
+                                </prototypes>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="30"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="dataSource" destination="FfE-jk-MyS" id="jiY-Tc-1lD"/>
+                                    <outlet property="delegate" destination="FfE-jk-MyS" id="aj5-Ne-DEk"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="TkE-Py-H3V"/>
+                        <color key="backgroundColor" name="mygreen"/>
+                        <constraints>
+                            <constraint firstItem="8DA-UY-xEQ" firstAttribute="leading" secondItem="twf-rn-PSE" secondAttribute="trailing" constant="2" id="9mc-FB-4FT"/>
+                            <constraint firstItem="8DA-UY-xEQ" firstAttribute="centerX" secondItem="1Bh-i7-vLh" secondAttribute="centerX" id="AbJ-xf-oE4"/>
+                            <constraint firstItem="2DI-Xi-i2e" firstAttribute="leading" secondItem="TkE-Py-H3V" secondAttribute="leading" id="VEU-B6-nrU"/>
+                            <constraint firstItem="twf-rn-PSE" firstAttribute="leading" secondItem="TkE-Py-H3V" secondAttribute="leading" constant="30" id="VEn-Pi-WJq"/>
+                            <constraint firstItem="8DA-UY-xEQ" firstAttribute="top" secondItem="TkE-Py-H3V" secondAttribute="top" id="fXj-lz-fJg"/>
+                            <constraint firstItem="8DA-UY-xEQ" firstAttribute="leading" secondItem="TkE-Py-H3V" secondAttribute="leading" constant="50" id="gPX-Hj-rNA"/>
+                            <constraint firstAttribute="trailing" secondItem="2DI-Xi-i2e" secondAttribute="trailing" id="kY2-UT-iYR"/>
+                            <constraint firstAttribute="bottom" secondItem="2DI-Xi-i2e" secondAttribute="bottom" id="sTV-gh-Wfj"/>
+                            <constraint firstItem="2DI-Xi-i2e" firstAttribute="top" secondItem="8DA-UY-xEQ" secondAttribute="bottom" constant="10" id="xeB-gm-zxb"/>
+                            <constraint firstItem="twf-rn-PSE" firstAttribute="top" secondItem="TkE-Py-H3V" secondAttribute="top" constant="10" id="zAU-Rz-aaI"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Grs-h2-7K4"/>
+                    <connections>
+                        <outlet property="posterImageView" destination="8DA-UY-xEQ" id="72l-wg-MMo"/>
+                        <outlet property="tblVw" destination="2DI-Xi-i2e" id="jOh-Zc-gkU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C48-gV-ZKI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4583" y="-290"/>
         </scene>
         <!--Item-->
         <scene sceneID="EkY-O5-0cv">
@@ -113,44 +225,6 @@
             </objects>
             <point key="canvasLocation" x="934" y="406"/>
         </scene>
-        <!--Categories View Controller-->
-        <scene sceneID="uaf-aM-waB">
-            <objects>
-                <viewController id="090-qg-mkl" customClass="CategoriesViewController" customModule="Grocery_App" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Yv8-5w-iaI">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="LlN-og-bvG"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="0hB-3v-2hU"/>
-                    <connections>
-                        <segue destination="zDV-VA-jhd" kind="push" id="gnT-mL-tbk"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lq8-Ga-cYX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2760" y="-299"/>
-        </scene>
-        <!--Products View Controller-->
-        <scene sceneID="4rH-ZI-JdO">
-            <objects>
-                <viewController id="zDV-VA-jhd" customClass="ProductsViewController" customModule="Grocery_App" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="zby-cb-LGz">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="Edh-1R-mqS"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="QGr-3C-beM"/>
-                    <connections>
-                        <segue destination="ZNE-MG-zFb" kind="push" id="lDn-0B-cIH"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="h6m-AQ-nGD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3603" y="-299"/>
-        </scene>
         <!--Item-->
         <scene sceneID="mNq-8K-4Qp">
             <objects>
@@ -170,24 +244,12 @@
             </objects>
             <point key="canvasLocation" x="1126.1538461538462" y="-298.57819905213267"/>
         </scene>
-        <!--Product Detail View Controller-->
-        <scene sceneID="HMy-pi-lSQ">
-            <objects>
-                <viewController id="ZNE-MG-zFb" customClass="ProductDetailViewController" customModule="Grocery_App" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="lTf-To-5wi">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="fDQ-Od-KGJ"/>
-                        <color key="backgroundColor" name="mygreen"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="Qkt-VS-DFz"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OJh-Sk-idI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4466" y="-317"/>
-        </scene>
     </scenes>
     <resources>
+        <image name="chevron.left" catalog="system" width="96" height="128"/>
+        <namedColor name="buttoncolor">
+            <color red="0.9649999737739563" green="0.95999997854232788" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <namedColor name="mygreen">
             <color red="0.33399999141693115" green="0.67299997806549072" blue="0.40799999237060547" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>

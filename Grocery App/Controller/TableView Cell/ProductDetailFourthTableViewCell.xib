@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="ProductDetailFourthTableViewCell" customModule="Grocery_App" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="390" height="130"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="390" height="130"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t95-4A-Spf">
+                        <rect key="frame" x="0.0" y="15" width="390" height="115"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JJ9-R0-RD0">
+                                <rect key="frame" x="193" y="25" width="170" height="65"/>
+                                <color key="backgroundColor" name="mygreen"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="15"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cart" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="VeX-Mu-rHp">
+                                <rect key="frame" x="213" y="39" width="36" height="38.5"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="18" scale="large" weight="bold"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Add to cart" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfc-4E-M5z">
+                                <rect key="frame" x="249" y="40" width="98.5" height="35"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$17.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Buq-k1-6yZ">
+                                <rect key="frame" x="30" y="25" width="109" height="65"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="109" id="uA6-yi-SPX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="29"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Buq-k1-6yZ" firstAttribute="leading" secondItem="t95-4A-Spf" secondAttribute="leading" constant="30" id="97Y-DN-bvu"/>
+                            <constraint firstItem="gfc-4E-M5z" firstAttribute="leading" secondItem="VeX-Mu-rHp" secondAttribute="trailing" id="CJY-yO-d4F"/>
+                            <constraint firstAttribute="trailing" secondItem="JJ9-R0-RD0" secondAttribute="trailing" constant="27" id="DCj-qW-M6d"/>
+                            <constraint firstItem="JJ9-R0-RD0" firstAttribute="centerY" secondItem="VeX-Mu-rHp" secondAttribute="centerY" id="Dyv-dM-oYJ"/>
+                            <constraint firstItem="VeX-Mu-rHp" firstAttribute="top" secondItem="JJ9-R0-RD0" secondAttribute="top" constant="15" id="FJ0-B8-JiE"/>
+                            <constraint firstItem="JJ9-R0-RD0" firstAttribute="top" secondItem="Buq-k1-6yZ" secondAttribute="top" id="GEw-z2-Ry3"/>
+                            <constraint firstItem="JJ9-R0-RD0" firstAttribute="centerY" secondItem="t95-4A-Spf" secondAttribute="centerY" id="LIM-u8-8z3"/>
+                            <constraint firstItem="JJ9-R0-RD0" firstAttribute="top" secondItem="t95-4A-Spf" secondAttribute="top" constant="25" id="Mpr-zg-EJb"/>
+                            <constraint firstItem="JJ9-R0-RD0" firstAttribute="bottom" secondItem="Buq-k1-6yZ" secondAttribute="bottom" id="NCy-Df-3qO"/>
+                            <constraint firstItem="JJ9-R0-RD0" firstAttribute="bottom" secondItem="gfc-4E-M5z" secondAttribute="bottom" constant="15" id="OKa-bH-Qb3"/>
+                            <constraint firstItem="JJ9-R0-RD0" firstAttribute="bottom" secondItem="VeX-Mu-rHp" secondAttribute="bottom" constant="15" id="P94-Wy-kdH"/>
+                            <constraint firstItem="gfc-4E-M5z" firstAttribute="top" secondItem="JJ9-R0-RD0" secondAttribute="top" constant="15" id="S4k-yK-OM3"/>
+                            <constraint firstItem="JJ9-R0-RD0" firstAttribute="leading" secondItem="Buq-k1-6yZ" secondAttribute="trailing" constant="54" id="bsg-kG-ypj"/>
+                            <constraint firstItem="VeX-Mu-rHp" firstAttribute="leading" secondItem="JJ9-R0-RD0" secondAttribute="leading" constant="20" id="kbg-sK-9MM"/>
+                            <constraint firstItem="gfc-4E-M5z" firstAttribute="centerX" secondItem="JJ9-R0-RD0" secondAttribute="centerX" constant="20.25" id="z9F-kA-YsC"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <integer key="value" value="30"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="t95-4A-Spf" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="8N8-BK-pMv"/>
+                    <constraint firstAttribute="trailing" secondItem="t95-4A-Spf" secondAttribute="trailing" id="OOu-Vb-qQk"/>
+                    <constraint firstAttribute="bottom" secondItem="t95-4A-Spf" secondAttribute="bottom" id="dcv-rM-kf2"/>
+                    <constraint firstItem="t95-4A-Spf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="djq-Yr-GLE"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" name="buttoncolor"/>
+            <point key="canvasLocation" x="-23.188405797101453" y="72.991071428571431"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="cart" catalog="system" width="128" height="102"/>
+        <namedColor name="buttoncolor">
+            <color red="0.9649999737739563" green="0.95999997854232788" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="mygreen">
+            <color red="0.33399999141693115" green="0.67299997806549072" blue="0.40799999237060547" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
