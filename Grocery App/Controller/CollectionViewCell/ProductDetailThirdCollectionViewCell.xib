@@ -46,47 +46,67 @@
                         <color key="textColor" name="mygreen"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hx4-2S-ofW">
-                        <rect key="frame" x="147" y="254" width="35" height="35"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GLt-dp-BIN">
+                        <rect key="frame" x="146" y="184" width="35" height="105"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zq0-hb-6Yg">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cCk-pY-MSh">
                                 <rect key="frame" x="0.0" y="0.0" width="35" height="35"/>
+                                <color key="backgroundColor" name="mygreen"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="esM-FB-F6z"/>
+                                    <constraint firstAttribute="width" constant="35" id="nck-eW-qKI"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="minus" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="15" scale="large" weight="semibold"/>
+                                </state>
+                                <connections>
+                                    <action selector="minusButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="CBO-li-3ul"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PyD-pn-hhX">
+                                <rect key="frame" x="0.0" y="35" width="35" height="35"/>
+                                <color key="backgroundColor" name="mygreen"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="fS2-R3-gkG"/>
+                                    <constraint firstAttribute="width" constant="35" id="xZb-15-Rtr"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zq0-hb-6Yg">
+                                <rect key="frame" x="0.0" y="70" width="35" height="35"/>
+                                <color key="backgroundColor" name="mygreen"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="Hlc-QN-0dL"/>
+                                    <constraint firstAttribute="height" constant="35" id="kTb-gK-b8Z"/>
+                                </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" image="plus" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="15" scale="large" weight="semibold"/>
                                 </state>
+                                <connections>
+                                    <action selector="plusButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="9Px-1G-2Je"/>
+                                </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" name="mygreen"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="35" id="12n-gk-p87"/>
-                            <constraint firstAttribute="width" constant="35" id="GJz-mr-3Ar"/>
-                            <constraint firstAttribute="trailing" secondItem="Zq0-hb-6Yg" secondAttribute="trailing" id="J8D-ea-x90"/>
-                            <constraint firstItem="Zq0-hb-6Yg" firstAttribute="leading" secondItem="hx4-2S-ofW" secondAttribute="leading" id="M1M-ed-DAD"/>
-                            <constraint firstItem="Zq0-hb-6Yg" firstAttribute="top" secondItem="hx4-2S-ofW" secondAttribute="top" id="gdP-Ij-Xdu"/>
-                            <constraint firstAttribute="bottom" secondItem="Zq0-hb-6Yg" secondAttribute="bottom" id="p4d-8y-8c8"/>
-                        </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                <integer key="value" value="10"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
-                    </view>
+                    </stackView>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
                 <constraint firstItem="G0b-R3-9o1" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="J0Y-Zx-DVp"/>
+                <constraint firstItem="3JT-Dv-uOi" firstAttribute="leading" secondItem="GLt-dp-BIN" secondAttribute="trailing" id="P7x-tH-LA4"/>
                 <constraint firstAttribute="bottom" secondItem="eVK-wx-Y5z" secondAttribute="bottom" constant="96" id="Q1I-G1-45W"/>
                 <constraint firstItem="3JT-Dv-uOi" firstAttribute="leading" secondItem="nI5-eF-MX3" secondAttribute="trailing" constant="40" id="Vbf-e2-YwW"/>
                 <constraint firstItem="Vx2-OJ-GtI" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="Yex-e4-jaH"/>
                 <constraint firstItem="nI5-eF-MX3" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="ZkI-VA-ViN"/>
                 <constraint firstItem="Vx2-OJ-GtI" firstAttribute="top" secondItem="nI5-eF-MX3" secondAttribute="bottom" constant="5" id="aLh-zf-EYW"/>
                 <constraint firstItem="nI5-eF-MX3" firstAttribute="top" secondItem="eVK-wx-Y5z" secondAttribute="bottom" constant="5" id="aRc-cV-Gxf"/>
+                <constraint firstAttribute="bottom" secondItem="GLt-dp-BIN" secondAttribute="bottom" id="cMQ-74-9G4"/>
                 <constraint firstItem="G0b-R3-9o1" firstAttribute="top" secondItem="Vx2-OJ-GtI" secondAttribute="bottom" constant="13" id="gBv-Zu-fwZ"/>
-                <constraint firstAttribute="trailing" secondItem="hx4-2S-ofW" secondAttribute="trailing" id="h7l-Rj-j55"/>
                 <constraint firstItem="3JT-Dv-uOi" firstAttribute="leading" secondItem="eVK-wx-Y5z" secondAttribute="trailing" id="hpm-j0-lhC"/>
-                <constraint firstAttribute="bottom" secondItem="hx4-2S-ofW" secondAttribute="bottom" id="iT0-Pj-Jbe"/>
                 <constraint firstItem="3JT-Dv-uOi" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="jvk-4b-85x"/>
                 <constraint firstItem="eVK-wx-Y5z" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="onb-yo-NDI"/>
                 <constraint firstItem="eVK-wx-Y5z" firstAttribute="top" secondItem="3JT-Dv-uOi" secondAttribute="top" id="orV-WZ-ooA"/>
@@ -97,13 +117,16 @@
             </constraints>
             <size key="customSize" width="207" height="267"/>
             <connections>
-                <outlet property="plusView" destination="hx4-2S-ofW" id="Y1U-Dv-6et"/>
+                <outlet property="minusButton" destination="cCk-pY-MSh" id="Mu3-Ci-55x"/>
+                <outlet property="plusButton" destination="Zq0-hb-6Yg" id="bzG-fh-Fbl"/>
+                <outlet property="quantityLabel" destination="PyD-pn-hhX" id="vCZ-0k-V2B"/>
             </connections>
             <point key="canvasLocation" x="89.855072463768124" y="143.63839285714286"/>
         </collectionViewCell>
     </objects>
     <resources>
         <image name="fruitBasket" width="374" height="460"/>
+        <image name="minus" catalog="system" width="128" height="24"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <namedColor name="mygreen">
             <color red="0.33399999141693115" green="0.67299997806549072" blue="0.40799999237060547" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
