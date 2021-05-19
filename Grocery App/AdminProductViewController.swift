@@ -186,7 +186,7 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
         sec.categoryIdd = "\(product[indexPath2.row].categoryId!)"
         sec.active = "\(product[indexPath2.row].active!)"
             sec.name = "\(product[indexPath2.row].name!)"
-        sec.price = "Price: " + "\(product[indexPath2.row].price!)"
+        sec.price = "\(product[indexPath2.row].price!)"
         print("string tags:" , stringTags)
         sec.tag = product[indexPath2.row].tags ?? [" "]
             sec.descript = "\(product[indexPath2.row].description!)"

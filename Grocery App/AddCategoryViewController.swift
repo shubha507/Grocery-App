@@ -28,12 +28,32 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
         if textField == newCategoryTxtField {
             newCategoryTxtField.layer.borderWidth = 2
             newCategoryTxtField.layer.borderColor = UIColor.systemGreen.cgColor
+            textField.keyboardType = UIKeyboardType.default
         }
         else if textField == newRankTxtField {
             newRankTxtField.layer.borderWidth = 2
             newRankTxtField.layer.borderColor = UIColor.systemGreen.cgColor
+            textField.keyboardType = UIKeyboardType.numberPad
         }
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == newCategoryTxtField {
+            return textField.resignFirstResponder()
+           
+           
+        }
+        else if textField == newRankTxtField {
+            
+            return textField.resignFirstResponder()
+        }
+        return textField.resignFirstResponder()
+    }
+    
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == newCategoryTxtField {

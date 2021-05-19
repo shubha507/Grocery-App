@@ -63,6 +63,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @IBOutlet weak var productActiveStatus: UITextField!
     @IBOutlet weak var productTags: UITextField!
+    @IBOutlet weak var scrollView: UIScrollView!
     var selectionDelegate2: PassActionProtocol!
     
     @IBOutlet weak var addButtonInAddProduct: UIButton!
@@ -70,16 +71,31 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
     let tableView = UITableView()
     var selectedCategory = " "
     var tag = [String]()
-    
+    var width = CGFloat()
 
+    func width(text:String?, font: UIFont, height:CGFloat) -> CGFloat {
+       var currentWidth: CGFloat!
+       let label = UILabel(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: height))
+       label.text = text
+       label.font = font
+       label.numberOfLines = 1
+       label.sizeToFit()
+       
+       currentWidth = label.frame.width
+       label.removeFromSuperview()
+       return currentWidth
+   }
+    
+    var contentView = UIView()
     override func viewDidLoad() {
         super.viewDidLoad()
 
       
         addButtonInAddProduct.layer.cornerRadius = 5
         addProductImage.layer.cornerRadius = addProductImage.frame.size.height/2
-        
-        
+       // var height = view.frame.height + 200
+        scrollView.addSubview(contentView)
+        scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height + 150 )
         tagsCollectionView.delegate = self
         tagsCollectionView.dataSource = self
         
@@ -89,8 +105,9 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
           //  flowLayout.estimatedItemSize = CGSize(width: 113, height: h)
        //}
         
-        productTags.addTarget(self, action: #selector(returnTapped), for: .editingDidEndOnExit)
-       
+        //productTags.addTarget(self, action: #selector(returnTapped), for: .editingDidEndOnExit)
+      
+        
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Product", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         dataManager.getImageFrom(url: "\(productImageid)", imageView: addProductImage)
@@ -149,7 +166,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         // Do any additional setup after loading the view.
     }
    
-    @objc func returnTapped()
+   /* @objc func returnTapped()
     {
         tag.append("\(productTags.text ?? " ")")
         
@@ -160,37 +177,103 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         
         tagsCollectionView.reloadData()
         
-    }
+    }*/
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        
         if textField == productName {
             productName.layer.borderWidth = 2
             productName.layer.borderColor = UIColor.systemGreen.cgColor
+            textField.keyboardType = UIKeyboardType.default
+            //scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
+           // productName.becomeFirstResponder()
+           
         }
         else if textField == productDescription {
             productDescription.layer.borderWidth = 2
             productDescription.layer.borderColor = UIColor.systemGreen.cgColor
+            textField.keyboardType = UIKeyboardType.default
+            //scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
         }
          else if textField == ProductCategory {
             ProductCategory.layer.borderWidth = 2
             ProductCategory.layer.borderColor = UIColor.systemGreen.cgColor
+            textField.keyboardType = UIKeyboardType.default
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
         }
         else if textField == productPrice {
             productPrice.layer.borderWidth = 2
             productPrice.layer.borderColor = UIColor.systemGreen.cgColor
+            textField.keyboardType = UIKeyboardType.numberPad
+            
+            //scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
         }
        else if textField == productTags {
             productTags.layer.borderWidth = 2
             productTags.layer.borderColor = UIColor.systemGreen.cgColor
+        textField.keyboardType = UIKeyboardType.default
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
         }
         else if textField == productActiveStatus {
             productActiveStatus.layer.borderWidth = 2
             productActiveStatus.layer.borderColor = UIColor.systemGreen.cgColor
+            textField.keyboardType = UIKeyboardType.default
+            
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
+            
         }
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+        
+    }
+    
+    /*func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == productName {
+            return textField.resignFirstResponder()
+           
+           
+        }
+        else if textField == productDescription {
+            
+            return textField.resignFirstResponder()
+        }
+         else if textField == ProductCategory {
+            return textField.resignFirstResponder()
+        }
+        else if textField == productPrice {
+            return textField.resignFirstResponder()
+        }
+      
+        else if textField == productActiveStatus {
+            return textField.resignFirstResponder()
+        }
+        else if textField == productTags
+        return productName.resignFirstResponder()
+    }*/
+ 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == productTags {
+            tag.append("\(productTags.text ?? " ")")
+            
+            
+            print("tags:" ,tag)
+           
+            productTags.resignFirstResponder()
+            
+            tagsCollectionView.reloadData()
+        }
+        else {
+            return textField.resignFirstResponder()
+        }
+        return textField.resignFirstResponder()
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == productName {
             productName.layer.borderWidth = 0
             productName.layer.borderColor = UIColor.white.cgColor
+            //textField.addTarget(self, action: #selector(removeKeyboard()), for: .touchUpInside)
         }
        else if textField == productDescription {
             productDescription.layer.borderWidth = 0
@@ -199,35 +282,58 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
        else if textField == ProductCategory {
             ProductCategory.layer.borderWidth = 0
             ProductCategory.layer.borderColor = UIColor.white.cgColor
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
         }
         else if textField == productPrice {
             productPrice.layer.borderWidth = 0
             productPrice.layer.borderColor = UIColor.white.cgColor
+            //productPrice.resignFirstResponder()
         }
        else if textField == productTags {
             productTags.layer.borderWidth = 0
             productTags.layer.borderColor = UIColor.white.cgColor
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
         }
        else if textField == productActiveStatus {
             productActiveStatus.layer.borderWidth = 0
             productActiveStatus.layer.borderColor = UIColor.white.cgColor
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
         }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("no of tags:" ,  tag.count)
         return tag.count
     }
-    
+  var j = 0
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tagsCell", for: indexPath) as! TagsCollectionViewCell
         cell.tagLabel.text = tag[indexPath.row]
         cell.layer.cornerRadius = 15
         cell.cancelButton.tag = indexPath.row
+       
         cell.cancelButton.addTarget(self, action: #selector(deleteTags(_:)), for: .touchUpInside)
+       
         return cell
     }
     
+    
+    
+    
+    
+    
+    
+   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    //var k = indexPath
+  //  var  widthOfCell = width[k]
+    width = self.width(text: tag[indexPath.row], font: UIFont.systemFont(ofSize: 17), height: 48)
+        print("width" , "\(width)")
+    print("width is:", width)
+        return CGSize(width: width + 131, height: 48)
+        
+        
+    }
    
     @IBAction func deleteTags(_ sender: UIButton) {
         let indexPath3 = IndexPath(row: sender.tag, section: 0)
