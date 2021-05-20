@@ -217,6 +217,11 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! AdminProductCollectionViewCell
        
+       // cell.productName.numberOfLines = 0
+        
+       
+        //cell.productName.lineBreakMode = .byWordWrapping
+        //cell.productName.sizeToFit()
         cell.productName.text = "\(product[indexPath.row].name!)"
         cell.productDescription.text = " \(product[indexPath.row].description!)"
         cell.productPrice.text = "Price:  " + "\(product[indexPath.row].price ?? 0)"

@@ -86,16 +86,19 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
        return currentWidth
    }
     
+   
+    
     var contentView = UIView()
     override func viewDidLoad() {
         super.viewDidLoad()
 
       
+      
         addButtonInAddProduct.layer.cornerRadius = 5
         addProductImage.layer.cornerRadius = addProductImage.frame.size.height/2
        // var height = view.frame.height + 200
-        scrollView.addSubview(contentView)
-        scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height + 150 )
+        //scrollView.addSubview(contentView)
+       // scrollView.contentSize = CGSize(width: getScreenWidth(), height: view.frame.height + 150 )
         tagsCollectionView.delegate = self
         tagsCollectionView.dataSource = self
         
@@ -254,6 +257,11 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
  
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == productTags {
+            if textField.text!.isEmpty 
+           {
+            print("empty type again")
+           }
+            else {
             tag.append("\(productTags.text ?? " ")")
             
             
@@ -262,12 +270,16 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
             productTags.resignFirstResponder()
             
             tagsCollectionView.reloadData()
+            }
+            
         }
         else {
             return textField.resignFirstResponder()
         }
         return textField.resignFirstResponder()
     }
+    
+    
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == productName {
