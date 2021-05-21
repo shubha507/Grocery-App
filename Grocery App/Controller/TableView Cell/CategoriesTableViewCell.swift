@@ -17,8 +17,6 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
     
     let dataManager = DataManager()
     
-    var dictDocumentID = [Int : String]()
-    
     var array1 = [Categories]()
     
     var array = ["Vegetables","Fruits","Meat","Egg"]
@@ -122,7 +120,7 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let controller = ProductsViewController()
         controller.pageTitle = array1[indexPath.row].name!
-        controller.productId = dictDocumentID[array1[indexPath.row].rank!]!
+        controller.productId = array1[indexPath.row].id!
         delegate?.pushViewController(controller: controller)
     }
 
@@ -139,7 +137,7 @@ extension CategoriesTableViewCell : UICollectionViewDataSource {
         cell.cellLabel.text = "\(array1[indexPath.row].name!)"
  //       print(array1[indexPath.row].name)
        // cell.cellImage.image = UIImage(named: "\(array[indexPath.row])")
-        dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage, defaultImage: "Vegetables")
+        dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage)
         return cell
     }
 }

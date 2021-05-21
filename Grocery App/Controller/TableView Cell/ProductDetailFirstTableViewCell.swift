@@ -9,7 +9,8 @@ import UIKit
 
 class ProductDetailFirstTableViewCell: UITableViewCell {
     
-    var quantity = 1
+    var quantity : Int?
+    var price : Int?
 
     @IBOutlet weak var containerView: UIView!
     
@@ -17,6 +18,8 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
     
     @IBOutlet weak var decreaseQuantity: UIButton!
     
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var perPeicePriceLabel: UILabel!
     @IBOutlet weak var quantityLabel: UILabel!
     
     @IBOutlet weak var increaseQuantity: UIButton!
@@ -34,14 +37,18 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
     
     
     @IBAction func decreaseQuantityPressed(_ sender: Any) {
-        if quantity > 1 {
-            quantity = quantity - 1
-            quantityLabel.text = "\(quantity) kg"
+        if quantity! > 1 {
+            quantity! = quantity! - 1
+            quantityLabel.text = "\(quantity!) kg"
+            priceLabel.text = "$\(price! * quantity!)"
         }
     }
     
     @IBAction func increaseQuantityPressed(_ sender: Any) {
-        quantity = quantity + 1
-        quantityLabel.text = "\(quantity) kg"
+        quantity! = quantity! + 1
+        quantityLabel.text = "\(quantity!) kg"
+        priceLabel.text = "$\(price! * quantity!)"
     }
+    
+    
 }

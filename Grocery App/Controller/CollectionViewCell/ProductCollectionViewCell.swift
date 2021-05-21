@@ -7,9 +7,21 @@
 
 import UIKit
 
+protocol passQuantityChangeData {
+    func quantityChanged(cellIndex:Int?, quant: Int?, isQuantViewOpen : Bool?)
+}
+
 class ProductCollectionViewCell : UICollectionViewCell {
     
-    var quantity = 0
+    var isQuantityViewOpen : Bool?
+    
+    var cellNumber : Int?
+    
+    var quantity : Int?
+    
+    var dataManager = DataManager()
+    
+    var delegate : passQuantityChangeData?
     
     let minusButton : UIButton = {
         let uv = UIButton(type: .system)
@@ -158,15 +170,17 @@ class ProductCollectionViewCell : UICollectionViewCell {
     @objc func plusButtonTapped(){
         plusButton.isHidden = true
         greenView.isHidden = false
-        quantity = quantity+1
-        quantityLabel.text = "\(quantity)"
+        quantity = quantity!+1
+        quantityLabel.text = "\(quantity!)"
+        isQuantityViewOpen = true
+        delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
     }
     
     func configureStackView(){
         let stack = UIStackView(arrangedSubviews: [minusButton,quantityLabel,plusGreenViewButton])
         stack.spacing = 5
         stack.axis = .vertical
-        quantityLabel.text = "\(quantity)"
+       // quantityLabel.text = "\(quantity)"
         plusGreenViewButton.addTarget(self, action: #selector(increaseQuantity), for: .touchUpInside)
         minusButton.addTarget(self, action: #selector(decreaseQuantity), for: .touchUpInside)
         greenView.addSubview(stack)
@@ -174,33 +188,44 @@ class ProductCollectionViewCell : UICollectionViewCell {
     }
 
     @objc func increaseQuantity(){
-        quantity = quantity+1
-        quantityLabel.text = "\(quantity)"
-        
+        quantity = quantity!+1
+        quantityLabel.text = "\(quantity!)"
+        isQuantityViewOpen = true
+        delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
     }
     
     @objc func decreaseQuantity(){
-        if quantity > 1{
-        quantity = quantity-1
-        quantityLabel.text = "\(quantity)"
+        if quantity! > 1{
+            quantity = quantity!-1
+            quantityLabel.text = "\(quantity!)"
+            delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
+            
+            isQuantityViewOpen = true
+            
         }else{
             quantity = 0
+            plusButton.isHidden = false
+            greenView.isHidden = true
+            isQuantityViewOpen = false
+            delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
+        }
+    }
+    
+    func configureCellUI(product : Product){
+        nameLabel.text = product.name!
+        priceLabel.text = "\(product.price!)"
+        descriptionLabel.text = product.description!
+        quantity = product.quantity
+        quantityLabel.text = "\(product.quantity)"
+        isQuantityViewOpen = product.isQuantityViewOpen
+        dataManager.getImageFrom(url: product.url!, imageView: cellImage)
+        if isQuantityViewOpen! {
+            plusButton.isHidden = true
+            greenView.isHidden = false
+        }else{
             plusButton.isHidden = false
             greenView.isHidden = true
         }
     }
     
-    
-    //to detect touch outside the greenView
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        super.touchesBegan(touches, with: event)
-//        let touch = touches.first
-//            guard let location = touch?.location(in: greenView) else { return }
-//            if !contentView.frame.contains(location) {
-//                greenView.isHidden = true
-//                plusButton.isHidden = false
-//            } else {
-//                print("Tapped inside the view")
-//            }
-//    }
 }

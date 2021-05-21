@@ -10,7 +10,7 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 
-class ProductsViewController : UIViewController, UICollectionViewDelegate{
+class ProductsViewController : UIViewController, UICollectionViewDelegate,passQuantityChangeData{
     
     let dataManager = DataManager()
     
@@ -95,8 +95,6 @@ class ProductsViewController : UIViewController, UICollectionViewDelegate{
     return lbl
     }()
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -108,13 +106,13 @@ class ProductsViewController : UIViewController, UICollectionViewDelegate{
         
         
         
-        self.dataManager.searchData(selectedId: productId) { (error) in
-            print("self.dataManager.productArray \(self.dataManager.productArray)")
+        self.dataManager.searchData(selectedId: productId, matchId: "category_id") { (error) in
+           // print("self.dataManager.productArray \(self.dataManager.productArray)")
            // self.productArray = self.dataManager.productArray
            self.productCellCollectionVw.reloadData()
             self.configureView()
                     }
-        print("productArray \(self.dataManager.productArray)")
+      //  print("productArray \(self.dataManager.productArray)")
         configureUI()
     }
         
@@ -152,16 +150,22 @@ func configureView(){
         backView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 120, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
         
 }
+    func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
+        dataManager.productArray[cellIndex!].isQuantityViewOpen = isQuantViewOpen!
+        dataManager.productArray[cellIndex!].quantity = quant!
+    }
+   
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
        let productDetailVC = storyboard.instantiateViewController(identifier: "ProductDetailViewController") as! ProductDetailViewController
        // let productDetailVC = ProductDetailViewController()
-        productDetailVC.url  = dataManager.productArray[indexPath.row].url!
-        productDetailVC.name = dataManager.productArray[indexPath.row].name!
-        productDetailVC.price = "\(dataManager.productArray[indexPath.row].price!)"
-        self.navigationController?.pushViewController(productDetailVC, animated: true)
+        productDetailVC.id  = dataManager.productArray[indexPath.row].id!
+        productDetailVC.product = dataManager.productArray[indexPath.row]
+        productDetailVC.modalPresentationStyle = .fullScreen
+        productDetailVC.productArray = dataManager.productArray
+        self.present(productDetailVC, animated: true, completion: nil)
     }
 
 }
@@ -179,17 +183,16 @@ extension ProductsViewController : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as! ProductCollectionViewCell
+        cell.delegate = self
+        cell.cellNumber = indexPath.row
        cell.addHorizontalView()
      //   cell.addVerticalView()
         if indexPath.row % 2 == 0{
             cell.addVerticalView()
             
         }
-        cell.nameLabel.text = "\(dataManager.productArray[indexPath.row].name!)"
-      //  cell.cellImage.image = UIImage(named: "\(productArray[indexPath.row])")
-        dataManager.getImageFrom(url: "\(dataManager.productArray[indexPath.row].url!)", imageView: cell.cellImage, defaultImage: "Vegetables")
-        cell.priceLabel.text = "$\(dataManager.productArray[indexPath.row].price!)"
-        cell.descriptionLabel.text = "\(dataManager.productArray[indexPath.row].description!)"
+        cell.configureCellUI(product: dataManager.productArray[indexPath.row])
+        
         return cell
     }
     

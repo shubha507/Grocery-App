@@ -18,8 +18,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="182" height="289"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fruitBasket" translatesAutoresizingMaskIntoConstraints="NO" id="eVK-wx-Y5z">
-                        <rect key="frame" x="0.0" y="0.0" width="181" height="193"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eVK-wx-Y5z">
+                        <rect key="frame" x="10" y="10" width="161" height="174"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="174" id="HEh-xO-RpH"/>
+                        </constraints>
                     </imageView>
                     <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3JT-Dv-uOi">
                         <rect key="frame" x="181" y="0.0" width="1" height="289"/>
@@ -35,14 +38,14 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$17.00/kg" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vx2-OJ-GtI">
-                        <rect key="frame" x="10" y="227" width="131" height="18"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <rect key="frame" x="10" y="227" width="131" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" systemColor="systemGray2Color"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$17.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G0b-R3-9o1">
-                        <rect key="frame" x="10" y="258" width="131" height="19.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <rect key="frame" x="10" y="257" width="131" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                         <color key="textColor" name="mygreen"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -64,7 +67,7 @@
                                     <action selector="minusButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="CBO-li-3ul"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PyD-pn-hhX">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PyD-pn-hhX">
                                 <rect key="frame" x="0.0" y="35" width="35" height="35"/>
                                 <color key="backgroundColor" name="mygreen"/>
                                 <constraints>
@@ -97,19 +100,18 @@
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
                 <constraint firstItem="G0b-R3-9o1" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="J0Y-Zx-DVp"/>
+                <constraint firstItem="eVK-wx-Y5z" firstAttribute="leading" secondItem="nI5-eF-MX3" secondAttribute="leading" id="KWb-3a-r9C"/>
+                <constraint firstItem="3JT-Dv-uOi" firstAttribute="leading" secondItem="eVK-wx-Y5z" secondAttribute="trailing" constant="10" id="P57-n6-vdK"/>
                 <constraint firstItem="3JT-Dv-uOi" firstAttribute="leading" secondItem="GLt-dp-BIN" secondAttribute="trailing" id="P7x-tH-LA4"/>
-                <constraint firstAttribute="bottom" secondItem="eVK-wx-Y5z" secondAttribute="bottom" constant="96" id="Q1I-G1-45W"/>
                 <constraint firstItem="3JT-Dv-uOi" firstAttribute="leading" secondItem="nI5-eF-MX3" secondAttribute="trailing" constant="40" id="Vbf-e2-YwW"/>
                 <constraint firstItem="Vx2-OJ-GtI" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="Yex-e4-jaH"/>
                 <constraint firstItem="nI5-eF-MX3" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="ZkI-VA-ViN"/>
                 <constraint firstItem="Vx2-OJ-GtI" firstAttribute="top" secondItem="nI5-eF-MX3" secondAttribute="bottom" constant="5" id="aLh-zf-EYW"/>
-                <constraint firstItem="nI5-eF-MX3" firstAttribute="top" secondItem="eVK-wx-Y5z" secondAttribute="bottom" constant="5" id="aRc-cV-Gxf"/>
+                <constraint firstAttribute="bottom" secondItem="G0b-R3-9o1" secondAttribute="bottom" constant="11.5" id="bDA-9v-h0b"/>
                 <constraint firstAttribute="bottom" secondItem="GLt-dp-BIN" secondAttribute="bottom" id="cMQ-74-9G4"/>
                 <constraint firstItem="G0b-R3-9o1" firstAttribute="top" secondItem="Vx2-OJ-GtI" secondAttribute="bottom" constant="13" id="gBv-Zu-fwZ"/>
-                <constraint firstItem="3JT-Dv-uOi" firstAttribute="leading" secondItem="eVK-wx-Y5z" secondAttribute="trailing" id="hpm-j0-lhC"/>
                 <constraint firstItem="3JT-Dv-uOi" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="jvk-4b-85x"/>
-                <constraint firstItem="eVK-wx-Y5z" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="onb-yo-NDI"/>
-                <constraint firstItem="eVK-wx-Y5z" firstAttribute="top" secondItem="3JT-Dv-uOi" secondAttribute="top" id="orV-WZ-ooA"/>
+                <constraint firstItem="eVK-wx-Y5z" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="kQ6-An-gn1"/>
                 <constraint firstAttribute="trailing" secondItem="3JT-Dv-uOi" secondAttribute="trailing" id="pIE-a7-Wse"/>
                 <constraint firstItem="3JT-Dv-uOi" firstAttribute="leading" secondItem="Vx2-OJ-GtI" secondAttribute="trailing" constant="40" id="qOY-oy-9PA"/>
                 <constraint firstAttribute="bottom" secondItem="3JT-Dv-uOi" secondAttribute="bottom" id="r27-qG-gZF"/>
@@ -120,12 +122,15 @@
                 <outlet property="minusButton" destination="cCk-pY-MSh" id="Mu3-Ci-55x"/>
                 <outlet property="plusButton" destination="Zq0-hb-6Yg" id="bzG-fh-Fbl"/>
                 <outlet property="quantityLabel" destination="PyD-pn-hhX" id="vCZ-0k-V2B"/>
+                <outlet property="similarProductImageView" destination="eVK-wx-Y5z" id="JpF-9V-9iQ"/>
+                <outlet property="similarProductNameLabel" destination="nI5-eF-MX3" id="yBU-2r-Nht"/>
+                <outlet property="similarProductPerPeicePriceLabel" destination="Vx2-OJ-GtI" id="6Bk-Kg-v3b"/>
+                <outlet property="similarProductPriceLabel" destination="G0b-R3-9o1" id="UeW-hF-BX3"/>
             </connections>
             <point key="canvasLocation" x="89.855072463768124" y="143.63839285714286"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="fruitBasket" width="374" height="460"/>
         <image name="minus" catalog="system" width="128" height="24"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <namedColor name="mygreen">

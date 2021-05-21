@@ -14,11 +14,8 @@ class CategoriesViewController : UIViewController {
     
     var dataArray = [Categories]()
     
-    var dictDocumentID = [Int : String]()
-    
     let dataManager = DataManager()
     
-  //  var productArray = [Product]()
     
     private let backButton : UIButton = {
         let button = UIButton(type: .system)
@@ -32,7 +29,7 @@ class CategoriesViewController : UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    private let array = ["Vegetables","Fruits","Meat","Egg","Vegetables","Fruits","Meat","Egg","Vegetables","Fruits","Meat","Egg","Vegetables","Fruits","Meat"]
+   // private let array = ["Vegetables","Fruits","Meat","Egg","Vegetables","Fruits","Meat","Egg","Vegetables","Fruits","Meat","Egg","Vegetables","Fruits","Meat"]
     
     private let categoryLabel : UILabel = {
         let lbl = UILabel()
@@ -93,9 +90,10 @@ extension CategoriesViewController : UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
        let controller = ProductsViewController()
         controller.pageTitle = dataArray[indexPath.row].name!
-       // print(" url \(dataArray[indexPath.row].url ?? "no url")")
-        controller.productId = dictDocumentID[dataArray[indexPath.row].rank!]!
+
+        controller.productId = dataArray[indexPath.row].id
         self.navigationController?.pushViewController(controller, animated: true)
+        
        }
 }
 
@@ -109,7 +107,7 @@ extension CategoriesViewController : UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! CategoryCollectionViewCell
         cell.cellLabel.text = "\(dataArray[indexPath.row].name!)"
       //  cell.cellImage.image = UIImage(named: "\(array[indexPath.row])")
-        dataManager.getImageFrom(url: "\(dataArray[indexPath.row].url!)", imageView: cell.cellImage, defaultImage: "Vegetables")
+        dataManager.getImageFrom(url: "\(dataArray[indexPath.row].url!)", imageView: cell.cellImage)
         return cell
     }
     

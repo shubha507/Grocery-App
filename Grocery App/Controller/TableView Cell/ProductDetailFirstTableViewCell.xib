@@ -21,7 +21,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ggG-7Z-jiO" userLabel="ContainerView">
                         <rect key="frame" x="15" y="15" width="360" height="235"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JAA-8r-QUT">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JAA-8r-QUT">
                                 <rect key="frame" x="15" y="20" width="330" height="30"/>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="25"/>
                                 <nil key="textColor"/>
@@ -33,17 +33,17 @@
                                 <color key="textColor" systemColor="systemGray2Color"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="Dq3-mZ-g6U">
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="Dq3-mZ-g6U">
                                 <rect key="frame" x="10" y="102" width="342" height="21"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$17.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kr8-z5-3I1">
-                                        <rect key="frame" x="0.0" y="0.0" width="77" height="21"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="87" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="14 Calories" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pE8-Ao-EgJ">
-                                        <rect key="frame" x="117" y="0.0" width="90" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="14 Calories" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pE8-Ao-EgJ">
+                                        <rect key="frame" x="122" y="0.0" width="90" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="90" id="Wl9-Bj-MnQ"/>
                                         </constraints>
@@ -184,6 +184,8 @@
                 <outlet property="decreaseQuantity" destination="ZbF-OX-WTK" id="EWg-7Z-ieB"/>
                 <outlet property="increaseQuantity" destination="rSw-cl-pb0" id="AwK-0c-ksu"/>
                 <outlet property="nameLabel" destination="JAA-8r-QUT" id="zyd-kF-Sba"/>
+                <outlet property="perPeicePriceLabel" destination="eOL-sW-uGu" id="znh-zA-qHw"/>
+                <outlet property="priceLabel" destination="Kr8-z5-3I1" id="st8-5L-Tdp"/>
                 <outlet property="quantityLabel" destination="VtQ-hd-DGE" id="AWi-eT-tlV"/>
             </connections>
             <point key="canvasLocation" x="131.8840579710145" y="141.29464285714286"/>

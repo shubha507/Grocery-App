@@ -18,7 +18,6 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction 
     var productArray = [Product]()
     var category = [Categories]()
     var sortedCategory = [Categories]()
-    var dict = [Int : String]()
     var discount = [Discount]()
     var sortedDiscount = [Discount]()
     var deals = [Deals]()
@@ -134,10 +133,10 @@ func configureUI(){
              let data = document.data()
              let name = data["name"] as? String ?? " "
              let rank = data["rank"] as? Int ?? 0
-             let url = data["url"] as? String ?? " "
-             let newCategory = Categories(name: name, rank: rank, url: url)
+             let url = data["url"] as? String ?? "No url"
+             let id = data["id"]  as? String ?? " "
+                let newCategory = Categories(name: name, rank: rank, url: url,id : id)
              self.category.append(newCategory)
-            self.dict.updateValue(document.documentID, forKey: rank)
             }
             self.tblView.reloadData()
             print("category \(self.category)")
@@ -159,7 +158,7 @@ func configureUI(){
              let data = document.data()
              let name = data["name"] as? String ?? " "
              let rank = data["rank"] as? Int ?? 0
-             let url = data["url"] as? String ?? " "
+             let url = data["url"] as? String ?? "No url"
              let id = data["id"] as? String ?? " "
              let discount = data["discount"] as? String ?? " "
              let createdAt = data["created_at"] as? String ?? " "
@@ -186,7 +185,7 @@ func configureUI(){
              let data = document.data()
              let name = data["name"] as? String ?? " "
              let rank = data["rank"] as? Int ?? 0
-             let url = data["url"] as? String ?? " "
+             let url = data["url"] as? String ?? "No url"
              let id = data["id"] as? String ?? " "
              let discount = data["discount"] as? String ?? " "
              let createdAt = data["created_at"] as? String ?? " "
@@ -226,7 +225,6 @@ func configureUI(){
     @objc func seeDetailView(){
         let categoryVC = CategoriesViewController()
         categoryVC.dataArray = sortedCategory
-        categoryVC.dictDocumentID = dict
         self.navigationController?.pushViewController(categoryVC, animated: true)
     }
     
@@ -247,7 +245,6 @@ extension HomeViewController : UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CategoriesTableViewCell
             cell.collectionViewData(array: sortedCategory)
             cell.seeAllButton.addTarget(self, action: #selector(seeDetailView), for: .touchUpInside)
-            cell.dictDocumentID = dict
             cell.delegate = self
         return cell
         }else if indexPath.row == 1{

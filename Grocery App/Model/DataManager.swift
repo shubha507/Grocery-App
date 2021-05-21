@@ -19,7 +19,7 @@ class DataManager {
     
     let activityIndicator = UIActivityIndicatorView()
     
-    func getImageFrom(url: String?, imageView : UIImageView, defaultImage : String?){
+    func getImageFrom(url: String?, imageView : UIImageView){
         
         activityIndicator.color = .gray
         imageView.addSubview(activityIndicator)
@@ -28,12 +28,13 @@ class DataManager {
         activityIndicator.centerY(inView: imageView)
         activityIndicator.startAnimating()
         
-        guard let posterUrl = url else {
-            imageView.image = UIImage(named: defaultImage!)
-            return
-            
+        if url == "No url"{
+            DispatchQueue.main.async {
+                imageView.image = UIImage(named: "Noimage")
+            self.activityIndicator.stopAnimating()
         }
-        guard let posterImageUrl = URL(string: posterUrl) else {return}
+        }else{
+            guard let posterImageUrl = URL(string: url!) else {return}
         
         imageView.image = nil
         
@@ -65,60 +66,36 @@ class DataManager {
             }
                 }else {
                     DispatchQueue.main.async {
-                        imageView.image = UIImage(named: defaultImage!)
+                        imageView.image = UIImage(named: "Noimage")
                     self.activityIndicator.stopAnimating()
                 }
              }
             }.resume()
         }
+        }
     
-    func searchData(selectedId : String?, callback: @escaping(_ error : Bool)-> Void){
+    func searchData(selectedId : String?,matchId : String? , callback: @escaping(_ error : Bool)-> Void){
          let db = Firestore.firestore()
-           db.collection("products").whereField("category_id", isEqualTo: selectedId).getDocuments() { [self] (querySnapshot, err) in
+        db.collection("products").whereField(matchId!, isEqualTo: selectedId).getDocuments() { [self] (querySnapshot, err) in
                if let err = err {
                     print("Error getting documents: \(err)")
                } else {
                     for document in querySnapshot!.documents {
                         print("\(document.documentID) => \(document.data())")
                         let data = document.data()
-                        let active = data["active"] as? Bool ?? false
+                        let active = data["active"] as? Bool ?? nil
                         let name = data["name"] as? String ?? ""
                         let categoryId = data["category_id"] as? String ?? ""
                         let description = data["description"] as? String ?? ""
                         let tags = data["tags"] as? [String] ?? []
                         let price = data["price"] as? Int ?? 0
-                        let url = data["url"] as? String ?? ""
+                        let url = data["url"] as? String ?? "No url"
+                        let id = data["id"] as? String ?? ""
                         let searchKey = data["search_keys"] as? [String] ?? []
-                        if active == true {
-                        let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: tags, url: url,searchKey: searchKey)
+                        if active == nil || active == true {
+                            let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: tags, url: url,searchKey: searchKey, id : id)
                         self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-//                            self.productArray.append(newProduct)
-                            
                         }
-                        
                     }
                }
                         if productArray.count > 0{

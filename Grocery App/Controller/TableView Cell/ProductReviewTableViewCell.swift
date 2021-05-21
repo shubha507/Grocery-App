@@ -1,13 +1,13 @@
 //
-//  ProductDetailFourthTableViewCell.swift
+//  ProductReviewTableViewCell.swift
 //  Grocery App
 //
-//  Created by Shubha Sachan on 12/05/21.
+//  Created by Shubha Sachan on 18/05/21.
 //
 
 import UIKit
 
-class ProductDetailFourthTableViewCell: UITableViewCell {
+class ProductReviewTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -18,9 +18,6 @@ class ProductDetailFourthTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }
-    @IBAction func addToCartButtonTapped(_ sender: Any) {
-        
     }
     
 }

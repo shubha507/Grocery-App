@@ -79,6 +79,6 @@ class DiscountCollectionViewCell : UICollectionViewCell {
     func configureUI(discountLbl : String?, discountDescriptionLbl : String?, url : String?){
         self.discountLabel.text = discountLbl
         self.discountDescriptionLabel.text = discountDescriptionLbl
-        dataManager.getImageFrom(url: url, imageView: basketImageView,defaultImage: "fruitBasket")
+        dataManager.getImageFrom(url: url, imageView: basketImageView)
     }
 }

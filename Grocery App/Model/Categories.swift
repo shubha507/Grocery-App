@@ -7,21 +7,23 @@
 
 import UIKit
 
-struct Categories {
+class Categories {
     
     var name : String?
     var rank : Int?
     var url : String?
+    var id : String?
     
     
-    init(name : String?,rank : Int?, url : String?) {
+    init(name : String?,rank : Int?, url : String?, id : String?) {
         self.name = name
         self.rank = rank
         self.url = url
+        self.id = id
     }
 }
 
-struct Product{
+class Product{
     
     var active : Bool?
     var categoryId : String?
@@ -31,8 +33,9 @@ struct Product{
     var tags : [String]?
     var url : String?
     var searchKey : [String]?
+    var id : String?
     
-    init(active : Bool? , categoryId : String?, description : String?,price : Int?, name : String?,tags : [String]?, url : String?, searchKey : [String]?){
+    init(active : Bool? , categoryId : String?, description : String?,price : Int?, name : String?,tags : [String]?, url : String?, searchKey : [String]?, id : String){
         self.active = active
         self.categoryId = categoryId
         self.description = description
@@ -41,10 +44,14 @@ struct Product{
         self.tags = tags
         self.url = url
         self.searchKey = searchKey
+        self.id = id
     }
+    
+    var quantity = 0
+    var isQuantityViewOpen = false
 }
 
-struct Discount {
+class Discount {
     var createdAt : String?
     var discount : String?
     var url : String?
@@ -63,7 +70,7 @@ struct Discount {
     
 }
 
-struct Deals {
+class Deals {
     var createdAt : String?
     var discount : String?
     var url : String?
@@ -81,5 +88,7 @@ struct Deals {
     }
     
 }
+
+
 
 
