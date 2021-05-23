@@ -261,20 +261,38 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
            {
             print("empty type again")
            }
-            else {
+            else  {
+                
+                if tag.contains(productTags.text ?? "") == true
+                {
+                    print("same tag")
+                    productTags.text = nil
+                    productTags.placeholder = "tags"
+                }
+               else {
+                productTags.autocorrectionType = .no
             tag.append("\(productTags.text ?? " ")")
             
             
             print("tags:" ,tag)
            
             productTags.resignFirstResponder()
-            
+                productTags.text = nil
+                productTags.placeholder = "tags"
+        
             tagsCollectionView.reloadData()
+            
+            }
             }
             
         }
         else {
+            if textField.text!.isEmpty {
+            print("empty field type again")
+            }
+            else {
             return textField.resignFirstResponder()
+            }
         }
         return textField.resignFirstResponder()
     }
@@ -514,12 +532,18 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
    
     @IBAction func addButtonClicked(_ sender: Any) {
         print("add tapped")
+        if productName.text!.isEmpty || ProductCategory.text!.isEmpty || productDescription.text!.isEmpty || productPrice.text!.isEmpty || productActiveStatus.text!.isEmpty || productTags.text!.isEmpty
+        {
+            print("input field/fields missing")
+        }
+        else {
         if uid == "nil"
         {
         setData2()
         selectionDelegate2?.addTapped(Name: "yes")
         }
-        else{
+        else
+        {
             let db = Firestore.firestore()
            // var array: Array<String> = tag
             let id = randomString(of: 20)
@@ -562,7 +586,8 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
             }
             selectionDelegate2?.addTapped(Name: "yes")
-
+        }
+    
         }
     }
     

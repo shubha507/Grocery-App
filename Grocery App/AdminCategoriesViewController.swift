@@ -10,7 +10,7 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 
-class AdminCategoriesViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class AdminCategoriesViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     @IBOutlet weak var categoriesCollectionView: UICollectionView!
     
     struct Dict {
@@ -101,7 +101,7 @@ class AdminCategoriesViewController: UIViewController, UICollectionViewDelegate,
         sec.selectionDelegate = self
         sec.uid = "\(sortedDict[indexPath1.row].stringId ?? "nil")"
         sec.category = "\(sortedCategory[indexPath1.row].name!)"
-        sec.rank = "Rank: " + "\(sortedCategory[indexPath1.row].rank!)"
+        sec.rank = "\(sortedCategory[indexPath1.row].rank!)"
         sec.imageurl = "\(sortedCategory[indexPath1.row].url!)"
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Edit Category", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
@@ -155,6 +155,9 @@ class AdminCategoriesViewController: UIViewController, UICollectionViewDelegate,
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 370, height: 95)
+    }
     
 
 }

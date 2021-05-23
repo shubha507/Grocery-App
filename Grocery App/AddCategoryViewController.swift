@@ -43,13 +43,22 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == newCategoryTxtField {
+            if textField.text!.isEmpty {
+            print("empty field type again")
+            }
+            else {
             return textField.resignFirstResponder()
-           
+            }
            
         }
         else if textField == newRankTxtField {
             
+            if textField.text!.isEmpty {
+            print("empty field type again")
+            }
+            else {
             return textField.resignFirstResponder()
+            }
         }
         return textField.resignFirstResponder()
     }
@@ -146,6 +155,10 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
     
 
     @IBAction func addButtonTapped(_ sender: Any) {
+        if newRankTxtField.text!.isEmpty || newCategoryTxtField.text!.isEmpty {
+            print("input field/fields missing")
+        }
+        else {
         if uid == "nil" {
         setData()
         selectionDelegate?.addTapped(Name: "yes")
@@ -168,6 +181,7 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
             
             selectionDelegate?.addTapped(Name: "yes")
         }
+    }
     }
     
 
