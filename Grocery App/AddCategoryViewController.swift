@@ -45,6 +45,8 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
         if textField == newCategoryTxtField {
             if textField.text!.isEmpty {
             print("empty field type again")
+                textField.layer.borderWidth = 2
+                textField.layer.borderColor = UIColor.systemRed.cgColor
             }
             else {
             return textField.resignFirstResponder()
@@ -55,6 +57,7 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
             
             if textField.text!.isEmpty {
             print("empty field type again")
+               
             }
             else {
             return textField.resignFirstResponder()
@@ -155,9 +158,16 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
     
 
     @IBAction func addButtonTapped(_ sender: Any) {
-        if newRankTxtField.text!.isEmpty || newCategoryTxtField.text!.isEmpty {
-            print("input field/fields missing")
+         if newCategoryTxtField.text!.isEmpty {
+            newCategoryTxtField.layer.borderWidth = 2
+            newCategoryTxtField.layer.borderColor = UIColor.systemRed.cgColor
         }
+        else if newRankTxtField.text!.isEmpty  {
+            print("input field/fields missing")
+            newRankTxtField.layer.borderWidth = 2
+            newRankTxtField.layer.borderColor = UIColor.systemRed.cgColor
+        }
+        
         else {
         if uid == "nil" {
         setData()

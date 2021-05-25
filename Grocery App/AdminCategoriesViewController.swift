@@ -10,9 +10,10 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 
-class AdminCategoriesViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    @IBOutlet weak var categoriesCollectionView: UICollectionView!
+class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+   
     
+    @IBOutlet weak var tableViewCategory: UITableView!
     struct Dict {
         var stringId: String!
         var intRankValue: Int!
@@ -58,10 +59,12 @@ class AdminCategoriesViewController: UIViewController, UICollectionViewDelegate,
            // self.tblView.reloadData()
             self.dictCat.append(row1)
             self.dictCat.append(row2)
-            self.categoriesCollectionView.reloadData()
+           // self.categoriesCollectionView.reloadData()
+            
             //sorting category cells according to rank
             self.sortedCategory = self.category.sorted(by: { $0.rank! < $1.rank! })
             self.sortedDict.sort(by: { $0.intRankValue! < $1.intRankValue! } )
+            self.tableViewCategory.reloadData()
             print(self.dict)
             print("hello")
             print(self.sortedDict)
@@ -73,9 +76,11 @@ class AdminCategoriesViewController: UIViewController, UICollectionViewDelegate,
         super.viewDidLoad()
         //fetchData()
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
-        categoriesCollectionView.delegate = self
-        categoriesCollectionView.dataSource = self
+        tableViewCategory.delegate = self
+        tableViewCategory.dataSource = self
+        self.tableViewCategory.separatorStyle = UITableViewCell.SeparatorStyle.none
         fetchData()
+        
         
     }
     /*override func viewWillAppear(_ animated: Bool) {
@@ -89,7 +94,7 @@ class AdminCategoriesViewController: UIViewController, UICollectionViewDelegate,
         self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationController?.pushViewController(sec, animated: true)
         fetchData()
-        self.categoriesCollectionView.reloadData()
+        self.tableViewCategory.reloadData()
         
     }
     
@@ -122,50 +127,53 @@ class AdminCategoriesViewController: UIViewController, UICollectionViewDelegate,
         self.navigationController?.pushViewController(sec, animated: true)
         
     }
+    
     @objc private func dismissSelf()
     { }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return sortedCategory.count
-    }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! AdminCategoriesCollectionViewCell
-       
-        cell.categoriesNameLabel.text = "\(sortedCategory[indexPath.row].name!)"
-        cell.categoriesRankLabel.text = "Rank: " + " \(sortedCategory[indexPath.row].rank!)"
-        dataManager.getImageFrom(url: "\(sortedCategory[indexPath.row].url!)", imageView: cell.categoriesImage)
+   
+    
+    
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.sortedCategory.count
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 120
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "categoryTableViewCell", for: indexPath) as! CategoryTableViewCell
+        
+        cell.categoryNameLabel.text = "\(sortedCategory[indexPath.row].name!)"
+        cell.categoryPriceLabel.text = "Rank: " + " \(sortedCategory[indexPath.row].rank!)"
+        dataManager.getImageFrom(url: "\(sortedCategory[indexPath.row].url!)", imageView: cell.tableViewCategoryImage)
         //cell.categoriesImage.layer.masksToBounds = true
-        cell.categoriesImage.layer.cornerRadius = cell.categoriesImage.frame.size.height/2
+        cell.tableViewCategoryImage.layer.cornerRadius = cell.tableViewCategoryImage.frame.size.height/2
         //cell.categoriesImage.layer.borderWidth = 1
-        cell.categoriesImage.layer.masksToBounds = false
-        cell.categoriesImage.clipsToBounds = true
-        cell.categoriesImage.layer.backgroundColor = UIColor.white.cgColor
-        cell.layer.cornerRadius = 5
-        cell.layer.borderWidth = 0.0
-                cell.layer.shadowColor = UIColor.black.cgColor
-                cell.layer.shadowOffset = CGSize(width: 0, height: 0)
-                cell.layer.shadowRadius = 5.0
-        cell.layer.shadowOpacity = 0.4
-                cell.layer.masksToBounds = false
-        cell.editCategoriesButton.tag = indexPath.row
-        cell.editCategoriesButton.addTarget(self, action: #selector(editCategoryButtonTapped(_:)), for: .touchUpInside)
+        cell.tableViewCategoryImage.layer.masksToBounds = false
+        cell.tableViewCategoryImage.clipsToBounds = true
+        cell.tableViewCategoryImage.layer.backgroundColor = UIColor.white.cgColor
+        cell.categoryTableViewInnerView.layer.cornerRadius = 5
+        cell.categoryTableViewInnerView.layer.borderWidth = 0.0
+                cell.categoryTableViewInnerView.layer.shadowColor = UIColor.black.cgColor
+                cell.categoryTableViewInnerView.layer.shadowOffset = CGSize(width: 0, height: 0)
+                cell.categoryTableViewInnerView.layer.shadowRadius = 5.0
+        cell.categoryTableViewInnerView.layer.shadowOpacity = 0.4
+                cell.categoryTableViewInnerView.layer.masksToBounds = false
+        cell.editCategoryTableView.tag = indexPath.row
+        cell.editCategoryTableView.addTarget(self, action: #selector(editCategoryButtonTapped(_:)), for: .touchUpInside)
         //cell.layer.borderWidth = 1
         //cell.layer.borderColor = UIColor.black.cgColor
        // cell.layer.backgroundColor = UIColor.lightGray.cgColor
         return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 370, height: 95)
-    }
-    
-
 }
 extension AdminCategoriesViewController: PassAction
 {
     func addTapped(Name: String) {
         fetchData()
-        self.categoriesCollectionView.reloadData()
+         
+        self.tableViewCategory.reloadData()
     }
     
     

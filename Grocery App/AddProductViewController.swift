@@ -289,6 +289,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         else {
             if textField.text!.isEmpty {
             print("empty field type again")
+               
             }
             else {
             return textField.resignFirstResponder()
@@ -532,9 +533,33 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
    
     @IBAction func addButtonClicked(_ sender: Any) {
         print("add tapped")
-        if productName.text!.isEmpty || ProductCategory.text!.isEmpty || productDescription.text!.isEmpty || productPrice.text!.isEmpty || productActiveStatus.text!.isEmpty || productTags.text!.isEmpty
+        if productName.text!.isEmpty 
         {
+            productName.layer.borderWidth = 2
+            productName.layer.borderColor = UIColor.systemRed.cgColor
             print("input field/fields missing")
+        }
+        else if productDescription.text!.isEmpty {
+            productDescription.layer.borderWidth = 2
+            productDescription.layer.borderColor = UIColor.systemRed.cgColor
+        }
+        else if productPrice.text!.isEmpty {
+            productPrice.layer.borderWidth = 2
+            productPrice.layer.borderColor = UIColor.systemRed.cgColor
+        }
+        else if ProductCategory.text!.isEmpty {
+            ProductCategory.layer.borderWidth = 2
+            ProductCategory.layer.borderColor = UIColor.systemRed.cgColor
+        }
+       
+        
+        else if productActiveStatus.text!.isEmpty {
+            productActiveStatus.layer.borderWidth = 2
+            productActiveStatus.layer.borderColor = UIColor.systemRed.cgColor
+        }
+        else if productTags.text!.isEmpty {
+            productTags.layer.borderWidth = 2
+            productTags.layer.borderColor = UIColor.systemRed.cgColor
         }
         else {
         if uid == "nil"

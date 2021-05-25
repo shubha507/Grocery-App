@@ -12,21 +12,19 @@ import FirebaseFirestore
 class CellClass: UITableViewCell {
     
 }
-class AdminProductViewController: UIViewController,UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource {
+class AdminProductViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
  private let Button = UIButton()
     let dataManager = DataManager()
     
-    @IBOutlet weak var prodcutCollectionView: UICollectionView!
+    @IBOutlet weak var productTableView: UITableView!
+    
+   
     private var product = [Product]()
     var categoryDropDown = [Categories]()
     let transparentView = UIView()
     let tableView = UITableView()
     let alertView = UIView()
-   // private var dict = [Int : String]()
    
-   // private var sortedDict = [Dict]()
-    
-   // private var sortedCategory = [Categories]()
     
   
     var categoryDict = [[String]]()
@@ -35,6 +33,8 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        productTableView.delegate = self
+        productTableView.dataSource = self
       
         //self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "dismiss", style: .plain, target: self, action: #selector(dismissSelf))
         
@@ -47,16 +47,18 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
         rightBarButtonItem2.image = buttonIcon2
         self.navigationItem.rightBarButtonItems = [rightBarButtonItem, rightBarButtonItem2]
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
-        prodcutCollectionView.delegate = self
-        prodcutCollectionView.dataSource = self
+        self.productTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
      
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(CellClass.self, forCellReuseIdentifier: "Productcell1")
+       
         fetchData()
     }
     let label = UILabel()
     let clearButton = UIButton()
+    
+    
     func addalertView()
     {
         let window = UIApplication.shared.keyWindow
@@ -152,7 +154,8 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
                 self.sortedDict.append(newDict)
                }
              
-               self.prodcutCollectionView.reloadData()
+              
+            self.productTableView.reloadData()
               
            }
        }
@@ -209,53 +212,62 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
         addTranparentView(frames: view.frame )
      
     }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return product.count
-    }
+    
+   
 
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! AdminProductCollectionViewCell
-       
-       // cell.productName.numberOfLines = 0
+   
         
-       
-        //cell.productName.lineBreakMode = .byWordWrapping
-        //cell.productName.sizeToFit()
-        cell.productName.text = "\(product[indexPath.row].name!)"
-        cell.productDescription.text = " \(product[indexPath.row].description!)"
-        cell.productPrice.text = "Price:  " + "\(product[indexPath.row].price ?? 0)"
-        dataManager.getImageFrom(url: "\(product[indexPath.row].url!)", imageView: cell.productImage)
-        //cell.categoriesImage.layer.masksToBounds = true
-        cell.productImage.layer.cornerRadius = cell.productImage.frame.size.height/2
-        //cell.categoriesImage.layer.borderWidth = 1
-        cell.productImage.layer.masksToBounds = false
-        cell.productImage.clipsToBounds = true
-        cell.productImage.layer.backgroundColor = UIColor.white.cgColor
-        cell.layer.cornerRadius = 5
-        cell.layer.borderWidth = 0.0
-                cell.layer.shadowColor = UIColor.black.cgColor
-                cell.layer.shadowOffset = CGSize(width: 0, height: 0)
-                cell.layer.shadowRadius = 5.0
-        cell.layer.shadowOpacity = 0.4
-                cell.layer.masksToBounds = false
-
-        cell.editProductButton.tag = indexPath.row
-        cell.editProductButton.addTarget(self, action: #selector(editProductClicked(_:)), for: .touchUpInside)
-        return cell
-    }
     
     
     
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+        if tableView == self.productTableView
+        {
+            
+            return product.count
+        }
+        else if tableView == self.tableView
+        {
         return categoryDict[0].count + 1
+        }
+        return 2
     }
     
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellP = tableView.dequeueReusableCell(withIdentifier: "Productcell1", for: indexPath)
+            if tableView == self.productTableView
+            {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellProduct", for: indexPath) as! TableViewProductTableViewCell
+               cell.tableProductName.text = "\(product[indexPath.row].name!)"
+            cell.tableProductDescription.text = " \(product[indexPath.row].description!)"
+                cell.tableProductPrice.text = "Price:  " + "\(product[indexPath.row].price ?? 0)"
+                dataManager.getImageFrom(url: "\(product[indexPath.row].url!)", imageView: cell.tableProductImage)
+                //cell.categoriesImage.layer.masksToBounds = true
+                cell.tableProductImage.layer.cornerRadius = cell.tableProductImage.frame.size.height/2
+                //cell.categoriesImage.layer.borderWidth = 1
+                cell.tableProductImage.layer.masksToBounds = false
+                cell.tableProductImage.clipsToBounds = true
+                cell.tableProductImage.layer.backgroundColor = UIColor.white.cgColor
+                cell.tableViewInnerView.layer.cornerRadius = 5
+                cell.tableViewInnerView.layer.borderWidth = 0.0
+                        cell.tableViewInnerView.layer.shadowColor = UIColor.black.cgColor
+                        cell.tableViewInnerView.layer.shadowOffset = CGSize(width: 0, height: 0)
+                        cell.tableViewInnerView.layer.shadowRadius = 5.0
+                cell.tableViewInnerView.layer.shadowOpacity = 0.4
+                        cell.tableViewInnerView.layer.masksToBounds = false
+
+                cell.tableEditButton.tag = indexPath.row
+                cell.tableEditButton.addTarget(self, action: #selector(editProductClicked(_:)), for: .touchUpInside)
+                return cell
+                
+            }
+            else if tableView == self.tableView
+            {
+       
+                let cellP = tableView.dequeueReusableCell(withIdentifier: "Productcell1", for: indexPath)
             if indexPath.row < categoryDict[0].count {
             cellP.textLabel?.text = categoryDict[0][indexPath.row]
                 
@@ -265,10 +277,23 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
                 //cellP.backgroundColor = UIColor.systemGreen
                
             }
+                
             return cellP
+            }
+            return UITableViewCell()
     }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-     return 50
+        if tableView == self.productTableView
+     {
+        return 130
+        
+     }
+     else if tableView == self.tableView
+     {
+        return 50
+    }
+        return 10
     }
     
     var i = 0
@@ -313,7 +338,7 @@ class AdminProductViewController: UIViewController,UICollectionViewDelegate, UIC
                     }
                                     }
             }
-            self.prodcutCollectionView.reloadData()
+            self.productTableView.reloadData()
             self.removeTranparentView()
             self.i = 0
             //self.categoryUid = " "
@@ -326,7 +351,7 @@ extension AdminProductViewController: PassActionProtocol
 {
     func addTapped(Name: String) {
         fetchData()
-        self.prodcutCollectionView.reloadData()
+        self.productTableView.reloadData()
     }
     
     
