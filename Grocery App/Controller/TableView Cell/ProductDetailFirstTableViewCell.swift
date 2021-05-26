@@ -1,5 +1,5 @@
 //
-//  ProductDetailFirstTableViewCell.swift
+//  ProductDetailNameQuantityTableViewCell.swift
 //  Grocery App
 //
 //  Created by Shubha Sachan on 11/05/21.
@@ -42,12 +42,12 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
         if quantity! > 1 {
             quantity! = quantity! - 1
             quantityLabel.text = "\(quantity!) kg"
-            priceLabel.text = "$\(price! * quantity!)"
+            priceLabel.text = "₹\(price! * quantity!)"
             delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: true)
         }else if quantity == 1{
             quantity! = quantity! - 1
             quantityLabel.text = "\(quantity!) kg"
-            priceLabel.text = "$\(price! * quantity!)"
+            priceLabel.text = "₹\(price! * quantity!)"
             delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: false)
         }
     }
@@ -55,7 +55,7 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
     @IBAction func increaseQuantityPressed(_ sender: Any) {
         quantity! = quantity! + 1
         quantityLabel.text = "\(quantity!) kg"
-        priceLabel.text = "$\(price! * quantity!)"
+        priceLabel.text = "₹\(price! * quantity!)"
         delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: true)
     }
     

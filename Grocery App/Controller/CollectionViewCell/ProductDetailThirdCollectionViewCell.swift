@@ -60,6 +60,7 @@ class ProductDetailThirdCollectionViewCell: UICollectionViewCell {
             isQuantityViewOpen = true
             delegate?.quantityChanged(cellIndex: cellIndex, quant: quantity!, isQuantViewOpen: isQuantityViewOpen)
         }else{
+            quantity = 0
             quantityLabel.isHidden = true
             minusButton.isHidden = true
             plusButton.layer.cornerRadius = 10

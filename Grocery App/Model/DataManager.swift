@@ -92,7 +92,7 @@ class DataManager {
                         let url = data["url"] as? String ?? "No url"
                         let id = data["id"] as? String ?? ""
                         let searchKey = data["search_keys"] as? [String] ?? []
-                        if active == nil || active == true {
+                        if active == true {
                             let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: tags, url: url,searchKey: searchKey, id : id)
                         self.productArray.append(newProduct)
                         }

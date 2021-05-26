@@ -10,8 +10,12 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 
-class ProductDetailViewController : UIViewController, UITableViewDelegate,passQuantityChangeData {
+class ProductDetailViewController : UIViewController, UITableViewDelegate,passQuantityChangeData,PassDetailOrReviewSelected {
+    
     var id : String?
+    
+    var isDetailButtonSelected = true
+    var isReviewButtonSelected = false
     
     var product : Product?
     
@@ -32,7 +36,14 @@ class ProductDetailViewController : UIViewController, UITableViewDelegate,passQu
         self.dataManager.getImageFrom(url: product?.url!, imageView: posterImageView)
         self.configureCells()
         self.getSimilarProduct()
+        print("product \(product?.isAddedToCart)")
+        print("product \(product?.quantity)")
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView), name: NSNotification.Name("ReloadTableView"), object: nil)
+    }
     
+    @objc func reloadTableView(){
+        print("notification Recieved")
+        tblVw.reloadData()
     }
     
 func getSimilarProduct(){
@@ -59,11 +70,17 @@ func getSimilarProduct(){
         tblVw.reloadData()
     }
     
+    func whichViewSelected(isDetailButtonSelected: Bool?, isReviewButtonSelected: Bool?) {
+        print("selected \(isDetailButtonSelected) \(isReviewButtonSelected)")
+        self.isDetailButtonSelected = isDetailButtonSelected!
+        self.isReviewButtonSelected = isReviewButtonSelected!
+        tblVw.reloadData()
+    }
+    
     
     @IBAction func backButton(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
-       // NotificationCenter.default.post(name: NSNotification.Name("ReloadProductCollectionVw"), object: self)
-}
+    }
 }
 
 extension ProductDetailViewController : UITableViewDataSource {
@@ -77,14 +94,16 @@ extension ProductDetailViewController : UITableViewDataSource {
             cell?.delegate = self
             cell?.nameLabel.text = self.product!.name
                 cell?.perPeicePriceLabel.text = " \(self.product!.price!)/kg"
-                cell?.priceLabel.text = "$\(self.product!.price! * (self.product!.quantity ?? 0))"
+                cell?.priceLabel.text = "₹\(self.product!.price! * (self.product!.quantity ?? 0))"
                 cell?.price = self.product!.price!
             cell?.quantityLabel.text = "\(self.product!.quantity)"
             cell?.quantity = self.product!.quantity ?? 0
         return cell!
         }else if indexPath.row == 1{
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProductDetailSecondTableViewCell") as? ProductDetailSecondTableViewCell
+            cell?.delegate = self
             cell?.productDescriptionLabel.text = self.product?.description!
+            cell?.configureUI(isDetailButtonSelected : isDetailButtonSelected , isReviewButtonSelected : isReviewButtonSelected )
             return cell!
         }else if indexPath.row == 2{
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProductDetailThirdTableViewCell") as? ProductDetailThirdTableViewCell
@@ -92,7 +111,8 @@ extension ProductDetailViewController : UITableViewDataSource {
         return cell!
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProductDetailFourthTableViewCell") as? ProductDetailFourthTableViewCell
-            cell?.priceLabel.text = "$\(self.product!.price! * (self.product!.quantity ))"
+            cell?.priceLabel.text = "₹\(self.product!.price! * (self.product!.quantity ))"
+            cell?.product = product
             return cell!
         }
     }
@@ -101,6 +121,11 @@ extension ProductDetailViewController : UITableViewDataSource {
         if indexPath.row == 0{
            return UITableView.automaticDimension
         }else if indexPath.row == 1{
+            if isDetailButtonSelected && !isReviewButtonSelected{
+            return UITableView.automaticDimension
+            }else if !isDetailButtonSelected && isReviewButtonSelected {
+            return 420
+            }
             return UITableView.automaticDimension
         }else if indexPath.row == 2{
             if similarProductArray.count == 0 {

@@ -28,9 +28,7 @@
                                     <constraint firstAttribute="height" constant="40" id="tO2-bR-Hxa"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                <state key="normal" title="Details">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
+                                <state key="normal" title="Details"/>
                                 <connections>
                                     <action selector="DetailsButtonPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="MJP-pC-aka"/>
                                 </connections>

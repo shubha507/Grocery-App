@@ -10,16 +10,24 @@ import UIKit
 class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     
     private let imageView : UIImageView = {
-        let iv = UIImageView(frame: CGRect(x: 27, y: 30, width: 35, height: 35))
+        let iv = UIImageView(frame: CGRect(x: 11, y: 14, width: 40, height: 40))
         iv.image = UIImage(named: "noun_cart_1533490")
         iv.tintColor = UIColor(named: "mygreen")
         return iv
     }()
     
-    private let cartItemNumberView : UIView = {
-        let view = UIView( frame: CGRect(x: 27, y: 0, width: 35, height: 35))
-        view.backgroundColor = .red
+    private let cartItemNumberImageView : UIImageView = {
+        let view = UIImageView( frame: CGRect(x: 45, y: -10, width: 30, height: 40))
+       // view.backgroundColor = .red
+        view.image = UIImage(named: "pop")
         return view
+    }()
+    
+    private let cartItemNumberLabel : UILabel = {
+        let lbl = UILabel()
+        lbl.textAlignment = .center
+        lbl.font = UIFont.boldSystemFont(ofSize: 17)
+        return lbl
     }()
     
     override func viewDidLoad() {
@@ -29,6 +37,7 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         self.selectedIndex = 0
         setupMiddleButton()
         ConfigureViewController()
+        cartItemNumberImageView.isHidden = true
     }
     
     func ConfigureViewController(){
@@ -46,26 +55,43 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
     }
     
     func setupMiddleButton() {
-        let middleButton = UIButton(frame: CGRect(x: (self.view.bounds.width / 2)-45, y:-70 , width: 90, height: 90))
+        let buttonView = UIView(frame: CGRect(x: (self.view.bounds.width / 2)-45, y:-70 , width: 90, height: 90))
+       // buttonView.layer.borderWidth = 12
+       // buttonView.layer.borderColor = UIColor(named: "mygreen")?.cgColor
+        buttonView.layer.cornerRadius = buttonView.frame.width/2
+        buttonView.backgroundColor = UIColor(named: "mygreen")
         
-        middleButton.layer.borderWidth = 12
-        middleButton.layer.borderColor = UIColor(named: "mygreen")?.cgColor
-        middleButton.layer.cornerRadius = middleButton.frame.width/2
+        let middleButton = UIButton()
+        middleButton.layer.cornerRadius = 30
+        buttonView.addSubview(middleButton)
+        middleButton.anchor(top: buttonView.topAnchor, left: buttonView.leftAnchor, bottom: buttonView.bottomAnchor, right: buttonView.rightAnchor, paddingTop: 13, paddingLeft: 13, paddingBottom: 13, paddingRight: 13)
+        
+        middleButton.clipsToBounds = true
         middleButton.backgroundColor = .white
+        middleButton.addTarget(self, action: #selector(menuButtonAction), for: .touchUpInside)
         middleButton.imageView?.contentMode = .center
-        
-        
         middleButton.addSubview(imageView)
               middleButton.layer.shadowColor = UIColor.black.cgColor
         middleButton.layer.shadowOpacity = 0.1
         middleButton.layer.shadowOffset = CGSize(width: 4, height: 4)
+        cartItemNumberImageView.addSubview(cartItemNumberLabel)
+        cartItemNumberLabel.anchor(top: cartItemNumberImageView.topAnchor, left: cartItemNumberImageView.leftAnchor, bottom: cartItemNumberImageView.bottomAnchor, right: cartItemNumberImageView.rightAnchor, paddingTop: 10, paddingLeft: 5, paddingBottom: 17, paddingRight: 5)
+        NotificationCenter.default.addObserver(self, selector: #selector(numberOfProductAddedToCart), name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
+       // cartItemNumberLabel.text = "10"
         
-        middleButton.addSubview(cartItemNumberView)
-        
-        self.tabBar.addSubview(middleButton)
-        middleButton.addTarget(self, action: #selector(menuButtonAction), for: .touchUpInside)
+        buttonView.addSubview(cartItemNumberImageView)
+        self.tabBar.addSubview(buttonView)
         
         self.view.layoutIfNeeded()
+    }
+    
+    @objc func numberOfProductAddedToCart(){
+        if CartManager.shared.productAddedToCart.count == 0{
+            cartItemNumberImageView.isHidden = true
+        }else{
+            cartItemNumberImageView.isHidden = false
+        cartItemNumberLabel.text = "\(CartManager.shared.productAddedToCart.count)"
+       }
     }
     
     @objc func menuButtonAction(sender: UIButton) {

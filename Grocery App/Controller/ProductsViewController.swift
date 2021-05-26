@@ -160,6 +160,20 @@ func configureView(){
         if quant! > 0 && dataManager.productArray[cellIndex!].isAddedToCart == false{
             CartManager.shared.productAddedToCart.append(dataManager.productArray[cellIndex!])
             dataManager.productArray[cellIndex!].isAddedToCart = true
+            NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
+        }else if quant! == 0 && dataManager.productArray[cellIndex!].isAddedToCart == true {
+            var index = 0
+            for products in CartManager.shared.productAddedToCart {
+                if products.id == dataManager.productArray[cellIndex!].id {
+                    CartManager.shared.productAddedToCart.remove(at: index)
+                    dataManager.productArray[cellIndex!].isAddedToCart = false
+                    NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
+                    return
+                }else{
+                    index = index + 1
+                }
+            }
+            
         }
         
     }

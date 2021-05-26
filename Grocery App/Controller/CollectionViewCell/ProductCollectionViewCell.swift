@@ -82,7 +82,6 @@ class ProductCollectionViewCell : UICollectionViewCell {
     let descriptionLabel : UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.systemFont(ofSize: 15)
-        lbl.text = "$17.00/kg"
         lbl.textColor = .lightGray
         lbl.textAlignment = .left
         return lbl
@@ -91,7 +90,6 @@ class ProductCollectionViewCell : UICollectionViewCell {
     let priceLabel : UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.boldSystemFont(ofSize: 18)
-        lbl.text = "$17.00/kg"
         lbl.textColor = UIColor(named: "mygreen")
         lbl.textAlignment = .left
         return lbl
@@ -206,7 +204,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
     
     func configureCellUI(product : Product){
         nameLabel.text = product.name!
-        priceLabel.text = "$\(product.price!)"
+        priceLabel.text = "₹\(product.price!)"
         descriptionLabel.text = product.description!
         quantity = product.quantity
         quantityLabel.text = "\(product.quantity)"
@@ -218,6 +216,11 @@ class ProductCollectionViewCell : UICollectionViewCell {
         }else{
             plusButton.isHidden = false
             greenView.isHidden = true
+        }
+        if !product.isAddedToCart  && isQuantityViewOpen! {
+            CartManager.shared.productAddedToCart.append(product)
+            NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
+            product.isAddedToCart = true
         }
     }
     

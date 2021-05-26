@@ -7,12 +7,13 @@
 
 import UIKit
 
-class CartViewController : UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CartViewController : UIViewController, UITableViewDelegate, UITableViewDataSource, passQuantityChangeData {
     
     var dataManager = DataManager()
     
     @IBOutlet weak var cartTblView: UITableView!
     
+    @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var checkoutButtonView: UIView!
     @IBOutlet weak var backViewInCart: UIView!
     
@@ -56,7 +57,8 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
         view.backgroundColor = UIColor(named: "mygreen")
         cartTblView.delegate = self
         cartTblView.dataSource = self
-    
+        cartTblView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+        configureEmptyCartViewUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,12 +67,22 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
             checkoutButtonView.isHidden = false
             noProductInCartView.isHidden = true
             backViewInCart.backgroundColor = UIColor(named: "buttoncolor")
+            totalLabel.text = "₹\(totalPriceInCart()!)"
         cartTblView.reloadData()
         }else{
             cartTblView.isHidden = true
             checkoutButtonView.isHidden = true
+            noProductInCartView.isHidden = false
             configureEmptyCartViewUI()
         }
+    }
+    
+    func totalPriceInCart()->Int?{
+        var sum = 0
+        for products in CartManager.shared.productAddedToCart {
+            sum = sum + (products.price! * products.quantity)
+        }
+        return sum
     }
     
     func configureEmptyCartViewUI(){
@@ -86,6 +98,30 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
         self.noProductLblInCart.text = "Your Cart is Empty, Add products"
     }
     
+    func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
+        if quant! > 0 {
+            CartManager.shared.productAddedToCart[cellIndex!].quantity = quant!
+            print(quant!)
+            cartTblView.reloadData()
+            totalLabel.text = "₹\(totalPriceInCart()!)"
+        }else{
+            CartManager.shared.productAddedToCart[cellIndex!].quantity = quant!
+            CartManager.shared.productAddedToCart[cellIndex!].isAddedToCart = false
+            CartManager.shared.productAddedToCart[cellIndex!].isQuantityViewOpen = false
+            CartManager.shared.productAddedToCart.remove(at: cellIndex!)
+            totalLabel.text = "₹\(totalPriceInCart()!)"
+            if CartManager.shared.productAddedToCart.count == 0 {
+                self.cartTblView.isHidden = true
+                self.checkoutButtonView.isHidden = true
+                self.configureEmptyCartViewUI()
+                self.noProductInCartView.isHidden = false
+                NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
+            }
+            cartTblView.reloadData()
+            
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if CartManager.shared.productAddedToCart.count != 0 {
             return CartManager.shared.productAddedToCart.count
@@ -97,12 +133,9 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cartCell") as! CartTableViewCell
-        cell.productNameLabel.text = "\(CartManager.shared.productAddedToCart[indexPath.row].name!)"
-        cell.quantity = CartManager.shared.productAddedToCart[indexPath.row].quantity
-        cell.productQuantityLabel.text = "\(CartManager.shared.productAddedToCart[indexPath.row].quantity)"
-        cell.pricePerPeiceLabel.text = "$\(CartManager.shared.productAddedToCart[indexPath.row].price!)"
-        cell.priceLabel.text = "$\(CartManager.shared.productAddedToCart[indexPath.row].price! * CartManager.shared.productAddedToCart[indexPath.row].quantity)"
-        dataManager.getImageFrom(url: CartManager.shared.productAddedToCart[indexPath.row].url!, imageView: cell.productImageView)
+        cell.configureCellUI(product: CartManager.shared.productAddedToCart[indexPath.row])
+        cell.cellIndex = indexPath.row
+        cell.delegate = self
         return cell
     }
     
@@ -117,13 +150,42 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     
     func deleteAction(at indexPath : IndexPath)->UIContextualAction{
         let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-         //   self.productAddedToCart.remove(at: indexPath.row)
+            CartManager.shared.productAddedToCart[indexPath.row].isAddedToCart = false
+            CartManager.shared.productAddedToCart[indexPath.row].isQuantityViewOpen = false
+            CartManager.shared.productAddedToCart[indexPath.row].quantity = 0
+            CartManager.shared.productAddedToCart.remove(at: indexPath.row)
             self.cartTblView.deleteRows(at: [indexPath], with: .automatic)
+            if CartManager.shared.productAddedToCart.count == 0 {
+                self.cartTblView.isHidden = true
+                self.checkoutButtonView.isHidden = true
+                self.configureEmptyCartViewUI()
+                self.noProductInCartView.isHidden = false
+                NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
+            }
             completion(true)
         }
         action.backgroundColor = .white
         action.image = UIImage(named: "noun_Delete_920406")
        return action
+    }
+    
+    @IBAction func checkoutButtonPressed(_ sender: Any) {
+        removeAllProductsAfterCheckout()
+        configureEmptyCartViewUI()
+        noProductInCartView.isHidden = false
+        checkoutButtonView.isHidden = true
+        cartTblView.isHidden = true
+        
+    }
+    
+    func removeAllProductsAfterCheckout(){
+        for products in CartManager.shared.productAddedToCart {
+            products.quantity = 0
+            products.isQuantityViewOpen = false
+            products.isAddedToCart = false
+        }
+    CartManager.shared.productAddedToCart.removeAll()
+        NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
     }
 }
 
