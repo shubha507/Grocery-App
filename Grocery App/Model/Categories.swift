@@ -49,6 +49,7 @@ class Product{
     
     var quantity = 0
     var isQuantityViewOpen = false
+    var isAddedToCart = false
 }
 
 class Discount {

@@ -115,6 +115,10 @@ class ProductsViewController : UIViewController, UICollectionViewDelegate,passQu
       //  print("productArray \(self.dataManager.productArray)")
         configureUI()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        productCellCollectionVw.reloadData()
+    }
         
 
 func configureView(){
@@ -153,6 +157,11 @@ func configureView(){
     func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
         dataManager.productArray[cellIndex!].isQuantityViewOpen = isQuantViewOpen!
         dataManager.productArray[cellIndex!].quantity = quant!
+        if quant! > 0 && dataManager.productArray[cellIndex!].isAddedToCart == false{
+            CartManager.shared.productAddedToCart.append(dataManager.productArray[cellIndex!])
+            dataManager.productArray[cellIndex!].isAddedToCart = true
+        }
+        
     }
    
     

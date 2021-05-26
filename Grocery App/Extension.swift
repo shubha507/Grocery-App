@@ -24,17 +24,21 @@ class curvedView : UIView {
         override func draw(_ rect: CGRect) {
             let bezierPath = UIBezierPath()
             
-            
-            
             bezierPath.move(to: CGPoint(x: 60, y: 66))
             bezierPath.addQuadCurve(to: CGPoint(x: 96, y: 76), controlPoint: CGPoint(x: 75, y: 73))
             
-            
-            
             bezierPath.close()
-            
-            
         }
-        
-    }
+}
+
+protocol passQuantityChangeData {
+    func quantityChanged(cellIndex:Int?, quant: Int?, isQuantViewOpen : Bool?)
+}
+
+class CartManager{
+    
+ static let shared = CartManager()
+    
+ var productAddedToCart = [Product]()
+}
 

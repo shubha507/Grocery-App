@@ -9,7 +9,7 @@ import UIKit
 
 class CartTableViewCell: UITableViewCell {
    
-    var quantity = 1
+    var quantity : Int?
     
     @IBOutlet weak var productImageView: UIImageView!
     
@@ -32,13 +32,13 @@ class CartTableViewCell: UITableViewCell {
     }
 
     @IBAction func plusButtonPressed(_ sender: Any) {
-        quantity = quantity + 1
-        productQuantityLabel.text = "\(quantity)"
+        quantity = quantity! + 1
+        productQuantityLabel.text = "\(quantity!)"
     }
     @IBAction func minusButtonPressed(_ sender: Any) {
-        if quantity > 1 {
-            quantity = quantity - 1
-            productQuantityLabel.text = "\(quantity)"
+        if quantity! > 1 {
+            quantity = quantity! - 1
+            productQuantityLabel.text = "\(quantity!)"
         }
     }
 }

@@ -8,12 +8,16 @@
 import UIKit
 
 class ProductDetailThirdCollectionViewCell: UICollectionViewCell {
+    
+    var cellIndex : Int?
 
     var quantity : Int?
     
     var isQuantityViewOpen : Bool?
     
     var dataManager = DataManager()
+    
+    var delegate : passQuantityChangeData?
     
     @IBOutlet weak var minusButton: UIButton!
     
@@ -45,17 +49,23 @@ class ProductDetailThirdCollectionViewCell: UICollectionViewCell {
         minusButton.layer.maskedCorners = [.layerMinXMinYCorner]
         quantity = quantity! + 1
         quantityLabel.text = "\(quantity!)"
+        isQuantityViewOpen = true
+        delegate?.quantityChanged(cellIndex: cellIndex, quant: quantity!, isQuantViewOpen: isQuantityViewOpen)
     }
     
     @IBAction func minusButtonPressed(_ sender: Any) {
         if quantity! > 1 {
             quantity = quantity! - 1
             quantityLabel.text = "\(quantity!)"
+            isQuantityViewOpen = true
+            delegate?.quantityChanged(cellIndex: cellIndex, quant: quantity!, isQuantViewOpen: isQuantityViewOpen)
         }else{
             quantityLabel.isHidden = true
             minusButton.isHidden = true
             plusButton.layer.cornerRadius = 10
             plusButton.layer.maskedCorners = [.layerMinXMinYCorner]
+            isQuantityViewOpen = false
+            delegate?.quantityChanged(cellIndex: cellIndex, quant: quantity!, isQuantViewOpen: isQuantityViewOpen)
         }
     }
     

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProductDetailThirdTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
+class ProductDetailThirdTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, passQuantityChangeData {
     
     var dataManager = DataManager()
     
@@ -33,6 +33,15 @@ class ProductDetailThirdTableViewCell: UITableViewCell, UICollectionViewDelegate
         ThirdCellCollectionView.reloadData()
     }
     
+    func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
+        similarProductArray[cellIndex!].quantity = quant!
+        similarProductArray[cellIndex!].isQuantityViewOpen = isQuantViewOpen!
+        if quant! > 0 && similarProductArray[cellIndex!].isAddedToCart == false{
+            CartManager.shared.productAddedToCart.append(similarProductArray[cellIndex!])
+            similarProductArray[cellIndex!].isAddedToCart = true
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
        // print("similarProductArray.count \(similarProductArray.count)")
         return similarProductArray.count
@@ -41,14 +50,8 @@ class ProductDetailThirdTableViewCell: UITableViewCell, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductDetailThirdCollectionViewCell", for: indexPath) as? ProductDetailThirdCollectionViewCell
         cell?.configureCellUI(product: similarProductArray[indexPath.row])
-//        cell?.similarProductPriceLabel.text = "$\(similarProductArray[indexPath.row].price!)"
-//        cell?.similarProductPerPeicePriceLabel.text = "\(similarProductArray[indexPath.row].price!)/kg"
-//        cell?.similarProductNameLabel.text = similarProductArray[indexPath.row].name!
-//        dataManager.getImageFrom(url: similarProductArray[indexPath.row].url, imageView: (cell?.similarProductImageView)!)
-//        cell?.quantity = similarProductArray[indexPath.row].quantity
-//        print("similarProductArray[indexPath.row].quantity \(similarProductArray[indexPath.row].isQuantityViewOpen)")
-//        cell?.isQuantityViewOpen = similarProductArray[indexPath.row].isQuantityViewOpen
-        
+        cell?.cellIndex = indexPath.row
+        cell?.delegate = self
         return cell!
     }
     

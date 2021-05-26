@@ -16,6 +16,12 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         return iv
     }()
     
+    private let cartItemNumberView : UIView = {
+        let view = UIView( frame: CGRect(x: 27, y: 0, width: 35, height: 35))
+        view.backgroundColor = .red
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,6 +59,8 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
               middleButton.layer.shadowColor = UIColor.black.cgColor
         middleButton.layer.shadowOpacity = 0.1
         middleButton.layer.shadowOffset = CGSize(width: 4, height: 4)
+        
+        middleButton.addSubview(cartItemNumberView)
         
         self.tabBar.addSubview(middleButton)
         middleButton.addTarget(self, action: #selector(menuButtonAction), for: .touchUpInside)

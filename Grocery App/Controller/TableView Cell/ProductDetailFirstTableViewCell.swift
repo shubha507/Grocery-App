@@ -11,6 +11,8 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
     
     var quantity : Int?
     var price : Int?
+    
+    var delegate : passQuantityChangeData?
 
     @IBOutlet weak var containerView: UIView!
     
@@ -41,6 +43,12 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
             quantity! = quantity! - 1
             quantityLabel.text = "\(quantity!) kg"
             priceLabel.text = "$\(price! * quantity!)"
+            delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: true)
+        }else if quantity == 1{
+            quantity! = quantity! - 1
+            quantityLabel.text = "\(quantity!) kg"
+            priceLabel.text = "$\(price! * quantity!)"
+            delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: false)
         }
     }
     
@@ -48,6 +56,7 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
         quantity! = quantity! + 1
         quantityLabel.text = "\(quantity!) kg"
         priceLabel.text = "$\(price! * quantity!)"
+        delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: true)
     }
     
     

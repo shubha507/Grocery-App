@@ -10,8 +10,7 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 
-class ProductDetailViewController : UIViewController, UITableViewDelegate {
-    
+class ProductDetailViewController : UIViewController, UITableViewDelegate,passQuantityChangeData {
     var id : String?
     
     var product : Product?
@@ -53,10 +52,17 @@ func getSimilarProduct(){
         tblVw.register(UINib(nibName: "ProductDetailFourthTableViewCell", bundle: nil), forCellReuseIdentifier: "ProductDetailFourthTableViewCell")
     }
     
+    func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
+        product?.quantity = quant!
+        product?.isQuantityViewOpen = isQuantViewOpen!
+        print("isQuantViewOpen \(isQuantViewOpen)")
+        tblVw.reloadData()
+    }
     
     
     @IBAction func backButton(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+       // NotificationCenter.default.post(name: NSNotification.Name("ReloadProductCollectionVw"), object: self)
 }
 }
 
@@ -68,7 +74,7 @@ extension ProductDetailViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0{
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProductDetailFirstTableViewCell") as? ProductDetailFirstTableViewCell
-
+            cell?.delegate = self
             cell?.nameLabel.text = self.product!.name
                 cell?.perPeicePriceLabel.text = " \(self.product!.price!)/kg"
                 cell?.priceLabel.text = "$\(self.product!.price! * (self.product!.quantity ?? 0))"
@@ -86,6 +92,7 @@ extension ProductDetailViewController : UITableViewDataSource {
         return cell!
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProductDetailFourthTableViewCell") as? ProductDetailFourthTableViewCell
+            cell?.priceLabel.text = "$\(self.product!.price! * (self.product!.quantity ))"
             return cell!
         }
     }

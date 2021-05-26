@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol passQuantityChangeData {
-    func quantityChanged(cellIndex:Int?, quant: Int?, isQuantViewOpen : Bool?)
-}
-
 class ProductCollectionViewCell : UICollectionViewCell {
     
     var isQuantityViewOpen : Bool?
@@ -69,7 +65,6 @@ class ProductCollectionViewCell : UICollectionViewCell {
     
     let cellImage : UIImageView = {
        let iv = UIImageView()
-      // iv.backgroundColor = UIColor(named: "cellgreen")
         iv.backgroundColor = .white
         iv.contentMode = .scaleToFill
        return iv
@@ -131,7 +126,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
        // layer.borderColor = UIColor.gray.cgColor
         
         addSubview(cellImage)
-        cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0, width: 100, height: 170)
+        cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10, width: 80, height: 160)
         
         addSubview(nameLabel)
         nameLabel.anchor(top: cellImage.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop:10, paddingLeft: 10,paddingRight: 10, width: frame.width, height: 30)
@@ -199,9 +194,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
             quantity = quantity!-1
             quantityLabel.text = "\(quantity!)"
             delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
-            
             isQuantityViewOpen = true
-            
         }else{
             quantity = 0
             plusButton.isHidden = false
@@ -213,7 +206,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
     
     func configureCellUI(product : Product){
         nameLabel.text = product.name!
-        priceLabel.text = "\(product.price!)"
+        priceLabel.text = "$\(product.price!)"
         descriptionLabel.text = product.description!
         quantity = product.quantity
         quantityLabel.text = "\(product.quantity)"
