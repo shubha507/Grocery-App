@@ -114,16 +114,20 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
     func setData() {
         let db = Firestore.firestore()
         let id = randomString(of: 20)
+        
         db.collection("categories").document("\(id)").setData([
             "id": "\(id)",
-            "name": "\(newCategoryTxtField.text ?? "nil")",
-            "rank": Int("\(newRankTxtField.text ?? "nil")")!,
+            //"name": "\(newCategoryTxtField.text ?? "nil")",
+            //"rank": Int("\(newRankTxtField.text ?? "nil")")!,
+            "name": trimString(selectedField: newCategoryTxtField) ,
+            "rank": Int(trimString(selectedField: newRankTxtField)) as Any ,
             
         ]) { err in
             if let err = err {
                 print("Error writing document: \(err)")
             } else {
                 print("Document successfully written!")
+                
                
             }
         }
@@ -155,15 +159,46 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
         }
         // Do any additional setup after loading the view.
     }
+    func showAlert( messageValue: String  )
+    {
+        let alert = UIAlertController(title: "Error!", message: messageValue, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (handle) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
     
+    
+    func trimString(selectedField: UITextField) -> String
+    {
+        var placeHolder = selectedField.text
+        placeHolder = placeHolder?.trimmingCharacters(in: .whitespacesAndNewlines)
+        return placeHolder ?? " "
+    }
 
     @IBAction func addButtonTapped(_ sender: Any) {
-         if newCategoryTxtField.text!.isEmpty {
+        if newCategoryTxtField.text!.isEmpty {
+            print("input field/fields missing")
+            showAlert(messageValue: "Value of field missing")
             newCategoryTxtField.layer.borderWidth = 2
             newCategoryTxtField.layer.borderColor = UIColor.systemRed.cgColor
         }
         else if newRankTxtField.text!.isEmpty  {
             print("input field/fields missing")
+            showAlert(messageValue: "Value of field missing")
+            newRankTxtField.layer.borderWidth = 2
+            newRankTxtField.layer.borderColor = UIColor.systemRed.cgColor
+        }
+        else if  newCategoryTxtField.text?.count ?? 0 >= 20 {
+            print("character count exceeded")
+            showAlert(messageValue: "No of characters exceeded")
+            newCategoryTxtField.layer.borderWidth = 2
+            newCategoryTxtField.layer.borderColor = UIColor.systemRed.cgColor
+            
+        }
+        else if newRankTxtField.text?.count ?? 0 >= 20 {
+            print("character count exceeded")
+            showAlert(messageValue: "No of characters exceeded")
             newRankTxtField.layer.borderWidth = 2
             newRankTxtField.layer.borderColor = UIColor.systemRed.cgColor
         }
@@ -176,15 +211,20 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
         else {
             let db = Firestore.firestore()
             
+            
             db.collection("categories").document("\(uid)").updateData([
-                "name": "\(newCategoryTxtField.text ?? "nil")",
-                "rank": Int("\(newRankTxtField.text ?? "nil")")!,
+               // "name": "\(newCategoryTxtField.text ?? "nil")",
+                "name": trimString(selectedField: newCategoryTxtField) ,
+                "rank": Int(trimString(selectedField: newRankTxtField)) as Any ,
+               // "rank": Int("\(newRankTxtField.text ?? "nil")")!,
                 
-            ]) { err in
+            ]) { [self] err in
                 if let err = err {
                     print("Error updating document: \(err)")
                 } else {
                     print("Document \(self.uid) updated successfully!")
+                   // db.collection("categories").document("\(uid)").delete()
+                    
                     self.uid = "nil"
                 }
             }

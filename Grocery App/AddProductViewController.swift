@@ -446,12 +446,16 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
             }
         }
         
+        
         db.collection("products").document("\(id)").setData([
             "active": boolValue!,
-            "category_id": "\(categoryID ?? "nil")",
-            "description": "\(productDescription.text ?? "nil")",
-            "name": "\(productName.text ?? "nil")",
-            "price": Int("\(productPrice.text ?? "nil")")!,
+           "category_id": "\(categoryID ?? " ")",
+           // "description": "\(productDescription.text ?? "nil")",
+           // "name": "\(productName.text ?? "nil")",
+           // "price": Int("\(productPrice.text ?? "nil")")!,
+            "description": trimString(selectedField: productDescription),
+            "name": trimString(selectedField: productName),
+            "price": Int(trimString(selectedField: productPrice)) as Any,
             "tags": tag,
             
         ]) { err in
@@ -475,6 +479,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         dataStorage = trueArray
         print(dataStorage)
         addTranparentView(frames: activeDropDownButton.frame)
+        
         //dataSource = productCategoryDict
             }
     
@@ -531,36 +536,80 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
        
     }
    
+    func showAlert( messageValue: String  )
+    {
+        let alert = UIAlertController(title: "Error!", message: messageValue, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (handle) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    
+    func trimString(selectedField: UITextField) -> String
+    {
+        var placeHolder = selectedField.text
+        placeHolder = placeHolder?.trimmingCharacters(in: .whitespacesAndNewlines)
+        return placeHolder ?? " "
+    }
+    
     @IBAction func addButtonClicked(_ sender: Any) {
         print("add tapped")
         if productName.text!.isEmpty 
         {
             productName.layer.borderWidth = 2
             productName.layer.borderColor = UIColor.systemRed.cgColor
+            showAlert(messageValue: "Value of field missing")
             print("input field/fields missing")
         }
         else if productDescription.text!.isEmpty {
             productDescription.layer.borderWidth = 2
             productDescription.layer.borderColor = UIColor.systemRed.cgColor
+            showAlert(messageValue: "Value of field missing")
         }
         else if productPrice.text!.isEmpty {
             productPrice.layer.borderWidth = 2
             productPrice.layer.borderColor = UIColor.systemRed.cgColor
+            showAlert(messageValue: "Value of field missing")
         }
         else if ProductCategory.text!.isEmpty {
             ProductCategory.layer.borderWidth = 2
             ProductCategory.layer.borderColor = UIColor.systemRed.cgColor
+            showAlert(messageValue: "Value of field missing")
         }
        
         
         else if productActiveStatus.text!.isEmpty {
             productActiveStatus.layer.borderWidth = 2
             productActiveStatus.layer.borderColor = UIColor.systemRed.cgColor
+            showAlert(messageValue: "Value of field missing")
         }
-        else if productTags.text!.isEmpty {
+        else if tag.isEmpty {
             productTags.layer.borderWidth = 2
             productTags.layer.borderColor = UIColor.systemRed.cgColor
+            showAlert(messageValue: "Value of field missing")
         }
+        else if productName.text?.count ?? 0 >= 20
+        {
+            productName.layer.borderWidth = 2
+            productName.layer.borderColor = UIColor.systemRed.cgColor
+            showAlert(messageValue: "No of characters exceeded")
+            
+        }
+        else if productDescription.text?.count ?? 0 >= 20 {
+            productDescription.layer.borderWidth = 2
+            productDescription.layer.borderColor = UIColor.systemRed.cgColor
+            showAlert(messageValue: "No of characters exceeded")
+        }
+        else if productPrice.text?.count ?? 0 >= 20{
+            productPrice.layer.borderWidth = 2
+            productPrice.layer.borderColor = UIColor.systemRed.cgColor
+            showAlert(messageValue: "No of characters exceeded")
+        }
+        
+       
+        
+        
         else {
         if uid == "nil"
         {
@@ -571,7 +620,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         {
             let db = Firestore.firestore()
            // var array: Array<String> = tag
-            let id = randomString(of: 20)
+           // let id = randomString(of: 20)
             var category = ProductCategory.text
             var categoryID: String!
                     var boolValue: Bool!
@@ -593,20 +642,23 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
             }
             
+            
             db.collection("products").document("\(uid)").setData([
                 "active": boolValue!,
-                "category_id": "\(categoryID ?? "nil")",
-                "description": "\(productDescription.text ?? "nil")",
-                "name": "\(productName.text ?? "nil")",
-                "price": Int("\(productPrice.text ?? "nil")")!,
+                "category_id": "\(categoryID ?? " ")",
+               
+               
+                "description": trimString(selectedField: productDescription),
+                "name": trimString(selectedField: productName),
+                "price": Int(trimString(selectedField: productPrice)) as Any,
                 "tags": tag,
                 
-            ]) { err in
+            ]) { [self] err in
                 if let err = err {
                     print("Error writing document: \(err)")
                 } else {
                     print("tag:" , self.tag)
-                    print("Document successfully written!")
+                    print("Document successfully updated!")
                     self.uid = "nil"
                 }
             }

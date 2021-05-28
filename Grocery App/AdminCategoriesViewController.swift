@@ -101,16 +101,18 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
     @IBAction func editCategoryButtonTapped(_ sender: UIButton) {
         let indexPath1 = IndexPath(row: sender.tag, section: 0)
         let sec:AddCategoryViewController = self.storyboard?.instantiateViewController(identifier: "AddCategoryViewController") as! AddCategoryViewController
-        print(" hi ")
-        print("\(sortedDict[indexPath1.row].stringId ?? "nil")")
+        //print(" hi ")
+        //print("\(sortedDict[indexPath1.row].stringId ?? "nil")")
         sec.selectionDelegate = self
         sec.uid = "\(sortedDict[indexPath1.row].stringId ?? "nil")"
+        print("String id issssssss" , sortedDict[indexPath1.row].stringId)
         sec.category = "\(sortedCategory[indexPath1.row].name!)"
         sec.rank = "\(sortedCategory[indexPath1.row].rank!)"
         sec.imageurl = "\(sortedCategory[indexPath1.row].url!)"
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Edit Category", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationController?.pushViewController(sec, animated: true)
+        self.tableViewCategory.reloadData()
     }
     
     @IBAction func cartButtonTapped(_ sender: Any) {

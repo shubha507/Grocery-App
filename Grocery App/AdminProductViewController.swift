@@ -172,6 +172,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationController?.pushViewController(sec, animated: true)
+        self.productTableView.reloadData()
     }
     
    
@@ -197,7 +198,9 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Edit Product", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationController?.pushViewController(sec, animated: true)
+        self.productTableView.reloadData()
     }
+    
     
     
     
