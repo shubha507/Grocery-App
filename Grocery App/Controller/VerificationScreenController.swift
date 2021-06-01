@@ -12,7 +12,10 @@ import FirebaseFirestore
 
 class VerificationScreenController : UIViewController {
     
+    //Mark :- Properties
     var mobNo : String?
+    
+    
     
     private let arrowButton : UIButton = {
         let button = UIButton(type: .system)
@@ -91,8 +94,8 @@ class VerificationScreenController : UIViewController {
         return button
     }()
     
-    
-    override func viewDidLoad() {
+    //Mark :- LifeCycle method
+ override func viewDidLoad() {
         super.viewDidLoad()
         
         firstNumberTxtField.delegate = self
@@ -109,9 +112,8 @@ class VerificationScreenController : UIViewController {
         firstNumberTxtField.becomeFirstResponder()
     }
     
-    func configureUI(){
-
-        
+    //Mark :- Helper Method
+   func configureUI(){
         view.addSubview(arrowButton)
         arrowButton.setDimensions(height: 45, width: 45)
         arrowButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 10)
@@ -123,8 +125,9 @@ class VerificationScreenController : UIViewController {
         view.addSubview(codeSentLbl)
         codeSentLbl.centerX(inView: view)
         codeSentLbl.anchor(top:verifyPhoneLbl.bottomAnchor, paddingTop: 30)
-        codeSentLbl.text = "Code is sent to \(self.mobNo!)"
-
+        if let mobNo = mobNo {
+            codeSentLbl.text = "Code is sent to \(mobNo.suffix(10))"
+        }
         setupStack()
         
         view.addSubview(getCallButton)
@@ -164,6 +167,7 @@ class VerificationScreenController : UIViewController {
         dontRecieveCodeButton.anchor(top : stack.bottomAnchor, paddingTop: 20)
     }
     
+    //Mark :- Action
     @objc func textDidChange(textfield : UITextField){
         let text = textfield.text
         
@@ -211,6 +215,9 @@ class VerificationScreenController : UIViewController {
           if let error = error {
             print(error.localizedDescription)
           }else{
+            if let mobNo = self.mobNo {
+            AppSharedDataManager.shared.phnNo = mobNo
+            }
             self.present(HomeViewController(), animated: true, completion: nil)
           }
     }

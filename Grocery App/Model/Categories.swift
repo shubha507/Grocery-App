@@ -57,16 +57,20 @@ class Discount {
     var discount : String?
     var url : String?
     var id : String?
-    var name : String?
     var rank : Int?
+    var title : String?
+    var offerTitle : String?
+    var offerDescription : String?
     
-    init(createdAt : String?, discount : String?, url : String?, id : String?, name : String?, rank : Int?){
+    init(createdAt : String?, discount : String?, url : String?, id : String?, rank : Int?, title : String?,offerTitle : String?,offerDescription : String?){
         self.createdAt = createdAt
         self.discount = discount
         self.id = id
         self.rank = rank
-        self.name = name
         self.url = url
+        self.title = title
+        self.offerTitle = offerTitle
+        self.offerDescription = offerDescription
     }
     
 }
@@ -90,6 +94,12 @@ class Deals {
     
 }
 
-
+class users {
+    var name : String?
+    var id : String?
+    var address : String?
+    var phone : String?
+    var url : String?
+}
 
 

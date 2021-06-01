@@ -127,7 +127,7 @@ extension PopularDealsTableViewCell : UICollectionViewDataSource {
  //       print(array1[indexPath.row].name)
        // cell.cellImage.image = UIImage(named: "\(array[indexPath.row])")
         dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage)
-        cell.discountLabel.text = array1[indexPath.row].discount!
+       // cell.discountLabel.text = array1[indexPath.row].discount!
         return cell
     }
 }

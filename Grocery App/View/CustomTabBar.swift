@@ -11,6 +11,7 @@ class CustomTabBar : UITabBar {
     
     private var shapeLayer: CALayer?
     
+// adding tab bar curved sahpe
     private func addShape() {
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = createPath()
@@ -37,6 +38,7 @@ class CustomTabBar : UITabBar {
         self.tintColor = UIColor(named: "mywhite")
     }
 
+ //creting tab bar shape
     func createPath() -> CGPath {
         let height: CGFloat = 30
         let path = UIBezierPath()
@@ -59,6 +61,7 @@ class CustomTabBar : UITabBar {
         
     }
     
+//making middle button to press as it is above normal tab button
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
             guard !clipsToBounds && !isHidden && alpha > 0 else { return nil }
             for member in subviews.reversed() {

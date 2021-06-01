@@ -7,6 +7,7 @@
 
 import UIKit
 
+//Otp text field 
 class CustomTextField : UITextField {
     
     override init(frame: CGRect) {

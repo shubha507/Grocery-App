@@ -7,6 +7,7 @@
 
 import UIKit
 
+//created to go directly from categoriestableviewcell to productViewController as we can not go from cell to controller
 protocol PerformAction {
     func pushViewController(controller : UIViewController)
 }

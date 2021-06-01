@@ -72,10 +72,11 @@ class ProductCollectionViewCell : UICollectionViewCell {
     
     let nameLabel : UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 25)
+        lbl.font = UIFont.boldSystemFont(ofSize: 20)
         lbl.text = "Apple (1kg)"
         lbl.textColor = .black
         lbl.textAlignment = .left
+        lbl.numberOfLines = 2
         return lbl
     }()
     
@@ -117,23 +118,24 @@ class ProductCollectionViewCell : UICollectionViewCell {
         return gv
     }()
     
+    
     override init(frame: CGRect) {
         super .init(frame: frame)
         backgroundColor = .white
        // layer.borderWidth = 0.5
        // layer.borderColor = UIColor.gray.cgColor
-        
         addSubview(cellImage)
         cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10, width: 80, height: 160)
         
         addSubview(nameLabel)
-        nameLabel.anchor(top: cellImage.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop:10, paddingLeft: 10,paddingRight: 10, width: frame.width, height: 30)
+        nameLabel.anchor(top: cellImage.bottomAnchor, left: leftAnchor, paddingTop:5, paddingLeft: 10, width: frame.width-37)
+        nameLabel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
         
         addSubview(descriptionLabel)
-        descriptionLabel.anchor(top: nameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 5, paddingLeft: 10, paddingRight: 10, width: frame.width, height: 40)
+        descriptionLabel.anchor(top: nameLabel.bottomAnchor, left: leftAnchor,  paddingTop: 5, paddingLeft: 10,  width: frame.width-37)
         
         addSubview(priceLabel)
-        priceLabel.anchor(top: descriptionLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 15, paddingLeft: 10, paddingRight: 10, width: frame.width, height: 20)
+        priceLabel.anchor(top: descriptionLabel.bottomAnchor, left: leftAnchor,  paddingTop: 15, paddingLeft: 10,  width: frame.width-37)
         
         contentView.addSubview(plusButton)
         plusButton.anchor( bottom: bottomAnchor, right: rightAnchor, paddingBottom: 0, paddingRight: 0, width: 35, height: 35)
@@ -149,6 +151,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     func addVerticalView(){
         contentView.addSubview(cellBorderView)
@@ -218,7 +221,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
             greenView.isHidden = true
         }
         if !product.isAddedToCart  && isQuantityViewOpen! {
-            CartManager.shared.productAddedToCart.append(product)
+            AppSharedDataManager.shared.productAddedToCart.append(product)
             NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
             product.isAddedToCart = true
         }

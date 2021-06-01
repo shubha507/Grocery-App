@@ -9,6 +9,7 @@ import UIKit
 
 class CartViewController : UIViewController, UITableViewDelegate, UITableViewDataSource, passQuantityChangeData {
     
+    //Mark :- properties
     var dataManager = DataManager()
     
     @IBOutlet weak var cartTblView: UITableView!
@@ -49,6 +50,8 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     return lbl
     }()
     
+    //Mark :- Lifecycle method
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,7 +65,7 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if CartManager.shared.productAddedToCart.count != 0 {
+        if AppSharedDataManager.shared.productAddedToCart.count != 0 {
             cartTblView.isHidden = false
             checkoutButtonView.isHidden = false
             noProductInCartView.isHidden = true
@@ -77,9 +80,11 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    //Mark :- Helper Method
+
     func totalPriceInCart()->Int?{
         var sum = 0
-        for products in CartManager.shared.productAddedToCart {
+        for products in AppSharedDataManager.shared.productAddedToCart {
             sum = sum + (products.price! * products.quantity)
         }
         return sum
@@ -98,19 +103,31 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
         self.noProductLblInCart.text = "Your Cart is Empty, Add products"
     }
     
+    func removeAllProductsAfterCheckout(){
+        for products in AppSharedDataManager.shared.productAddedToCart {
+            products.quantity = 0
+            products.isQuantityViewOpen = false
+            products.isAddedToCart = false
+        }
+        AppSharedDataManager.shared.productAddedToCart.removeAll()
+        NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
+    }
+    
+    //Mark :- passQuantityChangeData delegate method
+
     func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
         if quant! > 0 {
-            CartManager.shared.productAddedToCart[cellIndex!].quantity = quant!
+            AppSharedDataManager.shared.productAddedToCart[cellIndex!].quantity = quant!
             print(quant!)
             cartTblView.reloadData()
             totalLabel.text = "₹\(totalPriceInCart()!)"
         }else{
-            CartManager.shared.productAddedToCart[cellIndex!].quantity = quant!
-            CartManager.shared.productAddedToCart[cellIndex!].isAddedToCart = false
-            CartManager.shared.productAddedToCart[cellIndex!].isQuantityViewOpen = false
-            CartManager.shared.productAddedToCart.remove(at: cellIndex!)
+            AppSharedDataManager.shared.productAddedToCart[cellIndex!].quantity = quant!
+            AppSharedDataManager.shared.productAddedToCart[cellIndex!].isAddedToCart = false
+            AppSharedDataManager.shared.productAddedToCart[cellIndex!].isQuantityViewOpen = false
+            AppSharedDataManager.shared.productAddedToCart.remove(at: cellIndex!)
             totalLabel.text = "₹\(totalPriceInCart()!)"
-            if CartManager.shared.productAddedToCart.count == 0 {
+            if AppSharedDataManager.shared.productAddedToCart.count == 0 {
                 self.cartTblView.isHidden = true
                 self.checkoutButtonView.isHidden = true
                 self.configureEmptyCartViewUI()
@@ -123,8 +140,8 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if CartManager.shared.productAddedToCart.count != 0 {
-            return CartManager.shared.productAddedToCart.count
+        if AppSharedDataManager.shared.productAddedToCart.count != 0 {
+            return AppSharedDataManager.shared.productAddedToCart.count
         }else{
             return 0
         }
@@ -133,7 +150,7 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cartCell") as! CartTableViewCell
-        cell.configureCellUI(product: CartManager.shared.productAddedToCart[indexPath.row])
+        cell.configureCellUI(product: AppSharedDataManager.shared.productAddedToCart[indexPath.row])
         cell.cellIndex = indexPath.row
         cell.delegate = self
         return cell
@@ -148,14 +165,16 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
         return UISwipeActionsConfiguration(actions: [delete])
     }
     
+    //Mark :- Action Method
+
     func deleteAction(at indexPath : IndexPath)->UIContextualAction{
         let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-            CartManager.shared.productAddedToCart[indexPath.row].isAddedToCart = false
-            CartManager.shared.productAddedToCart[indexPath.row].isQuantityViewOpen = false
-            CartManager.shared.productAddedToCart[indexPath.row].quantity = 0
-            CartManager.shared.productAddedToCart.remove(at: indexPath.row)
+            AppSharedDataManager.shared.productAddedToCart[indexPath.row].isAddedToCart = false
+            AppSharedDataManager.shared.productAddedToCart[indexPath.row].isQuantityViewOpen = false
+            AppSharedDataManager.shared.productAddedToCart[indexPath.row].quantity = 0
+            AppSharedDataManager.shared.productAddedToCart.remove(at: indexPath.row)
             self.cartTblView.deleteRows(at: [indexPath], with: .automatic)
-            if CartManager.shared.productAddedToCart.count == 0 {
+            if AppSharedDataManager.shared.productAddedToCart.count == 0 {
                 self.cartTblView.isHidden = true
                 self.checkoutButtonView.isHidden = true
                 self.configureEmptyCartViewUI()
@@ -175,17 +194,12 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
         noProductInCartView.isHidden = false
         checkoutButtonView.isHidden = true
         cartTblView.isHidden = true
-        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let orderDetailVC = storyboard.instantiateViewController(withIdentifier: "OrderDetailsViewController") as! OrderDetailsViewController
+        orderDetailVC.modalPresentationStyle = .fullScreen
+        self.present(orderDetailVC, animated: true, completion: nil)
     }
     
-    func removeAllProductsAfterCheckout(){
-        for products in CartManager.shared.productAddedToCart {
-            products.quantity = 0
-            products.isQuantityViewOpen = false
-            products.isAddedToCart = false
-        }
-    CartManager.shared.productAddedToCart.removeAll()
-        NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
-    }
+    
 }
 

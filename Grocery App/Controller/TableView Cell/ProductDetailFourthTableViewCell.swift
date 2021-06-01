@@ -25,7 +25,7 @@ class ProductDetailFourthTableViewCell: UITableViewCell {
     }
     @IBAction func addToCartButtonTapped(_ sender: Any) {
         if !product!.isAddedToCart && product!.quantity > 0 {
-            CartManager.shared.productAddedToCart.append(product!)
+            AppSharedDataManager.shared.productAddedToCart.append(product!)
             product?.isAddedToCart = true
             NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
         }

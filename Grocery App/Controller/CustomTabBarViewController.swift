@@ -9,6 +9,7 @@ import UIKit
 
 class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     
+    //Mark :- Properties
     private let imageView : UIImageView = {
         let iv = UIImageView(frame: CGRect(x: 11, y: 14, width: 40, height: 40))
         iv.image = UIImage(named: "noun_cart_1533490")
@@ -30,6 +31,7 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         return lbl
     }()
     
+    //Mark :- LifeCycle Method
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -40,6 +42,8 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         cartItemNumberImageView.isHidden = true
     }
     
+    //Mark :- Helper method
+
     func ConfigureViewController(){
             
         tabBar.items?[0].title = "Home"
@@ -51,8 +55,8 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         tabBar.items?[3].image = #imageLiteral(resourceName: "noun_Gift_1546455")
         tabBar.items?[4].image = #imageLiteral(resourceName: "noun_slider_125134")
         tabBar.items?[2].title = nil
-        
     }
+    
     
     func setupMiddleButton() {
         let buttonView = UIView(frame: CGRect(x: (self.view.bounds.width / 2)-45, y:-70 , width: 90, height: 90))
@@ -76,8 +80,8 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         middleButton.layer.shadowOffset = CGSize(width: 4, height: 4)
         cartItemNumberImageView.addSubview(cartItemNumberLabel)
         cartItemNumberLabel.anchor(top: cartItemNumberImageView.topAnchor, left: cartItemNumberImageView.leftAnchor, bottom: cartItemNumberImageView.bottomAnchor, right: cartItemNumberImageView.rightAnchor, paddingTop: 10, paddingLeft: 5, paddingBottom: 17, paddingRight: 5)
+        //Notification to update number of products in cart in view above cart button
         NotificationCenter.default.addObserver(self, selector: #selector(numberOfProductAddedToCart), name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
-       // cartItemNumberLabel.text = "10"
         
         buttonView.addSubview(cartItemNumberImageView)
         self.tabBar.addSubview(buttonView)
@@ -85,12 +89,14 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         self.view.layoutIfNeeded()
     }
     
+    //Mark :- Action
+
     @objc func numberOfProductAddedToCart(){
-        if CartManager.shared.productAddedToCart.count == 0{
+        if AppSharedDataManager.shared.productAddedToCart.count == 0{
             cartItemNumberImageView.isHidden = true
         }else{
             cartItemNumberImageView.isHidden = false
-        cartItemNumberLabel.text = "\(CartManager.shared.productAddedToCart.count)"
+        cartItemNumberLabel.text = "\(AppSharedDataManager.shared.productAddedToCart.count)"
        }
     }
     

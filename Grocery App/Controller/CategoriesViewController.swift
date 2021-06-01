@@ -12,10 +12,10 @@ import FirebaseFirestore
 
 class CategoriesViewController : UIViewController {
     
+    //Mark :- Properties
     var dataArray = [Categories]()
     
     let dataManager = DataManager()
-    
     
     private let backButton : UIButton = {
         let button = UIButton(type: .system)
@@ -28,8 +28,6 @@ class CategoriesViewController : UIViewController {
     @objc func showHomeScreen(){
         navigationController?.popViewController(animated: true)
     }
-    
-   // private let array = ["Vegetables","Fruits","Meat","Egg","Vegetables","Fruits","Meat","Egg","Vegetables","Fruits","Meat","Egg","Vegetables","Fruits","Meat"]
     
     private let categoryLabel : UILabel = {
         let lbl = UILabel()
@@ -59,6 +57,8 @@ class CategoriesViewController : UIViewController {
        return fc
    }()
     
+    //Mark :- Lifecycle method
+
     override func viewDidLoad() {
         super.viewDidLoad()
         

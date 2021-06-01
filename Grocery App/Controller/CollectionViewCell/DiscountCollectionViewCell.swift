@@ -13,14 +13,14 @@ class DiscountCollectionViewCell : UICollectionViewCell {
     
      private let basketImageView : UIImageView = {
         let iv = UIImageView(image: UIImage(named: "fruitBasket"))
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleToFill
         return iv
     }()
     
      private let discountLabel : UILabel = {
         let lbl = UILabel()
         lbl.text = "30% Discount"
-        lbl.font = UIFont.boldSystemFont(ofSize: 18)
+        lbl.font = UIFont.boldSystemFont(ofSize: 30)
         lbl.textColor = UIColor(named: "mygreen")
         lbl.numberOfLines = 0
         lbl.textAlignment = .left
@@ -55,8 +55,7 @@ class DiscountCollectionViewCell : UICollectionViewCell {
         layer.cornerRadius = 30
         
         addSubview(basketImageView)
-        basketImageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor,paddingTop: 15, paddingLeft: 10, paddingBottom: 15)
-        basketImageView.setDimensions(height: 110, width: 110)
+        basketImageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor,paddingTop: 15, paddingLeft: 10, paddingBottom: 15,width: 110)
         
         configureStack()
     }

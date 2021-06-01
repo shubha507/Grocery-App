@@ -10,15 +10,13 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 
-class ProductsViewController : UIViewController, UICollectionViewDelegate,passQuantityChangeData{
+class ProductsViewController : UIViewController,UICollectionViewDelegate, passQuantityChangeData{
+    
+    
     
     let dataManager = DataManager()
     
-  //  var selectedDocumentid : String!
-    
     var pageTitle : String?
-    
-   // var productArray = [Product]()
     
     var productId : String?
     
@@ -43,7 +41,7 @@ class ProductsViewController : UIViewController, UICollectionViewDelegate,passQu
        fc.showsVerticalScrollIndicator = false
        fc.layer.cornerRadius = 30
        fc.bounces = false
-       return fc
+        return fc
    }()
     
     
@@ -110,14 +108,16 @@ class ProductsViewController : UIViewController, UICollectionViewDelegate,passQu
            // print("self.dataManager.productArray \(self.dataManager.productArray)")
            // self.productArray = self.dataManager.productArray
            self.productCellCollectionVw.reloadData()
+            self.productCellCollectionVw.layoutIfNeeded()
             self.configureView()
                     }
       //  print("productArray \(self.dataManager.productArray)")
         configureUI()
-    }
+        }
     
     override func viewWillAppear(_ animated: Bool) {
         productCellCollectionVw.reloadData()
+        productCellCollectionVw.layoutIfNeeded()
     }
         
 
@@ -158,14 +158,14 @@ func configureView(){
         dataManager.productArray[cellIndex!].isQuantityViewOpen = isQuantViewOpen!
         dataManager.productArray[cellIndex!].quantity = quant!
         if quant! > 0 && dataManager.productArray[cellIndex!].isAddedToCart == false{
-            CartManager.shared.productAddedToCart.append(dataManager.productArray[cellIndex!])
+            AppSharedDataManager.shared.productAddedToCart.append(dataManager.productArray[cellIndex!])
             dataManager.productArray[cellIndex!].isAddedToCart = true
             NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
         }else if quant! == 0 && dataManager.productArray[cellIndex!].isAddedToCart == true {
             var index = 0
-            for products in CartManager.shared.productAddedToCart {
+            for products in AppSharedDataManager.shared.productAddedToCart {
                 if products.id == dataManager.productArray[cellIndex!].id {
-                    CartManager.shared.productAddedToCart.remove(at: index)
+                    AppSharedDataManager.shared.productAddedToCart.remove(at: index)
                     dataManager.productArray[cellIndex!].isAddedToCart = false
                     NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
                     return
@@ -224,7 +224,7 @@ extension ProductsViewController : UICollectionViewDataSource {
 extension ProductsViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width/2, height: 300 )
+        return CGSize(width: collectionView.frame.width/2, height: 300  )
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

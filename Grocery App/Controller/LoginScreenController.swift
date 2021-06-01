@@ -9,7 +9,7 @@ import UIKit
 import FirebaseAuth
 
 class LoginScreenController: UIViewController {
-    
+    //Mark :- properties
     var alertController : UIAlertController?
     
     private let continueWithPhoneLbl : UILabel = {
@@ -50,10 +50,10 @@ class LoginScreenController: UIViewController {
     numField.borderStyle = .none
     numField.keyboardAppearance = .light
     numField.keyboardType = .phonePad
-    numField.attributedText = NSAttributedString(string: "+918423821154", attributes: [.foregroundColor : UIColor(white: 1.0, alpha: 0.7)])
+    numField.attributedText = NSAttributedString(string: "", attributes: [.foregroundColor : UIColor(white: 1.0, alpha: 0.7)])
     numField.textColor = .black
-    
     numField.font = UIFont.boldSystemFont(ofSize: 20)
+    numField.placeholder = "+912222222222"
     return numField
     }()
     
@@ -72,7 +72,8 @@ class LoginScreenController: UIViewController {
         return vw
     }()
     
-    
+    //Mark :- Lifecycle methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -86,6 +87,8 @@ class LoginScreenController: UIViewController {
         super.viewWillAppear(animated)
       //  numberTextField.text = "+"
     }
+
+    //Mark :- Helper method
 
     func configureUI(){
         
@@ -129,8 +132,10 @@ class LoginScreenController: UIViewController {
         stack.setDimensions(height: 50, width: 200)
     }
     
+    //Mark :- Action 
+
     @objc func continueButtonPushed(){
-        if (numberTextField.text?.contains("+91") == true) && numberTextField.text?.count == 13 {
+        if numberTextField.text?.count == 13 {
         numberTextField.endEditing(true)
             
         guard let phnNumber = numberTextField.text else { return }
@@ -143,20 +148,14 @@ class LoginScreenController: UIViewController {
             UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
             let controller = VerificationScreenController()
             controller.modalPresentationStyle = .fullScreen
-            controller.mobNo = self.numberTextField.text?.replacingOccurrences(of: "+91", with: "")
+            if let text = self.numberTextField.text {
+            controller.mobNo = text
+            }
             self.present(controller, animated: true, completion: nil)
           }
         }
-        }else if (numberTextField.text?.contains("+91") == true) && numberTextField.text!.count < 13 {
-            alertController = UIAlertController(title: nil, message: "Too Short Phone Number", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Ok", style: .default, handler: { (dismissAction: UIAlertAction!) in self.alertController?.dismiss(animated: true, completion: nil) })
-            alertController?.modalPresentationStyle = .custom
-            alertController?.addAction(action)
-            self.present(alertController!,
-                                           animated: true,
-                                           completion: nil)
-        }else if (numberTextField.text?.contains("+91") == false) {
-            alertController = UIAlertController(title: nil, message: "Please add country code +91 and 10 digit phone number", preferredStyle: .alert)
+        }else if numberTextField.text!.count < 13 {
+            alertController = UIAlertController(title: nil, message: "Please add country code and 10 digit phone number", preferredStyle: .alert)
             let action = UIAlertAction(title: "Ok", style: .default, handler: { (dismissAction: UIAlertAction!) in self.alertController?.dismiss(animated: true, completion: nil) })
             alertController?.modalPresentationStyle = .custom
             alertController?.addAction(action)

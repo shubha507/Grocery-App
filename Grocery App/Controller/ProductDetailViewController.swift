@@ -12,6 +12,7 @@ import FirebaseFirestore
 
 class ProductDetailViewController : UIViewController, UITableViewDelegate,passQuantityChangeData,PassDetailOrReviewSelected {
     
+    
     var id : String?
     
     var isDetailButtonSelected = true
@@ -36,14 +37,8 @@ class ProductDetailViewController : UIViewController, UITableViewDelegate,passQu
         self.dataManager.getImageFrom(url: product?.url!, imageView: posterImageView)
         self.configureCells()
         self.getSimilarProduct()
-        print("product \(product?.isAddedToCart)")
-        print("product \(product?.quantity)")
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView), name: NSNotification.Name("ReloadTableView"), object: nil)
-    }
-    
-    @objc func reloadTableView(){
-        print("notification Recieved")
-        tblVw.reloadData()
+       // print("product \(product?.isAddedToCart)")
+       // print("product \(product?.quantity)")
     }
     
 func getSimilarProduct(){

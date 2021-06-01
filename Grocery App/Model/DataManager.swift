@@ -34,7 +34,7 @@ class DataManager {
             self.activityIndicator.stopAnimating()
         }
         }else{
-            guard let posterImageUrl = URL(string: url!) else {return}
+            guard let url = url , let posterImageUrl = URL(string: url) else {return}
         
         imageView.image = nil
         
@@ -56,11 +56,11 @@ class DataManager {
                 if let data = data , let response = response , ((response as? HTTPURLResponse)?.statusCode ?? 500 ) < 300 {
                 DispatchQueue.main.async {
                     if let image = UIImage(data : data) {
-                        print("image \(image)")
+                       // print("image \(image)")
                         imageCache.setObject(image, forKey: posterImageUrl as AnyObject )
                         imageView.image = image
                        // print(imageCache.description)
-                     print(response)
+                    // print(response)
                     self.activityIndicator.stopAnimating()
                 }
             }
@@ -74,14 +74,15 @@ class DataManager {
         }
         }
     
-    func searchData(selectedId : String?,matchId : String? , callback: @escaping(_ error : Bool)-> Void){
+    
+    func searchData(selectedId : String?, matchId : String? , callback: @escaping(_ error : Bool)-> Void){
          let db = Firestore.firestore()
         db.collection("products").whereField(matchId!, isEqualTo: selectedId).getDocuments() { [self] (querySnapshot, err) in
                if let err = err {
                     print("Error getting documents: \(err)")
                } else {
                     for document in querySnapshot!.documents {
-                        print("\(document.documentID) => \(document.data())")
+                       // print("\(document.documentID) => \(document.data())")
                         let data = document.data()
                         let active = data["active"] as? Bool ?? nil
                         let name = data["name"] as? String ?? ""
