@@ -130,7 +130,8 @@ func configureUI(){
              let name = data["name"] as? String ?? " "
              let rank = data["rank"] as? Int ?? 0
              let url = data["url"] as? String ?? " "
-             let newCategory = Categories(name: name, rank: rank, url: url)
+                let id = data["id"] as? String ?? " "
+                let newCategory = Categories(name: name, rank: rank, url: url, id: id )
              self.category.append(newCategory)
              self.dict.updateValue(document.documentID, forKey: rank)
             }

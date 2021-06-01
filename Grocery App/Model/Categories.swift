@@ -12,16 +12,17 @@ struct Categories {
     var name : String?
     var rank : Int?
     var url : String?
+    var id : String?
     
-    
-    init(name : String?,rank : Int?, url : String?) {
+    init(name : String?,rank : Int?, url : String?, id: String?) {
         self.name = name
         self.rank = rank
         self.url = url
+        self.id = id
     }
 }
 
-struct Product{
+/*struct Product{
     
     var active : Bool?
     var categoryId : String?
@@ -39,5 +40,5 @@ struct Product{
         self.tags = tags
         self.url = url
     }
-}
+}*/
 

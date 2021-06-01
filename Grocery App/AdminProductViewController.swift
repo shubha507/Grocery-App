@@ -33,15 +33,17 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        
         productTableView.delegate = self
         productTableView.dataSource = self
       
-        //self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "dismiss", style: .plain, target: self, action: #selector(dismissSelf))
+        productTableView.allowsSelection = false
+       
         
        let  buttonIcon = UIImage(systemName: "plus")
          let rightBarButtonItem = UIBarButtonItem(title: "add", style: UIBarButtonItem.Style.done, target: self, action: #selector(addProduct))
         rightBarButtonItem.image = buttonIcon
-       // self.navigationItem.rightBarButtonItem = rightBarButtonItem
+       
         let buttonIcon2 = UIImage(systemName: "magnifyingglass")
         let rightBarButtonItem2 = UIBarButtonItem(title: "magnifyingglass", style: UIBarButtonItem.Style.done, target: self, action: #selector(filter))
         rightBarButtonItem2.image = buttonIcon2
@@ -139,18 +141,19 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
                 
                 let data = document.data()
                 let active = data["active"] as? Bool ?? true
-                let name = data["name"] as? String ?? " "
-                let categoryId = data["category_id"] as? String ?? " "
-                let tags = data["tags"] as? [String] ?? [" "]
-                let description = data["description"] as? String ?? " "
+                let name = data["name"] as? String ?? ""
+                let categoryId = data["category_id"] as? String ?? ""
+                let tags = data["tags"] as? [String] ?? [""]
+                let description = data["description"] as? String ?? ""
                 let price = data["price"] as? Int ?? 0
-                let url = data["url"] as? String ?? " "
+                let url = data["url"] as? String ?? ""
+                let id = data["id"] as? String ?? ""
                 self.stringTags = tags
                 print("self.stringTags:" , tags)
-                let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: self.stringTags, url: url)
+                let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: self.stringTags, url: url, id: id)
                 self.product.append(newProduct)
                 let newDict = Dict(stringId: document.documentID, intRankValue: price)
-                //self.arrayCategories.append()
+                
                 self.sortedDict.append(newDict)
                }
              
@@ -167,7 +170,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         let sec:AddProductViewController = self.storyboard?.instantiateViewController(identifier: "AddProductViewController") as! AddProductViewController
         sec.selectionDelegate2 = self
         sec.productCategoryDict = self.categoryDict
-       // sec.strname = nameTxtField.text
+       
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Product", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
@@ -180,13 +183,12 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
     @IBAction func editProductClicked(_ sender: UIButton) {
         let indexPath2 = IndexPath(row: sender.tag, section: 0)
         let sec:AddProductViewController = self.storyboard?.instantiateViewController(identifier: "AddProductViewController") as! AddProductViewController
-       // print(" hi ")
-       // print("\(sortedDict[indexPath1.row].stringId ?? "nil")")
+
         print("arrayCategories", arrayCategories)
         sec.selectionDelegate2 = self
         sec.productCategoryDict = self.categoryDict
         sec.productImageid = "\(product[indexPath2.row].url!)"
-        sec.uid = "\(sortedDict[indexPath2.row].stringId ?? "nil")"
+        sec.uid = "\(product[indexPath2.row].id ?? "")"
         sec.categoryIdd = "\(product[indexPath2.row].categoryId!)"
         sec.active = "\(product[indexPath2.row].active!)"
             sec.name = "\(product[indexPath2.row].name!)"
@@ -239,7 +241,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         return 2
     }
     
-        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             if tableView == self.productTableView
             {
                 
@@ -248,9 +250,9 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
             cell.tableProductDescription.text = " \(product[indexPath.row].description!)"
                 cell.tableProductPrice.text = "Price:  " + "\(product[indexPath.row].price ?? 0)"
                 dataManager.getImageFrom(url: "\(product[indexPath.row].url!)", imageView: cell.tableProductImage)
-                //cell.categoriesImage.layer.masksToBounds = true
-                cell.tableProductImage.layer.cornerRadius = cell.tableProductImage.frame.size.height/2
-                //cell.categoriesImage.layer.borderWidth = 1
+               // TableViewProductTableViewCell.init(style: UITableViewCell.CellStyle, reuseIdentifier: "tableViewCellProduct" )
+                /*cell.tableProductImage.layer.cornerRadius = cell.tableProductImage.frame.size.height/2
+                
                 cell.tableProductImage.layer.masksToBounds = false
                 cell.tableProductImage.clipsToBounds = true
                 cell.tableProductImage.layer.backgroundColor = UIColor.white.cgColor
@@ -260,7 +262,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
                         cell.tableViewInnerView.layer.shadowOffset = CGSize(width: 0, height: 0)
                         cell.tableViewInnerView.layer.shadowRadius = 5.0
                 cell.tableViewInnerView.layer.shadowOpacity = 0.4
-                        cell.tableViewInnerView.layer.masksToBounds = false
+                        cell.tableViewInnerView.layer.masksToBounds = false*/
 
                 cell.tableEditButton.tag = indexPath.row
                 cell.tableEditButton.addTarget(self, action: #selector(editProductClicked(_:)), for: .touchUpInside)
@@ -277,7 +279,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
             }
             else if indexPath.row == categoryDict[0].count {
                 cellP.textLabel?.text = ""
-                //cellP.backgroundColor = UIColor.systemGreen
+                
                
             }
                 
@@ -315,19 +317,20 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
              
              let data = document.data()
              let active = data["active"] as? Bool ?? true
-             let name = data["name"] as? String ?? " "
-             let categoryId = data["categoryId"] as? String ?? " "
-             let tags = data["tags"] as? [String] ?? [" "]
-             let description = data["description"] as? String ?? " "
+             let name = data["name"] as? String ?? ""
+             let categoryId = data["categoryId"] as? String ?? ""
+             let tags = data["tags"] as? [String] ?? [""]
+             let description = data["description"] as? String ?? ""
              let price = data["price"] as? Int ?? 0
-             let url = data["url"] as? String ?? " "
-                var catId: String = " "
+             let url = data["url"] as? String ?? ""
+                let id = data["id"] as? String ?? ""
+                var catId: String = ""
               
                 catId = document.get("category_id") as! String
-                print("cat id:" , document.get("category_id") ?? "nil")
+                print("cat id:" , document.get("category_id") ?? "")
                 if self.categoryUid == catId {
                     self.removeAlertView()
-                    let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags:self.stringTags, url: url)
+                    let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags:self.stringTags, url: url, id: id)
              self.product.append(newProduct)
                     self.i = self.i+1
                 }
@@ -344,7 +347,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
             self.productTableView.reloadData()
             self.removeTranparentView()
             self.i = 0
-            //self.categoryUid = " "
+            
         }
     }
     }
@@ -352,9 +355,10 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
 }
 extension AdminProductViewController: PassActionProtocol
 {
-    func addTapped(Name: String) {
-        fetchData()
+    func addTapped(name: String) {
+        
         self.productTableView.reloadData()
+        fetchData()
     }
     
     

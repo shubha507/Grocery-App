@@ -10,7 +10,7 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 protocol PassAction {
-    func addTapped(Name: String)
+    func addTapped(name: String)
 }
 class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
@@ -20,7 +20,7 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
         let imagecontroller = UIImagePickerController()
         imagecontroller.delegate = self
         imagecontroller.sourceType = UIImagePickerController.SourceType.photoLibrary
-        //imagecontroller.sourceType = UIImagePickerController.SourceType.camera
+        
 
         self.present(imagecontroller, animated: true, completion: nil)
     }
@@ -91,14 +91,14 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
     
     
     let dataManager = DataManager()
-    var imageurl = " "
+    var imageurl = ""
     @IBOutlet weak var addCategoryImage: UIImageView!
     @IBOutlet weak var newCategoryTxtField: UITextField!
     @IBOutlet weak var newRankTxtField: UITextField!
-    var uid = "nil"
-    var category = " "
-    var rank = " "
-    var selectionDelegate: PassAction!
+    var uid = ""
+    var category = ""
+    var rank = ""
+    var selectionDelegate: PassAction?
    
     @IBOutlet weak var addButton: UIButton!
     
@@ -117,8 +117,7 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
         
         db.collection("categories").document("\(id)").setData([
             "id": "\(id)",
-            //"name": "\(newCategoryTxtField.text ?? "nil")",
-            //"rank": Int("\(newRankTxtField.text ?? "nil")")!,
+            
             "name": trimString(selectedField: newCategoryTxtField) ,
             "rank": Int(trimString(selectedField: newRankTxtField)) as Any ,
             
@@ -204,32 +203,32 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
         }
         
         else {
-        if uid == "nil" {
+        if uid == "" {
         setData()
-        selectionDelegate?.addTapped(Name: "yes")
+        selectionDelegate?.addTapped(name: "yes")
         }
         else {
             let db = Firestore.firestore()
             
             
             db.collection("categories").document("\(uid)").updateData([
-               // "name": "\(newCategoryTxtField.text ?? "nil")",
+              
                 "name": trimString(selectedField: newCategoryTxtField) ,
                 "rank": Int(trimString(selectedField: newRankTxtField)) as Any ,
-               // "rank": Int("\(newRankTxtField.text ?? "nil")")!,
+               
                 
             ]) { [self] err in
                 if let err = err {
                     print("Error updating document: \(err)")
                 } else {
                     print("Document \(self.uid) updated successfully!")
-                   // db.collection("categories").document("\(uid)").delete()
+             
                     
                     self.uid = "nil"
                 }
             }
             
-            selectionDelegate?.addTapped(Name: "yes")
+            selectionDelegate?.addTapped(name: "yes")
         }
     }
     }

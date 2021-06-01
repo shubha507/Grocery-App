@@ -44,10 +44,11 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
             for document in querySnapshot!.documents {
                 print("\(document.documentID) => \(document.data()["rank"] as! Int)")
              let data = document.data()
-             let name = data["name"] as? String ?? " "
+             let name = data["name"] as? String ?? ""
              let rank = data["rank"] as? Int ?? 0
-             let url = data["url"] as? String ?? " "
-             let newCategory = Categories(name: name, rank: rank, url: url)
+             let url = data["url"] as? String ?? ""
+                let id = data["id"] as? String ?? ""
+                let newCategory = Categories(name: name, rank: rank, url: url, id: id)
              self.category.append(newCategory)
                 let newDict = Dict(stringId: document.documentID, intRankValue: rank)
                 self.sortedDict.append(newDict)
@@ -56,12 +57,10 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
                 row1.append(name)
                 row2.append(document.documentID)
             }
-           // self.tblView.reloadData()
+          
             self.dictCat.append(row1)
             self.dictCat.append(row2)
-           // self.categoriesCollectionView.reloadData()
-            
-            //sorting category cells according to rank
+           
             self.sortedCategory = self.category.sorted(by: { $0.rank! < $1.rank! })
             self.sortedDict.sort(by: { $0.intRankValue! < $1.intRankValue! } )
             self.tableViewCategory.reloadData()
@@ -80,12 +79,11 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
         tableViewCategory.dataSource = self
         self.tableViewCategory.separatorStyle = UITableViewCell.SeparatorStyle.none
         fetchData()
+        self.tableViewCategory.allowsSelection = false
         
         
     }
-    /*override func viewWillAppear(_ animated: Bool) {
-        self.categoriesCollectionView.reloadData()
-    }*/
+    
     @IBAction func plusButtonTapped(_ sender: Any) {
         let sec:AddCategoryViewController = self.storyboard?.instantiateViewController(identifier: "AddCategoryViewController") as! AddCategoryViewController
         sec.selectionDelegate = self
@@ -98,14 +96,50 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
         
     }
     
+    
+    func getUid(string channelName: String, IndexPath index: IndexPath) -> String
+    {
+       // let indexPath1 = IndexPath(row: sender.tag, section: 0)
+        
+        var currentUid = ""
+        let db = Firestore.firestore()
+        db.collection("categories").getDocuments() { (querySnapshot, err) in
+        if let err = err {
+            print("Error getting documents: \(err)")
+        } else {
+            for document in querySnapshot!.documents {
+               // print("\(document.documentID) => \(document.data()["price"] as! Int)")
+             
+             let data = document.data()
+             let id = data["id"] as? String ?? ""
+                print(" id is:" , id)
+                let name = data["name"] as? String ?? ""
+                print("name is:" , name)
+                print("self.sortedCategory[index.row].name! is:", self.sortedCategory[index.row].name!)
+                if name == self.sortedCategory[index.row].name! {
+                    currentUid = id
+                }
+            
+              }
+           
+           }
+       }
+
+        return currentUid
+    }
+    
+    
     @IBAction func editCategoryButtonTapped(_ sender: UIButton) {
         let indexPath1 = IndexPath(row: sender.tag, section: 0)
         let sec:AddCategoryViewController = self.storyboard?.instantiateViewController(identifier: "AddCategoryViewController") as! AddCategoryViewController
         //print(" hi ")
         //print("\(sortedDict[indexPath1.row].stringId ?? "nil")")
         sec.selectionDelegate = self
-        sec.uid = "\(sortedDict[indexPath1.row].stringId ?? "nil")"
-        print("String id issssssss" , sortedDict[indexPath1.row].stringId)
+       // sec.uid = "\(sortedDict[indexPath1.row].stringId ?? " ")"
+        var currentUid = "\(sortedCategory[indexPath1.row].id!)"
+        sec.uid =  currentUid
+        print("String id issssssss" , currentUid)
+        print("category name is:",sortedCategory[indexPath1.row].name!)
         sec.category = "\(sortedCategory[indexPath1.row].name!)"
         sec.rank = "\(sortedCategory[indexPath1.row].rank!)"
         sec.imageurl = "\(sortedCategory[indexPath1.row].url!)"
@@ -117,15 +151,13 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
     
     @IBAction func cartButtonTapped(_ sender: Any) {
         let sec:AdminProductViewController = self.storyboard?.instantiateViewController(identifier: "AdminProductViewController") as! AdminProductViewController
-        //sec.selectionDelegate = self
-       // sec.strname = nameTxtField.text
+       
         sec.categoryDict = self.dictCat
         sec.categoryDropDown = sortedCategory
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Product", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         
-      //  navigationItem.backButtonTitle(image: Image(systemName: "person.crop.circle").imageScale(.large) , style: .plain , target:nil , action: nil)
-        //self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "dismiss", style: .plain, target: self, action: #selector(dismissSelf))
+     
         self.navigationController?.pushViewController(sec, animated: true)
         
     }
@@ -149,9 +181,9 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
         cell.categoryNameLabel.text = "\(sortedCategory[indexPath.row].name!)"
         cell.categoryPriceLabel.text = "Rank: " + " \(sortedCategory[indexPath.row].rank!)"
         dataManager.getImageFrom(url: "\(sortedCategory[indexPath.row].url!)", imageView: cell.tableViewCategoryImage)
-        //cell.categoriesImage.layer.masksToBounds = true
+        
         cell.tableViewCategoryImage.layer.cornerRadius = cell.tableViewCategoryImage.frame.size.height/2
-        //cell.categoriesImage.layer.borderWidth = 1
+
         cell.tableViewCategoryImage.layer.masksToBounds = false
         cell.tableViewCategoryImage.clipsToBounds = true
         cell.tableViewCategoryImage.layer.backgroundColor = UIColor.white.cgColor
@@ -164,18 +196,17 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
                 cell.categoryTableViewInnerView.layer.masksToBounds = false
         cell.editCategoryTableView.tag = indexPath.row
         cell.editCategoryTableView.addTarget(self, action: #selector(editCategoryButtonTapped(_:)), for: .touchUpInside)
-        //cell.layer.borderWidth = 1
-        //cell.layer.borderColor = UIColor.black.cgColor
-       // cell.layer.backgroundColor = UIColor.lightGray.cgColor
+       
         return cell
     }
 }
 extension AdminCategoriesViewController: PassAction
 {
-    func addTapped(Name: String) {
+    func addTapped(name: String) {
+        
         fetchData()
-         
         self.tableViewCategory.reloadData()
+        
     }
     
     
