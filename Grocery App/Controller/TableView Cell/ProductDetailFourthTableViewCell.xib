@@ -92,6 +92,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" name="buttoncolor"/>
             <connections>
+                <outlet property="addToCartButton" destination="JJ9-R0-RD0" id="lrk-br-ZMd"/>
                 <outlet property="priceLabel" destination="Buq-k1-6yZ" id="OJU-n3-pYJ"/>
             </connections>
             <point key="canvasLocation" x="-23.188405797101453" y="72.991071428571431"/>

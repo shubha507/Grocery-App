@@ -56,7 +56,7 @@ extension DiscountTableViewCell : UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as! DiscountCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as? DiscountCollectionViewCell else {return UICollectionViewCell()}
         cell.configureUI(discountLbl: discountArray[indexPath.row].offerTitle, discountDescriptionLbl: discountArray[indexPath.row].offerDescription, url: discountArray[indexPath.row].url)
         return cell
 

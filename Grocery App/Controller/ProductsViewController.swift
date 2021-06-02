@@ -129,7 +129,9 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
             self.oopsLbl.anchor(top: self.noProductImageView.bottomAnchor, left: self.noProductView.leftAnchor, right: self.noProductView.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 20, width: self.noProductView.frame.width - 40, height: 40)
             self.noProductView.addSubview(self.noProductLbl)
             self.noProductLbl.anchor(top: self.oopsLbl.bottomAnchor, left: self.noProductView.leftAnchor, right: self.noProductView.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 20, width: self.noProductView.frame.width - 40, height: 60)
-            self.noProductLbl.text = "No product available in \(self.pageTitle!) category"
+            if let title = self.pageTitle {
+            self.noProductLbl.text = "No product available in \(title) category"
+            }
         }
     }
     
@@ -156,18 +158,19 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
     //Mark :- passQuantitychange delegate method
     
     func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
-        dataManager.productArray[cellIndex!].isQuantityViewOpen = isQuantViewOpen!
-        dataManager.productArray[cellIndex!].quantity = quant!
-        if quant! > 0 && dataManager.productArray[cellIndex!].isAddedToCart == false{
-            AppSharedDataManager.shared.productAddedToCart.append(dataManager.productArray[cellIndex!])
-            dataManager.productArray[cellIndex!].isAddedToCart = true
+        guard let cellIndex = cellIndex, let quant = quant, let isQuantViewOpen = isQuantViewOpen else {return}
+        dataManager.productArray[cellIndex].isQuantityViewOpen = isQuantViewOpen
+        dataManager.productArray[cellIndex].quantity = quant
+        if quant > 0 && dataManager.productArray[cellIndex].isAddedToCart == false{
+            AppSharedDataManager.shared.productAddedToCart.append(dataManager.productArray[cellIndex])
+            dataManager.productArray[cellIndex].isAddedToCart = true
             NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
-        }else if quant! == 0 && dataManager.productArray[cellIndex!].isAddedToCart == true {
+        }else if quant == 0 && dataManager.productArray[cellIndex].isAddedToCart == true {
             var index = 0
             for products in AppSharedDataManager.shared.productAddedToCart {
-                if products.id == dataManager.productArray[cellIndex!].id {
+                if products.id == dataManager.productArray[cellIndex].id {
                     AppSharedDataManager.shared.productAddedToCart.remove(at: index)
-                    dataManager.productArray[cellIndex!].isAddedToCart = false
+                    dataManager.productArray[cellIndex].isAddedToCart = false
                     NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
                     return
                 }else{
@@ -186,7 +189,7 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let productDetailVC = storyboard.instantiateViewController(identifier: "ProductDetailViewController") as! ProductDetailViewController
         // let productDetailVC = ProductDetailViewController()
-        productDetailVC.id  = dataManager.productArray[indexPath.row].id!
+        productDetailVC.id  = dataManager.productArray[indexPath.row].id
         productDetailVC.product = dataManager.productArray[indexPath.row]
         productDetailVC.modalPresentationStyle = .fullScreen
         productDetailVC.productArray = dataManager.productArray
@@ -207,7 +210,7 @@ extension ProductsViewController : UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as! ProductCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as? ProductCollectionViewCell else {return UICollectionViewCell()}
         cell.delegate = self
         cell.cellNumber = indexPath.row
         cell.addHorizontalView()

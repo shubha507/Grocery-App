@@ -103,7 +103,7 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Reviewcell") as! ProductReviewTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Reviewcell") as? ProductReviewTableViewCell else {return UITableViewCell()}
         return cell
     }
     

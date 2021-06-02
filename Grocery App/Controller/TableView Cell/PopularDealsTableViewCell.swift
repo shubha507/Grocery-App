@@ -117,7 +117,7 @@ extension PopularDealsTableViewCell : UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as! PopularDealsCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as? PopularDealsCollectionViewCell else {return UICollectionViewCell()}
         cell.cellLabel.text = "\(array1[indexPath.row].name!)"
         dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage)
         return cell

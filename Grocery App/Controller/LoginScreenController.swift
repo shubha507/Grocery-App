@@ -10,7 +10,6 @@ import FirebaseAuth
 
 class LoginScreenController: UIViewController {
     //Mark :- properties
-    var alertController : UIAlertController?
     
     private let continueWithPhoneLbl : UILabel = {
         let lbl = UILabel()
@@ -123,11 +122,13 @@ class LoginScreenController: UIViewController {
     //Mark :- Action 
 
     @objc func continueButtonPushed(){
-        if numberTextField.text?.count == 13 {
+        
+        guard let phoneNumber = numberTextField.text else { return }
+        
+        if phoneNumber.count == 13 {
         numberTextField.endEditing(true)
-            
-        guard let phnNumber = numberTextField.text else { return }
-        PhoneAuthProvider.provider().verifyPhoneNumber(phnNumber, uiDelegate: nil) { (verificationID, error) in
+    
+        PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { (verificationID, error) in
           if let error = error {
             print(error.localizedDescription)
             return
@@ -142,12 +143,12 @@ class LoginScreenController: UIViewController {
             self.present(controller, animated: true, completion: nil)
           }
         }
-        }else if numberTextField.text!.count < 13 {
-            alertController = UIAlertController(title: nil, message: "Please add country code and 10 digit phone number", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Ok", style: .default, handler: { (dismissAction: UIAlertAction!) in self.alertController?.dismiss(animated: true, completion: nil) })
-            alertController?.modalPresentationStyle = .custom
-            alertController?.addAction(action)
-            self.present(alertController!,
+        }else if phoneNumber.count < 13 {
+          let alertController = UIAlertController(title: nil, message: "Please add country code and 10 digit phone number", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default, handler: { (dismissAction: UIAlertAction!) in alertController.dismiss(animated: true, completion: nil) })
+            alertController.modalPresentationStyle = .custom
+            alertController.addAction(action)
+            self.present(alertController,
                                            animated: true,
                                            completion: nil)
         }

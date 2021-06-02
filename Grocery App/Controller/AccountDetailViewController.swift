@@ -19,7 +19,6 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
     let dataManager = DataManager()
     let db = Firestore.firestore()
     var phoneNumber : String?
-    var alertControler : UIAlertController?
     var ref: DocumentReference? = nil
     var url : String?
     var imageUrl : String?
@@ -37,6 +36,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
     @IBOutlet weak var nameView: UIView!
     @IBOutlet weak var addressFirstLineView: UIView!
     
+    @IBOutlet weak var mainView: UIView!
     
     //Mark :- Lifecycle methods
     override func viewDidLoad() {
@@ -62,8 +62,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
         logOutButton.layer.shadowColor = UIColor.darkGray.cgColor
         logOutButton.layer.shadowOffset = CGSize(width: 3, height: 5)
         logOutButton.layer.shadowOpacity = 0.5
-        nameTextField.becomeFirstResponder()
-        
+        mainView.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
           }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,6 +95,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
                 self.addressFirstLineLabel.isHidden = true
                 self.nameEditButton.isHidden = true
                 self.addressEditButton.isHidden = true
+                self.nameTextField.becomeFirstResponder()
                 print("Document does not exist")
                 
             }
@@ -107,7 +107,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
         profileImageView.image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
         profileImageView.contentMode = .scaleAspectFill
         var data = NSData()
-        data = profileImageView.image!.jpegData(compressionQuality: 0.2)! as NSData
+        data = profileImageView.image!.jpegData(compressionQuality: 0.4)! as NSData
             // set upload path
     
             let metaData = StorageMetadata()
@@ -157,7 +157,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
             self.db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["name" : text])
             self.defaults.set(text, forKey: "userName")
             }
-            alert!.dismiss(animated: true) {
+            alert?.dismiss(animated: true) {
                 self.configureUserDetails()
             }
         }))
@@ -180,7 +180,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
                 self.db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["address" : text1])
                 self.defaults.set(text1,forKey: "userAddressFirstLine")
             }
-            alert!.dismiss(animated: true) {
+            alert?.dismiss(animated: true) {
                 self.configureUserDetails()
             }
         }))
@@ -233,7 +233,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
                         self.defaults.set(addressFirstLine,forKey: "userAddressFirstLine")
                         let alertControler = UIAlertController(title: nil, message: "Saved", preferredStyle: .alert)
                         let actionOk = UIAlertAction(title: "Ok", style: .default) { (action) in
-                            self.alertControler?.dismiss(animated: true, completion: nil)
+                            alertControler.dismiss(animated: true, completion: nil)
                                 
                         }
                         alertControler.addAction(actionOk)
@@ -245,7 +245,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
                 }else if name.count == 0 && addressFirstLine.count > 0 {
                 let alertControler = UIAlertController(title: nil, message: "Please give your name", preferredStyle: .alert)
                 let actionOk = UIAlertAction(title: "Ok", style: .default) { (action) in
-                    self.alertControler?.dismiss(animated: true, completion: nil)
+                    alertControler.dismiss(animated: true, completion: nil)
                     
                 }
                 alertControler.addAction(actionOk)
@@ -253,7 +253,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
             }else if name.count > 0 && addressFirstLine.count == 0 {
                 let alertControler = UIAlertController(title: nil, message: "Please give your address", preferredStyle: .alert)
                 let actionOk = UIAlertAction(title: "Ok", style: .default) { (action) in
-                    self.alertControler?.dismiss(animated: true, completion: nil)
+                    alertControler.dismiss(animated: true, completion: nil)
                     
                 }
                 alertControler.addAction(actionOk)
@@ -261,7 +261,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
             }else if name.count == 0 && addressFirstLine.count == 0 {
                 let alertControler = UIAlertController(title: nil, message: "Please give your name and address", preferredStyle: .alert)
                 let actionOk = UIAlertAction(title: "Ok", style: .default) { (action) in
-                    self.alertControler?.dismiss(animated: true, completion: nil)
+                    alertControler.dismiss(animated: true, completion: nil)
                     
                 }
                 alertControler.addAction(actionOk)
@@ -272,7 +272,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
     }
     
     @IBAction func logoutButtonPressed(_ sender: Any) {
-        alertControler = UIAlertController(title: nil, message: "Do you want to logout?", preferredStyle: .alert)
+        let alertControler = UIAlertController(title: nil, message: "Do you want to logout?", preferredStyle: .alert)
                let actionYes = UIAlertAction(title: "Yes", style: .default) { (action) in
                    let firebaseAuth = Auth.auth()
                   do {
@@ -283,14 +283,13 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
                }
        
                let actionNo = UIAlertAction(title: "No", style: .default) { (action) in
-                   self.alertControler?.dismiss(animated: true, completion: nil)
+                   alertControler.dismiss(animated: true, completion: nil)
                }
        
-               alertControler?.addAction(actionYes)
-               alertControler?.addAction(actionNo)
-        alertControler?.setBackgroundColor(color:.white)
+               alertControler.addAction(actionYes)
+               alertControler.addAction(actionNo)
        
-               self.present(alertControler!, animated: true, completion: nil)
+               self.present(alertControler, animated: true, completion: nil)
     }
 }
 

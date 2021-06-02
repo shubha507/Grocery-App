@@ -89,7 +89,7 @@ extension CategoriesViewController : UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
        let controller = ProductsViewController()
-        controller.pageTitle = dataArray[indexPath.row].name!
+        controller.pageTitle = dataArray[indexPath.row].name
 
         controller.productId = dataArray[indexPath.row].id
         self.navigationController?.pushViewController(controller, animated: true)
@@ -104,10 +104,8 @@ extension CategoriesViewController : UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! CategoryCollectionViewCell
-        cell.cellLabel.text = "\(dataArray[indexPath.row].name!)"
-      //  cell.cellImage.image = UIImage(named: "\(array[indexPath.row])")
-        dataManager.getImageFrom(url: "\(dataArray[indexPath.row].url!)", imageView: cell.cellImage)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as? CategoryCollectionViewCell else { return UICollectionViewCell()}
+        cell.configureCellUI(categoty: dataArray[indexPath.row])
         return cell
     }
     

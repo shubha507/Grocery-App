@@ -15,11 +15,15 @@ class ProductDetailFourthTableViewCell: UITableViewCell {
     
     @IBOutlet weak var priceLabel: UILabel!
     
+    @IBOutlet weak var addToCartButton: UIButton!
     //Mark :- Lifecycle method
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        addToCartButton.layer.shadowColor = UIColor.darkGray.cgColor
+        addToCartButton.layer.shadowOffset = CGSize(width: 3, height: 5)
+        addToCartButton.layer.shadowOpacity = 0.5
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

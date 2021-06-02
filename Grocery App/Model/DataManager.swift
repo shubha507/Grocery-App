@@ -71,7 +71,10 @@ class DataManager {
     
     func searchData(selectedId : String?, matchId : String? , callback: @escaping(_ error : Bool)-> Void){
         let db = Firestore.firestore()
-        db.collection("products").whereField(matchId!, isEqualTo: selectedId).getDocuments() { [self] (querySnapshot, err) in
+        
+        guard let id = matchId else {return}
+        
+        db.collection("products").whereField(id, isEqualTo: selectedId).getDocuments() { [self] (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {

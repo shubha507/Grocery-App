@@ -455,6 +455,7 @@
                     <connections>
                         <outlet property="backViewInCart" destination="u96-nA-k7c" id="kFX-Qs-KAJ"/>
                         <outlet property="cartTblView" destination="Jb9-JR-4uM" id="3ii-DF-Tz3"/>
+                        <outlet property="checkoutButton" destination="VJ5-hj-YIH" id="6pR-qp-IGW"/>
                         <outlet property="checkoutButtonView" destination="Wme-Bx-W4c" id="42D-KR-iBO"/>
                         <outlet property="totalLabel" destination="qiU-ZB-xJW" id="aio-FH-L5G"/>
                     </connections>
@@ -733,8 +734,8 @@
                                                     <constraint firstAttribute="height" constant="1" id="srS-Zy-mVi"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7N-Wg-1ij">
-                                                <rect key="frame" x="60" y="367.5" width="304" height="27.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7N-Wg-1ij">
+                                                <rect key="frame" x="60" y="367.5" width="304" height="0.0"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -777,18 +778,19 @@
                                                     <action selector="logoutButtonPressed:" destination="8HA-Oh-mqN" eventType="touchUpInside" id="hio-U7-vRX"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g78-zb-QZx">
-                                                <rect key="frame" x="65" y="224" width="264" height="27.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g78-zb-QZx">
+                                                <rect key="frame" x="65" y="224" width="269" height="0.0"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ab1-ax-LXR">
-                                                <rect key="frame" x="339" y="224" width="25" height="25"/>
+                                                <rect key="frame" x="344" y="224" width="20" height="20"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="25" id="Oph-U0-T7S"/>
-                                                    <constraint firstAttribute="width" constant="25" id="rQm-66-ZdY"/>
+                                                    <constraint firstAttribute="height" constant="20" id="Oph-U0-T7S"/>
+                                                    <constraint firstAttribute="width" constant="20" id="rQm-66-ZdY"/>
                                                 </constraints>
+                                                <color key="tintColor" name="mygreen"/>
                                                 <state key="normal" image="pencil" catalog="system">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="21" scale="medium" weight="heavy"/>
                                                 </state>
@@ -797,11 +799,12 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rn1-o1-CBz">
-                                                <rect key="frame" x="339" y="293" width="25" height="25"/>
+                                                <rect key="frame" x="344" y="293" width="20" height="20"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="25" id="h8h-x4-aQA"/>
-                                                    <constraint firstAttribute="height" constant="25" id="rlC-Ul-k9S"/>
+                                                    <constraint firstAttribute="width" constant="20" id="h8h-x4-aQA"/>
+                                                    <constraint firstAttribute="height" constant="20" id="rlC-Ul-k9S"/>
                                                 </constraints>
+                                                <color key="tintColor" name="mygreen"/>
                                                 <state key="normal" image="pencil" catalog="system">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="21" scale="medium" weight="heavy"/>
                                                 </state>
@@ -809,8 +812,8 @@
                                                     <action selector="addressEditButtonPressed:" destination="8HA-Oh-mqN" eventType="touchUpInside" id="9Uf-Sp-SNJ"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zKm-oz-BGu">
-                                                <rect key="frame" x="65" y="295" width="264" height="27.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zKm-oz-BGu">
+                                                <rect key="frame" x="65" y="295" width="269" height="0.0"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -941,6 +944,7 @@
                         <outlet property="addressFirstLineTextField" destination="uZi-hL-eaa" id="e32-Nz-gqW"/>
                         <outlet property="addressFirstLineView" destination="9iA-Ws-IWl" id="ejd-c9-VOb"/>
                         <outlet property="logOutButton" destination="eRh-0b-r93" id="49g-T8-KL6"/>
+                        <outlet property="mainView" destination="ec0-R8-Sx6" id="laz-Tk-xFu"/>
                         <outlet property="nameEditButton" destination="ab1-ax-LXR" id="aHy-cB-0gR"/>
                         <outlet property="nameLabel" destination="g78-zb-QZx" id="Ryf-vn-wPY"/>
                         <outlet property="nameTextField" destination="3mU-Jv-bPv" id="qsD-l9-0md"/>
@@ -1123,11 +1127,6 @@
                                     <constraint firstItem="Rxl-zk-hCm" firstAttribute="trailing" secondItem="crk-XE-Aau" secondAttribute="trailing" id="q9E-3b-Wix"/>
                                     <constraint firstItem="Rxl-zk-hCm" firstAttribute="top" secondItem="Ihz-qz-acQ" secondAttribute="top" constant="15" id="tmG-PP-4Jg"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <integer key="value" value="30"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kx2-Iq-GDN">
                                 <rect key="frame" x="30" y="91" width="16" height="22"/>
@@ -1154,6 +1153,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="mainView" destination="Ihz-qz-acQ" id="MSF-EK-jOU"/>
                         <outlet property="statusTableView" destination="FMn-Ol-e9c" id="ZZb-YQ-TyI"/>
                     </connections>
                 </viewController>

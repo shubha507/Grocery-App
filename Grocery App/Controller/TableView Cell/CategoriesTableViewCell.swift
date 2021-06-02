@@ -54,6 +54,7 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
         fc.showsHorizontalScrollIndicator = false
         fc.bounces = false
         fc.allowsMultipleSelection = false
+        fc.allowsSelection = true
         return fc
     }()
     
@@ -121,8 +122,8 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let controller = ProductsViewController()
-        controller.pageTitle = array1[indexPath.row].name!
-        controller.productId = array1[indexPath.row].id!
+        controller.pageTitle = array1[indexPath.row].name
+        controller.productId = array1[indexPath.row].id
         delegate?.pushViewController(controller: controller)
     }
 
@@ -135,8 +136,8 @@ extension CategoriesTableViewCell : UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! CategoryCollectionViewCell
-        cell.cellLabel.text = "\(array1[indexPath.row].name!)"
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as? CategoryCollectionViewCell else {return UICollectionViewCell()}
+         cell.cellLabel.text = "\(array1[indexPath.row].name!)"
          dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage)
         return cell
     }

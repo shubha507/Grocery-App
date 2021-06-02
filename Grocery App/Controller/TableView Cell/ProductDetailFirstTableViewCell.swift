@@ -39,12 +39,12 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
     //Mark :- Action
     @IBAction func decreaseQuantityPressed(_ sender: Any) {
         if quantity! > 1 {
-            quantity! = quantity! - 1
+            quantity = quantity! - 1
             quantityLabel.text = "\(quantity!) kg"
             priceLabel.text = "₹\(price! * quantity!)"
             delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: true)
-        }else if quantity == 1{
-            quantity! = quantity! - 1
+        }else if quantity! == 1{
+            self.quantity = quantity! - 1
             quantityLabel.text = "\(quantity!) kg"
             priceLabel.text = "₹\(price! * quantity!)"
             delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: false)
@@ -52,7 +52,7 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
     }
     
     @IBAction func increaseQuantityPressed(_ sender: Any) {
-        quantity! = quantity! + 1
+        quantity = quantity! + 1
         quantityLabel.text = "\(quantity!) kg"
         priceLabel.text = "₹\(price! * quantity!)"
         delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: true)

@@ -240,7 +240,6 @@ func configureUI(){
             print("Error getting documents: \(err)")
         } else {
             for document in querySnapshot!.documents {
-               print("\(document.documentID) => \(document.data()["rank"] as! Int)")
              let data = document.data()
              let rank = data["rank"] as? Int ?? 0
              let url = data["url"] as? String ?? "No url"
@@ -268,7 +267,6 @@ func configureUI(){
             print("Error getting documents: \(err)")
         } else {
             for document in querySnapshot!.documents {
-               print("\(document.documentID) => \(document.data()["rank"] as! Int)")
              let data = document.data()
              let name = data["name"] as? String ?? " "
              let rank = data["rank"] as? Int ?? 0
@@ -289,8 +287,11 @@ func configureUI(){
     
     func productsMatchingWithSearch(searchedText : String?){
         searchedProduct.removeAll()
+        
+        guard let searchedTxt = searchedText else {return}
+                
         let db = Firestore.firestore()
-       db.collection("products").whereField("search_keys", arrayContains: searchedText!).getDocuments() { [self] (querySnapshot, err) in
+       db.collection("products").whereField("search_keys", arrayContains: searchedTxt).getDocuments() { [self] (querySnapshot, err) in
               if let err = err {
                    print("Error getting documents: \(err)")
               } else {
@@ -376,21 +377,24 @@ extension HomeViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CategoriesTableViewCell
+          if let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? CategoriesTableViewCell {
             cell.collectionViewData(array: sortedCategory)
             cell.seeAllButton.addTarget(self, action: #selector(seeDetailView), for: .touchUpInside)
             cell.delegate = self
         return cell
-        }else if indexPath.row == 1{
-            let cell1 = tableView.dequeueReusableCell(withIdentifier: "cell1") as! DiscountTableViewCell
-            cell1.collectionViewData(array: sortedDiscount)
-            return cell1
-        }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell2") as! PopularDealsTableViewCell
-            cell.collectionViewData(array: sortedDeals)
-                
+          }
+        }else if indexPath.row == 1 {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "cell1") as? DiscountTableViewCell {
+            cell.collectionViewData(array: sortedDiscount)
             return cell
+            }
+        }else {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "cell2") as? PopularDealsTableViewCell{
+                cell.collectionViewData(array: sortedDeals)
+                return cell
+            }
         }
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -418,10 +422,12 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDataSo
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as! ProductCollectionViewCell
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as? ProductCollectionViewCell else {return UICollectionViewCell()}
+        
         cell.cellNumber = indexPath.row
        cell.addHorizontalView()
-     //   cell.addVerticalView()
+     
         if indexPath.row % 2 == 0{
             cell.addVerticalView()
             
@@ -436,8 +442,7 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDataSo
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
        let productDetailVC = storyboard.instantiateViewController(identifier: "ProductDetailViewController") as! ProductDetailViewController
-       // let productDetailVC = ProductDetailViewController()
-        productDetailVC.id  = searchedProduct[indexPath.row].id!
+        productDetailVC.id  = searchedProduct[indexPath.row].id
         productDetailVC.product = searchedProduct[indexPath.row]
         productDetailVC.modalPresentationStyle = .fullScreen
         productDetailVC.productArray = searchedProduct

@@ -161,9 +161,9 @@ class VerificationScreenController : UIViewController {
     
     //Mark :- Action
     @objc func textDidChange(textfield : UITextField){
-        let text = textfield.text
+        guard let text = textfield.text else {return}
         
-        if text?.utf16.count == 1 {
+        if text.utf16.count == 1 {
             switch textfield {
             
             case firstNumberTxtField:
@@ -197,10 +197,11 @@ class VerificationScreenController : UIViewController {
     
     @objc func verifyOTPAndCreateAccount(){
         let otp = "\(firstNumberTxtField.text!)\(secondNumberTxtField.text!)\(thirdNumberTxtField.text!)\(fourthNumberTxtField.text!)\(fifthNumberTxtField.text!)\(sixthNumberTxtField.text!)"
-        let verificationID = UserDefaults.standard.string(forKey: "authVerificationID")
+        
+        guard let verificationID = UserDefaults.standard.string(forKey: "authVerificationID") else {return}
         
         let credential = PhoneAuthProvider.provider().credential(
-            withVerificationID: verificationID!,
+            withVerificationID: verificationID,
             verificationCode: otp)
         
         Auth.auth().signIn(with: credential) { (authResult, error) in
