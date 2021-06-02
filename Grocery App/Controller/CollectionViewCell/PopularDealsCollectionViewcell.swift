@@ -9,13 +9,15 @@ import UIKit
 
 class PopularDealsCollectionViewCell : UICollectionViewCell {
     
+    //Mark :- Properties
+    
     let cellImage : UIImageView = {
        let iv = UIImageView()
        iv.backgroundColor = UIColor(named: "cellgreen")
        iv.layer.cornerRadius = 20
        iv.clipsToBounds = true
        iv.contentMode = .scaleAspectFill
-       return iv
+        return iv
    }()
    
    let cellLabel : UILabel = {
@@ -26,11 +28,6 @@ class PopularDealsCollectionViewCell : UICollectionViewCell {
        return lbl
    }()
     
-//    let discountView : UIView = {
-//        let dV = UIView()
-//        dV.backgroundColor = UIColor(red: 255/255, green: 0, blue: 0, alpha: 0.5)
-//        return dV
-//    }()
     
     let discountLabel : UILabel = {
         let dIV = UILabel()
@@ -42,18 +39,13 @@ class PopularDealsCollectionViewCell : UICollectionViewCell {
         return dIV
     }()
     
+    //Mark :- Lifecycle Method
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         contentView.addSubview(cellImage)
         cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0, width: 160, height: 160)
-//        cellImage.addSubview(discountView)
-//        discountView.anchor(top: cellImage.topAnchor, left: cellImage.leftAnchor, paddingTop: -40, paddingLeft: -25, width: 120, height: 120)
-//        discountView.layer.masksToBounds = true
-//        discountView.layer.cornerRadius = 60
-//
-//        discountView.addSubview(discountLabel)
-//        discountLabel.anchor(top: discountView.topAnchor, left: discountView.leftAnchor, paddingTop: 50, paddingLeft: 35,width: 70, height: 50)
         
         
         contentView.addSubview(cellLabel)

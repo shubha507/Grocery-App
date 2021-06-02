@@ -116,11 +116,21 @@ extension CategoriesViewController : UICollectionViewDataSource {
 extension CategoriesViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width:110, height: 135 )
+        if cellCollectionVw.frame.width > 355 {
+        return CGSize(width: 110, height: 135)
+        }else{
+            return CGSize(width: 105, height: 135)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        print(cellCollectionVw.frame.width)
+        if cellCollectionVw.frame.width > 355 {
         return 10
+        }else{
+            return 5
+        }
+       
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

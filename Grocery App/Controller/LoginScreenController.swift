@@ -34,15 +34,7 @@ class LoginScreenController: UIViewController {
         return lbl
     }()
     
-    private let continueButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Continue" , for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = UIColor(named: "myyellow")
-        button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        return button
-    }()
+    private let continueButton = CustomButton()
         
     private let numberTextField : UITextField = {
         let numField = UITextField()
@@ -82,11 +74,6 @@ class LoginScreenController: UIViewController {
         configureUI()
         
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-      //  numberTextField.text = "+"
-    }
 
     //Mark :- Helper method
 
@@ -110,6 +97,7 @@ class LoginScreenController: UIViewController {
         continueButton.setDimensions(height: 50, width: 150)
         continueButton.anchor(right : phoneNumberView.rightAnchor , paddingRight: 10)
         continueButton.addTarget(self, action: #selector(continueButtonPushed), for: .touchUpInside)
+        continueButton.setTitle("Continue" , for: .normal)
         
         
         setupStack()
@@ -173,14 +161,4 @@ extension LoginScreenController : UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return range.location <= 12
     }
-    
-    
-   
-    
-    
-    
-    
-        
-    
-    
 }

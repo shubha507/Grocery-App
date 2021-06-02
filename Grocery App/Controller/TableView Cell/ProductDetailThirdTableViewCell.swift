@@ -9,13 +9,14 @@ import UIKit
 
 class ProductDetailThirdTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, passQuantityChangeData {
     
+    //Mark :- Properties
+
     var dataManager = DataManager()
-    
     var similarProductArray = [Product]()
-    
-    
     @IBOutlet weak var ThirdCellCollectionView: UICollectionView!
     
+    //Mark :- Lifecycle Method
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -28,11 +29,13 @@ class ProductDetailThirdTableViewCell: UITableViewCell, UICollectionViewDelegate
         
   }
     
-    func getSimilarProductArray(array : [Product]){
+    //Mark :- helper function
+   func getSimilarProductArray(array : [Product]){
         self.similarProductArray = array
         ThirdCellCollectionView.reloadData()
     }
     
+    //Mark :- Delegate Method
     func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
         similarProductArray[cellIndex!].quantity = quant!
         similarProductArray[cellIndex!].isQuantityViewOpen = isQuantViewOpen!
@@ -56,7 +59,6 @@ class ProductDetailThirdTableViewCell: UITableViewCell, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-       // print("similarProductArray.count \(similarProductArray.count)")
         return similarProductArray.count
     }
     

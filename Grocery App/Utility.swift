@@ -89,24 +89,6 @@ extension UIView {
         widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
-    func fillSuperview() {
-        translatesAutoresizingMaskIntoConstraints = false
-        guard let view = superview else { return }
-        anchor(top: view.topAnchor, left: view.leftAnchor,
-               bottom: view.bottomAnchor, right: view.rightAnchor)
-    }
-    
-    func dropShadow(color: UIColor, opacity: Float = 0.5, offSet: CGSize, radius: CGFloat = 1, scale: Bool = true) {
-        layer.masksToBounds = false
-        layer.shadowColor = color.cgColor
-        layer.shadowOpacity = opacity
-        layer.shadowOffset = offSet
-        layer.shadowRadius = radius
-
-        layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
-        layer.shouldRasterize = true
-        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
-      }
 }
 
 protocol passQuantityChangeData {
@@ -118,8 +100,6 @@ protocol passQuantityChangeData {
 class AppSharedDataManager{
     
  static let shared = AppSharedDataManager()
-    
-    var phnNo : String?
     
  var productAddedToCart = [Product]()
 }

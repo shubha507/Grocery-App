@@ -9,14 +9,12 @@ import UIKit
 
 class ProductCollectionViewCell : UICollectionViewCell {
     
+    //Mark :- Properties
+
     var isQuantityViewOpen : Bool?
-    
     var cellNumber : Int?
-    
     var quantity : Int?
-    
     var dataManager = DataManager()
-    
     var delegate : passQuantityChangeData?
     
     let minusButton : UIButton = {
@@ -39,8 +37,6 @@ class ProductCollectionViewCell : UICollectionViewCell {
         lbl.backgroundColor = UIColor(named: "mygreen")
        return lbl
     }()
-    
-    
     
     let plusGreenViewButton : UIButton = {
         let uv = UIButton(type: .system)
@@ -66,7 +62,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
     let cellImage : UIImageView = {
        let iv = UIImageView()
         iv.backgroundColor = .white
-        iv.contentMode = .scaleToFill
+        iv.contentMode = .scaleAspectFit
        return iv
    }()
     
@@ -118,12 +114,11 @@ class ProductCollectionViewCell : UICollectionViewCell {
         return gv
     }()
     
-    
+    //Mark :- Lifecycle Method
+
     override init(frame: CGRect) {
         super .init(frame: frame)
         backgroundColor = .white
-       // layer.borderWidth = 0.5
-       // layer.borderColor = UIColor.gray.cgColor
         addSubview(cellImage)
         cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10, width: 80, height: 160)
         
@@ -152,7 +147,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+    //Mark :- Helper function
     func addVerticalView(){
         contentView.addSubview(cellBorderView)
         cellBorderView.anchor(top: topAnchor, right: rightAnchor, paddingTop: 0, paddingRight: 0, width: 0.3, height: 300)
@@ -163,25 +158,39 @@ class ProductCollectionViewCell : UICollectionViewCell {
         cellHorizntalBorderView.anchor(left: leftAnchor, bottom: bottomAnchor, paddingLeft: 0, paddingBottom: 0, width: frame.width, height: 0.3)
     }
     
-    @objc func plusButtonTapped(){
-        plusButton.isHidden = true
-        greenView.isHidden = false
-        quantity = quantity!+1
-        quantityLabel.text = "\(quantity!)"
-        isQuantityViewOpen = true
-        delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
-    }
-    
     func configureStackView(){
         let stack = UIStackView(arrangedSubviews: [minusButton,quantityLabel,plusGreenViewButton])
         stack.spacing = 5
         stack.axis = .vertical
-       // quantityLabel.text = "\(quantity)"
         plusGreenViewButton.addTarget(self, action: #selector(increaseQuantity), for: .touchUpInside)
         minusButton.addTarget(self, action: #selector(decreaseQuantity), for: .touchUpInside)
         greenView.addSubview(stack)
         stack.anchor(top: greenView.topAnchor, left: greenView.leftAnchor, bottom: greenView.bottomAnchor, right: greenView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 35, height: 115)
     }
+    
+    func configureCellUI(product : Product){
+        nameLabel.text = product.name!
+        priceLabel.text = "₹\(product.price!)"
+        descriptionLabel.text = product.description!
+        quantity = product.quantity
+        quantityLabel.text = "\(product.quantity)"
+        isQuantityViewOpen = product.isQuantityViewOpen
+        dataManager.getImageFrom(url: product.url!, imageView: cellImage)
+        if isQuantityViewOpen! {
+            plusButton.isHidden = true
+            greenView.isHidden = false
+        }else{
+            plusButton.isHidden = false
+            greenView.isHidden = true
+        }
+        if !product.isAddedToCart  && isQuantityViewOpen! {
+            AppSharedDataManager.shared.productAddedToCart.append(product)
+            NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
+            product.isAddedToCart = true
+        }
+    }
+
+    //Mark :- Action
 
     @objc func increaseQuantity(){
         quantity = quantity!+1
@@ -205,26 +214,13 @@ class ProductCollectionViewCell : UICollectionViewCell {
         }
     }
     
-    func configureCellUI(product : Product){
-        nameLabel.text = product.name!
-        priceLabel.text = "₹\(product.price!)"
-        descriptionLabel.text = product.description!
-        quantity = product.quantity
-        quantityLabel.text = "\(product.quantity)"
-        isQuantityViewOpen = product.isQuantityViewOpen
-        dataManager.getImageFrom(url: product.url!, imageView: cellImage)
-        if isQuantityViewOpen! {
-            plusButton.isHidden = true
-            greenView.isHidden = false
-        }else{
-            plusButton.isHidden = false
-            greenView.isHidden = true
-        }
-        if !product.isAddedToCart  && isQuantityViewOpen! {
-            AppSharedDataManager.shared.productAddedToCart.append(product)
-            NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
-            product.isAddedToCart = true
-        }
+    @objc func plusButtonTapped(){
+        plusButton.isHidden = true
+        greenView.isHidden = false
+        quantity = quantity!+1
+        quantityLabel.text = "\(quantity!)"
+        isQuantityViewOpen = true
+        delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
     }
     
 }

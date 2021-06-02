@@ -8,12 +8,16 @@
 import UIKit
 
 class OrderStatusDesignTableViewCell: UITableViewCell {
+    
+    //Mark :- Properties
 
     @IBOutlet weak var statusView: UIView!
-    
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var checkmarkView: UIImageView!
     @IBOutlet weak var lineView: UIView!
+    
+    //Mark :- Lifecycle Method
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

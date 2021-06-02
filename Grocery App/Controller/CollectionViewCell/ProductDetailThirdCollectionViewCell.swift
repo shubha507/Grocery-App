@@ -9,28 +9,23 @@ import UIKit
 
 class ProductDetailThirdCollectionViewCell: UICollectionViewCell {
     
+    //Mark :- Properties
     var cellIndex : Int?
-
     var quantity : Int?
-    
     var isQuantityViewOpen : Bool?
-    
     var dataManager = DataManager()
-    
     var delegate : passQuantityChangeData?
     
     @IBOutlet weak var minusButton: UIButton!
-    
     @IBOutlet weak var quantityLabel: UILabel!
-    
     @IBOutlet weak var similarProductPerPeicePriceLabel: UILabel!
     @IBOutlet weak var similarProductImageView: UIImageView!
-    
     @IBOutlet weak var similarProductPriceLabel: UILabel!
     @IBOutlet weak var similarProductNameLabel: UILabel!
-    
     @IBOutlet weak var plusButton: UIButton!
     
+    //Mark :- Lifecycle Method
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -41,6 +36,31 @@ class ProductDetailThirdCollectionViewCell: UICollectionViewCell {
         quantityLabel.isHidden = true
         }
     
+    //Mark :- Helper Function
+
+    func configureCellUI(product : Product?){
+        quantity = product!.quantity ?? 0
+        quantityLabel.text = "\(product!.quantity ?? 0)"
+        isQuantityViewOpen = product!.isQuantityViewOpen ?? nil
+        similarProductPriceLabel.text = "\(product!.price ?? 0)"
+        similarProductPerPeicePriceLabel.text = "\(product!.price ?? 0)/kg"
+        similarProductNameLabel.text = product!.name ?? ""
+        dataManager.getImageFrom(url: product!.url, imageView: similarProductImageView)
+        if isQuantityViewOpen! {
+            plusButton.layer.cornerRadius = 0
+            minusButton.isHidden = false
+            quantityLabel.isHidden = false
+            minusButton.layer.cornerRadius = 10
+            minusButton.layer.maskedCorners = [.layerMinXMinYCorner]
+        }else{
+            minusButton.isHidden = true
+            quantityLabel.isHidden = true
+        }
+        
+    }
+    
+    //Mark :- Action
+
     @IBAction func plusButtonPressed(_ sender: Any) {
         plusButton.layer.cornerRadius = 0
         quantityLabel.isHidden = false
@@ -68,26 +88,5 @@ class ProductDetailThirdCollectionViewCell: UICollectionViewCell {
             isQuantityViewOpen = false
             delegate?.quantityChanged(cellIndex: cellIndex, quant: quantity!, isQuantViewOpen: isQuantityViewOpen)
         }
-    }
-    
-    func configureCellUI(product : Product?){
-        quantity = product!.quantity ?? 0
-        quantityLabel.text = "\(product!.quantity ?? 0)"
-        isQuantityViewOpen = product!.isQuantityViewOpen ?? nil
-        similarProductPriceLabel.text = "\(product!.price ?? 0)"
-        similarProductPerPeicePriceLabel.text = "\(product!.price ?? 0)/kg"
-        similarProductNameLabel.text = product!.name ?? ""
-        dataManager.getImageFrom(url: product!.url, imageView: similarProductImageView)
-        if isQuantityViewOpen! {
-            plusButton.layer.cornerRadius = 0
-            minusButton.isHidden = false
-            quantityLabel.isHidden = false
-            minusButton.layer.cornerRadius = 10
-            minusButton.layer.maskedCorners = [.layerMinXMinYCorner]
-        }else{
-            minusButton.isHidden = true
-            quantityLabel.isHidden = true
-        }
-        
     }
 }

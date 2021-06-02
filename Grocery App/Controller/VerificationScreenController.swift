@@ -15,7 +15,7 @@ class VerificationScreenController : UIViewController {
     //Mark :- Properties
     var mobNo : String?
     
-    
+    let defaults = UserDefaults.standard
     
     private let arrowButton : UIButton = {
         let button = UIButton(type: .system)
@@ -83,16 +83,7 @@ class VerificationScreenController : UIViewController {
         return button
     }()
     
-    private let verifyButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Verify and Create Account" , for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = UIColor(named: "myyellow")
-        button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        button.addTarget(self, action: #selector(verifyOTPAndCreateAccount), for: .touchUpInside)
-        return button
-    }()
+    private let verifyButton = CustomButton()
     
     //Mark :- LifeCycle method
  override func viewDidLoad() {
@@ -137,7 +128,8 @@ class VerificationScreenController : UIViewController {
         view.addSubview(verifyButton)
         verifyButton.setDimensions(height: 50, width: view.frame.width - 30)
         verifyButton.anchor(top : getCallButton.bottomAnchor, left : view.leftAnchor,right : view.rightAnchor, paddingTop: 10 , paddingLeft: 15, paddingRight: 15)
-
+    verifyButton.setTitle("Verify and Create Account" , for: .normal)
+    verifyButton.addTarget(self, action: #selector(verifyOTPAndCreateAccount), for: .touchUpInside)
     }
     
     func setupStack(){
@@ -216,7 +208,7 @@ class VerificationScreenController : UIViewController {
             print(error.localizedDescription)
           }else{
             if let mobNo = self.mobNo {
-            AppSharedDataManager.shared.phnNo = mobNo
+                self.defaults.setValue(mobNo, forKey: "UserMobileNo")
             }
             self.present(HomeViewController(), animated: true, completion: nil)
           }

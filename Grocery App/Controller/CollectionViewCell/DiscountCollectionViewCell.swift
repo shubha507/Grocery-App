@@ -9,6 +9,7 @@ import UIKit
 
 class DiscountCollectionViewCell : UICollectionViewCell {
     
+    //Mark :- Properties
     let dataManager = DataManager()
     
      private let basketImageView : UIImageView = {
@@ -20,7 +21,7 @@ class DiscountCollectionViewCell : UICollectionViewCell {
      private let discountLabel : UILabel = {
         let lbl = UILabel()
         lbl.text = "30% Discount"
-        lbl.font = UIFont.boldSystemFont(ofSize: 30)
+        lbl.font = UIFont.boldSystemFont(ofSize: 23)
         lbl.textColor = UIColor(named: "mygreen")
         lbl.numberOfLines = 0
         lbl.textAlignment = .left
@@ -46,6 +47,7 @@ class DiscountCollectionViewCell : UICollectionViewCell {
         return lbl
     }()
 
+    //Mark :- Lifecycle Method
 
     
     override init(frame: CGRect) {
@@ -54,25 +56,28 @@ class DiscountCollectionViewCell : UICollectionViewCell {
         backgroundColor = UIColor(named: "discountCellGreen")
         layer.cornerRadius = 30
         
-        addSubview(basketImageView)
-        basketImageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor,paddingTop: 15, paddingLeft: 10, paddingBottom: 15,width: 110)
+        contentView.addSubview(basketImageView)
+        basketImageView.anchor(top: contentView.topAnchor, left: contentView.leftAnchor, bottom: contentView.bottomAnchor,paddingTop: 15, paddingLeft: 10, paddingBottom: 15,width: 110)
         
-        configureStack()
-    }
-    
-    func configureStack(){
-        let stack = UIStackView(arrangedSubviews: [discountLabel,discountDescriptionLabel,orderNowLabel])
-        stack.axis = .vertical
-        stack.spacing = 10
-        
-        addSubview(stack)
-
-        stack.anchor(top: topAnchor,left: basketImageView.rightAnchor, paddingTop: 15,paddingLeft: 10)
-        stack.setDimensions(height: 135, width: 200)
+        configureLabels()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //Mark :- Helper Function
+
+    func configureLabels(){
+        contentView.addSubview(discountLabel)
+        discountLabel.anchor(top: contentView.topAnchor, left: basketImageView.rightAnchor, right: contentView.rightAnchor, paddingTop: 30, paddingLeft: 10, paddingRight: 5)
+        
+        contentView.addSubview(discountDescriptionLabel)
+        discountDescriptionLabel.anchor(top: discountLabel.bottomAnchor, left: basketImageView.rightAnchor, right: contentView.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingRight: 5)
+        discountDescriptionLabel.sizeToFit()
+        
+        contentView.addSubview(orderNowLabel)
+        orderNowLabel.anchor(top: discountDescriptionLabel.bottomAnchor, left: basketImageView.rightAnchor, bottom: contentView.bottomAnchor, right: contentView.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 25, paddingRight: 5)
     }
     
     func configureUI(discountLbl : String?, discountDescriptionLbl : String?, url : String?){

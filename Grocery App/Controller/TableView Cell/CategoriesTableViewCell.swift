@@ -14,12 +14,11 @@ protocol PerformAction {
 
 class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
     
+    //Mark :- Properties
+
     var delegate : PerformAction?
-    
     let dataManager = DataManager()
-    
     var array1 = [Categories]()
-    
     var array = ["Vegetables","Fruits","Meat","Egg"]
     
     private let cellView : UIView = {
@@ -58,12 +57,8 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
         return fc
     }()
     
-    //created function to pass data from tableview to collectionview
-    func collectionViewData(array : [Categories]){
-        self.array1 = array
-        categoriesCellCollection.reloadData()
-       // print(self.array1)
-    }
+    //Mark :- LifeCycle Methods
+
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -77,6 +72,8 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
         fatalError()
     }
     
+    //Mark :- Helper function
+
     func configureUI(){
         
         contentView.addSubview(cellView)
@@ -95,9 +92,13 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
         cellView.addSubview(categoriesCellCollection)
         categoriesCellCollection.anchor(top: categoryLabel.bottomAnchor, left: cellView.leftAnchor, bottom: cellView.bottomAnchor, right: cellView.rightAnchor, paddingTop: 23, paddingLeft: 0, paddingBottom: 25, paddingRight: 0)
         categoriesCellCollection.setDimensions(height: 135, width: cellView.frame.width)
-        //firstCellCollection.frame(forAlignmentRect: <#T##CGRect#>)
    }
     
+    //created function to pass data from tableview to collectionview
+    func collectionViewData(array : [Categories]){
+        self.array1 = array
+        categoriesCellCollection.reloadData()
+    }
     
     func createLine(){
         let path = UIBezierPath()
@@ -136,9 +137,7 @@ extension CategoriesTableViewCell : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! CategoryCollectionViewCell
         cell.cellLabel.text = "\(array1[indexPath.row].name!)"
- //       print(array1[indexPath.row].name)
-       // cell.cellImage.image = UIImage(named: "\(array[indexPath.row])")
-        dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage)
+         dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage)
         return cell
     }
 }

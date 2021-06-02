@@ -9,6 +9,7 @@ import UIKit
 
 class CategoryCollectionViewCell : UICollectionViewCell {
     
+    //Mark :- Properties
      let cellImage : UIImageView = {
         let iv = UIImageView()
         iv.backgroundColor = UIColor(named: "cellgreen")
@@ -26,10 +27,11 @@ class CategoryCollectionViewCell : UICollectionViewCell {
         return lbl
     }()
     
+    //Mark :- LifeCycle Method
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-          
-      //  backgroundColor = UIColor(named: "cellgreen")
+        
         addSubview(cellImage)
         cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0, width: 110, height: 110)
         

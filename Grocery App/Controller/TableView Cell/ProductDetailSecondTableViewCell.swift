@@ -13,6 +13,8 @@ protocol PassDetailOrReviewSelected {
 
 class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource {
     
+    //Mark :- Properties
+
     var delegate : PassDetailOrReviewSelected?
     
     let productReviewTableView : UITableView = {
@@ -27,7 +29,6 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
     
     let productDescriptionLabel : UILabel = {
         let pDL = UILabel()
-   //     pDL.text = "Lorem ipsum dolor sitamet, consectetur adipiscing elit, in seddo eiusmod tempor incididunt utlabore etdolore magna aliqua. Utenim adminim veniam, nostrud exercitation ullamco laboris nisiut aliquip exea commodo consequat Duisaute iruredolor in reprehenderit in voluptate velitesse dolore eufugiat."
         pDL.textColor = .white
         pDL.font = UIFont.systemFont(ofSize: 21)
         pDL.numberOfLines = 0
@@ -36,18 +37,14 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
     }()
 
  @IBOutlet weak var detailsButton: UIButton!
-    
  @IBOutlet weak var reviewsButton: UIButton!
-    
  @IBOutlet weak var reviewsNumberLabel: UILabel!
-    
  @IBOutlet weak var belowDetailsView: UIView!
-    
  @IBOutlet weak var belowReviewView: UIView!
-    
  @IBOutlet weak var curvedView: UIView!
     
-    
+    //Mark :- Lifecycle method
+
  override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -69,6 +66,30 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
     productReviewTableView.separatorStyle = .none
     }
     
+    
+    //Mark :- Helper Function
+    func configureUI(isDetailButtonSelected : Bool? , isReviewButtonSelected : Bool?) {
+        if isDetailButtonSelected! {
+            detailsButton.tintColor = .black
+            reviewsButton.tintColor = .gray
+            belowDetailsView.isHidden = false
+            belowReviewView.isHidden = true
+        productDescriptionLabel.isHidden = false
+        productReviewTableView.isHidden = true
+            print("detail button selected")
+        }else if isReviewButtonSelected! {
+            detailsButton.tintColor = .gray
+            reviewsButton.tintColor = .black
+            belowReviewView.isHidden = false
+            belowDetailsView.isHidden = true
+        productDescriptionLabel.isHidden = true
+        productReviewTableView.isHidden = false
+        productReviewTableView.reloadData()
+            print("Review button selected")
+        }
+    }
+
+    //Mark :- Action
  @IBAction func DetailsButtonPressed(_ sender: Any) {
     delegate?.whichViewSelected(isDetailButtonSelected: true, isReviewButtonSelected: false)
     }
@@ -90,24 +111,4 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
         return UITableView.automaticDimension
     }
     
-    func configureUI(isDetailButtonSelected : Bool? , isReviewButtonSelected : Bool?) {
-        if isDetailButtonSelected! {
-            detailsButton.tintColor = .black
-            reviewsButton.tintColor = .gray
-            belowDetailsView.isHidden = false
-            belowReviewView.isHidden = true
-        productDescriptionLabel.isHidden = false
-        productReviewTableView.isHidden = true
-            print("detail button selected")
-        }else if isReviewButtonSelected! {
-            detailsButton.tintColor = .gray
-            reviewsButton.tintColor = .black
-            belowReviewView.isHidden = false
-            belowDetailsView.isHidden = true
-        productDescriptionLabel.isHidden = true
-        productReviewTableView.isHidden = false
-        productReviewTableView.reloadData()
-            print("Review button selected")
-        }
-    }
   }

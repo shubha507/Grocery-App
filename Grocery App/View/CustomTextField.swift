@@ -20,7 +20,7 @@ class CustomTextField : UITextField {
         textAlignment = .center
         setDimensions(height: 50, width: 50)
         layer.shadowOpacity = 0.5
-        layer.shadowColor = UIColor.blue.cgColor
+        layer.shadowColor = UIColor(named: "mygreen")?.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 2)
     }
     
