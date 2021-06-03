@@ -21,6 +21,21 @@ struct Categories {
         self.id = id
     }
 }
+struct Categories1 {
+    
+    var name : String?
+    var rank : Int?
+    var url : String?
+    var id : String?
+    
+    init(docId: String) {
+       // self.name = docId["name"] as? String ?? ""
+       // self.rank = docId["rank"] as? Int ?? 0
+       // self.url = docId["url"] as? String ?? ""
+       // self.id = docId["id"] as? String ?? ""
+        
+    }
+}
 
 /*struct Product{
     

@@ -48,7 +48,9 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
              let rank = data["rank"] as? Int ?? 0
              let url = data["url"] as? String ?? ""
                 let id = data["id"] as? String ?? ""
-                let newCategory = Categories(name: name, rank: rank, url: url, id: id)
+               let newCategory = Categories(name: name, rank: rank, url: url, id: id)
+              // let newCategory = Categories1(docId: data)
+                print("document is" , document)
              self.category.append(newCategory)
                 let newDict = Dict(stringId: document.documentID, intRankValue: rank)
                 self.sortedDict.append(newDict)

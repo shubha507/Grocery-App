@@ -11,6 +11,7 @@
 		9F7A042C265BD12A0058587F /* TableViewProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7A042B265BD12A0058587F /* TableViewProductTableViewCell.swift */; };
 		9F7A042F265BF67B0058587F /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7A042E265BF67B0058587F /* CategoryTableViewCell.swift */; };
 		9F7A043426651D220058587F /* Products.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7A043326651D220058587F /* Products.swift */; };
+		9F7A04372667918C0058587F /* Admin.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F7A04362667918C0058587F /* Admin.storyboard */; };
 		9FD092612643CEB600A6498C /* AdminCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD092602643CEB600A6498C /* AdminCategoriesViewController.swift */; };
 		9FD092642643E9AB00A6498C /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD092632643E9AB00A6498C /* AddCategoryViewController.swift */; };
 		9FD092682645246F00A6498C /* AdminProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD092672645246F00A6498C /* AdminProductViewController.swift */; };
@@ -49,6 +50,7 @@
 		9F7A042B265BD12A0058587F /* TableViewProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewProductTableViewCell.swift; sourceTree = "<group>"; };
 		9F7A042E265BF67B0058587F /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		9F7A043326651D220058587F /* Products.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Products.swift; sourceTree = "<group>"; };
+		9F7A04362667918C0058587F /* Admin.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Admin.storyboard; sourceTree = "<group>"; };
 		9FD092602643CEB600A6498C /* AdminCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminCategoriesViewController.swift; sourceTree = "<group>"; };
 		9FD092632643E9AB00A6498C /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 		9FD092672645246F00A6498C /* AdminProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminProductViewController.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				B2536E8A2631E6C400EADC0C /* SceneDelegate.swift */,
 				B2C1DD502632A70000913F66 /* Controller */,
 				B2536E8E2631E6C400EADC0C /* Main.storyboard */,
+				9F7A04362667918C0058587F /* Admin.storyboard */,
 				9F7A042E265BF67B0058587F /* CategoryTableViewCell.swift */,
 				9FD092672645246F00A6498C /* AdminProductViewController.swift */,
 				9F7A042B265BD12A0058587F /* TableViewProductTableViewCell.swift */,
@@ -275,6 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2536E952631E6C800EADC0C /* LaunchScreen.storyboard in Resources */,
+				9F7A04372667918C0058587F /* Admin.storyboard in Resources */,
 				B22A43E72637EE55001F1AC2 /* GoogleService-Info.plist in Resources */,
 				B2536E922631E6C800EADC0C /* Assets.xcassets in Resources */,
 				B2536E902631E6C400EADC0C /* Main.storyboard in Resources */,

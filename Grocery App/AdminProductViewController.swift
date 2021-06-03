@@ -9,6 +9,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 class CellClass: UITableViewCell {
     
 }
@@ -39,7 +40,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
       
         productTableView.allowsSelection = false
        
-        
+        //tableView.backgroundColor = UIColor.white
        let  buttonIcon = UIImage(systemName: "plus")
          let rightBarButtonItem = UIBarButtonItem(title: "add", style: UIBarButtonItem.Style.done, target: self, action: #selector(addProduct))
         rightBarButtonItem.image = buttonIcon
@@ -107,8 +108,11 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
     @objc func clearButtonTapped()
     {
         fetchData()
+       // tableView.backgroundColor = UIColor.white
         removeTranparentView()
         removeAlertView()
+        tableView.layer.backgroundColor = UIColor.white.cgColor
+        tableView.reloadData()
         
     }
     
@@ -119,6 +123,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
             self.transparentView.alpha = 0
            
         }, completion: nil)
+       // tableView.backgroundColor = UIColor.white
     }
     private var sortedDict = [Dict]()
     var arrayCategories = [String]()
@@ -128,29 +133,37 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     var stringTags = [String]()
-    
-       func fetchData(){
+    var searchKeyValues = [String]()
+      func fetchData(){
            let db = Firestore.firestore()
            db.collection("products").getDocuments() { (querySnapshot, err) in
            if let err = err {
                print("Error getting documents: \(err)")
            } else {
-               self.product = []
+            
+            
+            self.product = []
                for document in querySnapshot!.documents {
-                   print("\(document.documentID) => \(document.data()["price"] as! Int)")
-                
+                print("\(document.documentID) => \(document.data()["price"] as! Int)")
+              
                 let data = document.data()
-                let active = data["active"] as? Bool ?? true
-                let name = data["name"] as? String ?? ""
+               let active = data["active"] as? Bool ?? true
+               let name = data["name"] as? String ?? ""
                 let categoryId = data["category_id"] as? String ?? ""
                 let tags = data["tags"] as? [String] ?? [""]
                 let description = data["description"] as? String ?? ""
-                let price = data["price"] as? Int ?? 0
+               let price = data["price"] as? Int ?? 0
                 let url = data["url"] as? String ?? ""
                 let id = data["id"] as? String ?? ""
+                let discount = data["discount"] as? Int ?? 0
+                let createdAt = data["createdAt"] as? Date ?? Date.distantPast
+                let updatedAt = data["updatedAt"] as? Date ?? Date.distantPast
+                let search_keys = data["search_keys"] as? [String] ?? [""]
+                
+                
                 self.stringTags = tags
                 print("self.stringTags:" , tags)
-                let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: self.stringTags, url: url, id: id)
+                let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: self.stringTags, url: url, id: id, discount: discount, createdAt: createdAt, updatedAt: updatedAt, search_keys: self.searchKeyValues)
                 self.product.append(newProduct)
                 let newDict = Dict(stringId: document.documentID, intRankValue: price)
                 
@@ -163,6 +176,21 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
            }
        }
    }
+  /*  var product1 = [Product1]()
+    func fetchData() {
+        var db = Firestore.firestore()
+        db.collection("products").addSnapshotListener { (QuerySnapshot, error) in
+            guard let documents = QuerySnapshot?.documents else {
+                print("no docs")
+                return
+            }
+            self.product = documents.compactMap{(QueryDocumentSnapshot) -> Product1? in
+                return try? QueryDocumentSnapshot.data(as: Product1.self)
+                
+            }
+        }
+    }*/
+    
     
     @objc private func addProduct()
     {
@@ -191,6 +219,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         sec.uid = "\(product[indexPath2.row].id ?? "")"
         sec.categoryIdd = "\(product[indexPath2.row].categoryId!)"
         sec.active = "\(product[indexPath2.row].active!)"
+        sec.discount = "\(product[indexPath2.row].discount!)"
             sec.name = "\(product[indexPath2.row].name!)"
         sec.price = "\(product[indexPath2.row].price!)"
         print("string tags:" , stringTags)
@@ -249,6 +278,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
                cell.tableProductName.text = "\(product[indexPath.row].name!)"
             cell.tableProductDescription.text = " \(product[indexPath.row].description!)"
                 cell.tableProductPrice.text = "Price:  " + "\(product[indexPath.row].price ?? 0)"
+                
                 dataManager.getImageFrom(url: "\(product[indexPath.row].url!)", imageView: cell.tableProductImage)
                // TableViewProductTableViewCell.init(style: UITableViewCell.CellStyle, reuseIdentifier: "tableViewCellProduct" )
                 /*cell.tableProductImage.layer.cornerRadius = cell.tableProductImage.frame.size.height/2
@@ -303,6 +333,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
     
     var i = 0
     var categoryUid: String = ""
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         categoryUid = categoryDict[1][indexPath.row]
         print(categoryUid)
@@ -324,13 +355,18 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
              let price = data["price"] as? Int ?? 0
              let url = data["url"] as? String ?? ""
                 let id = data["id"] as? String ?? ""
+                let discount = data["discount"] as? Int ?? 0
+                let createdAt = data["createdAt"] as? Date ?? Date.distantPast
+                let updatedAt = data["updatedAt"] as? Date ?? Date.distantPast
+                let search_keys = data["search_keys"] as? [String] ?? [""]
                 var catId: String = ""
               
                 catId = document.get("category_id") as! String
+                
                 print("cat id:" , document.get("category_id") ?? "")
                 if self.categoryUid == catId {
                     self.removeAlertView()
-                    let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags:self.stringTags, url: url, id: id)
+                    let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags:self.stringTags, url: url, id: id, discount: discount, createdAt: createdAt, updatedAt: updatedAt, search_keys: self.searchKeyValues)
              self.product.append(newProduct)
                     self.i = self.i+1
                 }

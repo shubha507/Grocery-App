@@ -45,6 +45,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
     var price = ""
     var active = ""
     var descript = ""
+    var discount = " "
     var tags = [String]()
     var name = ""
    var category = ""
@@ -59,6 +60,9 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @IBOutlet weak var productPrice: UITextField!
     
+    @IBOutlet weak var productDiscount: UITextField!
+    @IBAction func productDiscount(_ sender: Any) {
+    }
     
     @IBOutlet weak var productCategory: UITextField!
     @IBOutlet weak var productActiveStatus: UITextField!
@@ -71,6 +75,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
     let tableView = UITableView()
     var selectedCategory = ""
     var tag = [String]()
+    var searchKey = [String]()
     var width = CGFloat()
 
     func width(text:String?, font: UIFont, height:CGFloat) -> CGFloat {
@@ -110,6 +115,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         print("category id is:", categoryIdd)
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Product", style: .plain, target: nil, action: nil)
 
+        productDiscount.delegate = self
         productTags.delegate = self
         productCategory.delegate = self
         productName.delegate = self
@@ -127,7 +133,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
             productName.text = name
             productDescription.text = descript
             productPrice.text = price
-            
+            productDiscount.text = discount
             var i = 0
             while i < productCategoryDict[0].count {
                 if categoryIdd == productCategoryDict[1][i] {
@@ -153,6 +159,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
             active = ""
             categoryIdd = ""
             tags = [""]
+            discount = " "
             
             
         }
@@ -160,6 +167,51 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
     }
    
   
+    func getSearchKeys(name: String) -> [String]
+    {
+        let stringName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        var i = 0
+        var j = 0
+        var p = 0
+        while j < stringName.count
+        {
+            if stringName[stringName.index(stringName.startIndex, offsetBy: j)] == " "   {
+                
+                if j - i >= 3 {
+                    for k in i+2 ... j-1 {
+                        let index = stringName.index(stringName.startIndex, offsetBy: i)
+                        let lastIndex = stringName.index(stringName.startIndex, offsetBy: k )
+                        let range = index...lastIndex
+                        let substring = String(stringName[range])
+                        searchKey.append(substring)
+                    }
+                }
+                i = j + 1
+                p = j
+            }
+            else if j == stringName.count-1 {
+                
+                if j - i >= 3 {
+                    for k in i+2 ... j-1 {
+                        let index = stringName.index(stringName.startIndex, offsetBy: i)
+                        let lastIndex = stringName.index(stringName.startIndex, offsetBy: k )
+                        let range = index...lastIndex
+                        let substring = String(stringName[range])
+                        searchKey.append(substring)
+                    }
+                }
+                i = j + 1
+            }
+            j = j + 1
+        }
+       // let range = ..<stringName.endIndex
+        if p > 0 {
+        searchKey.append((String)(stringName.suffix(stringName.count - p - 1)))
+        }
+        searchKey.append(name)
+        print("search key is:" , searchKey)
+        return searchKey
+    }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
@@ -202,6 +254,13 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
             
             scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
             
+        }
+        else if textField == productDiscount {
+            productDiscount.layer.borderWidth = 2
+            productDiscount.layer.borderColor = UIColor.systemGreen.cgColor
+            textField.keyboardType = UIKeyboardType.default
+            
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
         }
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -258,6 +317,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == productName {
+            self.getSearchKeys(name: self.productName.text ?? "")
             productName.layer.borderWidth = 0
             productName.layer.borderColor = UIColor.white.cgColor
            
@@ -284,6 +344,11 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
        else if textField == productActiveStatus {
             productActiveStatus.layer.borderWidth = 0
             productActiveStatus.layer.borderColor = UIColor.white.cgColor
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
+        }
+       else if textField == productDiscount {
+            productDiscount.layer.borderWidth = 0
+            productDiscount.layer.borderColor = UIColor.white.cgColor
         scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
         }
         
@@ -401,7 +466,9 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
             }
         }
         
-        
+        let timeStamp = NSDate().timeIntervalSince1970
+        let myTimeInterval = TimeInterval(timeStamp)
+        let  time = NSDate(timeIntervalSince1970: TimeInterval(myTimeInterval))
         db.collection("products").document("\(id)").setData([
             "active": boolValue!,
            "category_id": "\(categoryID ?? "")",
@@ -409,6 +476,11 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
             "description": trimString(selectedField: productDescription),
             "name": trimString(selectedField: productName),
             "price": Int(trimString(selectedField: productPrice)) as Any,
+            "discount": Int(trimString(selectedField: productDiscount)) as Any,
+
+            "search_keys": searchKey,
+            "createdAt":  time,
+            "updatedAt": time,
             "tags": tag,
             
         ]) { err in
@@ -416,7 +488,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
                 print("Error writing document: \(err)")
             } else {
                 print("Document successfully written!")
-               
+                print("search key:" , self.searchKey)
             }
         }
         
@@ -531,6 +603,11 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
             productActiveStatus.layer.borderColor = UIColor.systemRed.cgColor
             showAlert(messageValue: "Value of field missing")
         }
+        else if productDiscount.text!.isEmpty {
+            productDiscount.layer.borderWidth = 2
+            productDiscount.layer.borderColor = UIColor.systemRed.cgColor
+            showAlert(messageValue: "Value of field missing")
+        }
         else if tag.isEmpty {
             productTags.layer.borderWidth = 2
             productTags.layer.borderColor = UIColor.systemRed.cgColor
@@ -553,6 +630,12 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
             productPrice.layer.borderColor = UIColor.systemRed.cgColor
             showAlert(messageValue: "No of characters exceeded")
         }
+        else if productDiscount.text?.count ?? 0 >= 20{
+            productDiscount.layer.borderWidth = 2
+            productDiscount.layer.borderColor = UIColor.systemRed.cgColor
+            showAlert(messageValue: "No of characters exceeded")
+        }
+        
         
        
         
@@ -591,6 +674,9 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
             }
             
+            let timeStamp = NSDate().timeIntervalSince1970
+            let myTimeInterval = TimeInterval(timeStamp)
+            let  time = NSDate(timeIntervalSince1970: TimeInterval(myTimeInterval))
             
             db.collection("products").document("\(uid)").updateData([
                 "active": boolValue!,
@@ -600,6 +686,9 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
                 "description": trimString(selectedField: productDescription),
                 "name": trimString(selectedField: productName),
                 "price": Int(trimString(selectedField: productPrice)) as Any,
+                "discount": Int(trimString(selectedField: productDiscount)) as Any,
+
+                "updatedAt": time,
                 "tags": tag,
                 
             ]) { [self] err in
