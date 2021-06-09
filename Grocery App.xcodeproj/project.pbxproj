@@ -8,6 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		2467AD5B315B3AB0875600A6 /* Pods_Grocery_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C695C44EAA4F5B4508F9F65D /* Pods_Grocery_App.framework */; };
+		62D4B14E267094E3007D546A /* TagsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D4B14D267094E3007D546A /* TagsCollectionViewCell.swift */; };
+		62D4B1592670977A007D546A /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D4B1502670977A007D546A /* CategoryTableViewCell.swift */; };
+		62D4B15A2670977A007D546A /* AdminCategoriesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D4B1512670977A007D546A /* AdminCategoriesCollectionViewCell.swift */; };
+		62D4B15B2670977A007D546A /* AdminProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D4B1522670977A007D546A /* AdminProductViewController.swift */; };
+		62D4B15C2670977A007D546A /* AddProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D4B1532670977A007D546A /* AddProductViewController.swift */; };
+		62D4B15D2670977A007D546A /* AdminCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D4B1542670977A007D546A /* AdminCategoriesViewController.swift */; };
+		62D4B15E2670977A007D546A /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D4B1552670977A007D546A /* AddCategoryViewController.swift */; };
+		62D4B15F2670977A007D546A /* AdminProductCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D4B1562670977A007D546A /* AdminProductCollectionViewCell.swift */; };
+		62D4B1602670977A007D546A /* Admin.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 62D4B1572670977A007D546A /* Admin.storyboard */; };
+		62D4B1612670977A007D546A /* TableViewProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D4B1582670977A007D546A /* TableViewProductTableViewCell.swift */; };
+		62D4B16426709819007D546A /* Products.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D4B16326709819007D546A /* Products.swift */; };
 		B20C2B9A263939E60001B9FA /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2B99263939E60001B9FA /* CustomTabBar.swift */; };
 		B20C2BAF263974860001B9FA /* CustomTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BAE263974860001B9FA /* CustomTabBarViewController.swift */; };
 		B20C2BB826397F9F0001B9FA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BB726397F9F0001B9FA /* HomeViewController.swift */; };
@@ -66,6 +77,17 @@
 
 /* Begin PBXFileReference section */
 		18A7324169AE42BDD20703FF /* Pods-Grocery App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grocery App.debug.xcconfig"; path = "Target Support Files/Pods-Grocery App/Pods-Grocery App.debug.xcconfig"; sourceTree = "<group>"; };
+		62D4B14D267094E3007D546A /* TagsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsCollectionViewCell.swift; sourceTree = "<group>"; };
+		62D4B1502670977A007D546A /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
+		62D4B1512670977A007D546A /* AdminCategoriesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminCategoriesCollectionViewCell.swift; sourceTree = "<group>"; };
+		62D4B1522670977A007D546A /* AdminProductViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminProductViewController.swift; sourceTree = "<group>"; };
+		62D4B1532670977A007D546A /* AddProductViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddProductViewController.swift; sourceTree = "<group>"; };
+		62D4B1542670977A007D546A /* AdminCategoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminCategoriesViewController.swift; sourceTree = "<group>"; };
+		62D4B1552670977A007D546A /* AddCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
+		62D4B1562670977A007D546A /* AdminProductCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminProductCollectionViewCell.swift; sourceTree = "<group>"; };
+		62D4B1572670977A007D546A /* Admin.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Admin.storyboard; sourceTree = "<group>"; };
+		62D4B1582670977A007D546A /* TableViewProductTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewProductTableViewCell.swift; sourceTree = "<group>"; };
+		62D4B16326709819007D546A /* Products.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Products.swift; sourceTree = "<group>"; };
 		A9EF7194E3A7173B735F6D76 /* Pods-Grocery App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grocery App.release.xcconfig"; path = "Target Support Files/Pods-Grocery App/Pods-Grocery App.release.xcconfig"; sourceTree = "<group>"; };
 		B20C2B99263939E60001B9FA /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		B20C2BAE263974860001B9FA /* CustomTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarViewController.swift; sourceTree = "<group>"; };
@@ -223,6 +245,16 @@
 		B2536E872631E6C400EADC0C /* Grocery App */ = {
 			isa = PBXGroup;
 			children = (
+				62D4B1552670977A007D546A /* AddCategoryViewController.swift */,
+				62D4B1532670977A007D546A /* AddProductViewController.swift */,
+				62D4B1572670977A007D546A /* Admin.storyboard */,
+				62D4B1512670977A007D546A /* AdminCategoriesCollectionViewCell.swift */,
+				62D4B1542670977A007D546A /* AdminCategoriesViewController.swift */,
+				62D4B1562670977A007D546A /* AdminProductCollectionViewCell.swift */,
+				62D4B1522670977A007D546A /* AdminProductViewController.swift */,
+				62D4B1502670977A007D546A /* CategoryTableViewCell.swift */,
+				62D4B1582670977A007D546A /* TableViewProductTableViewCell.swift */,
+				62D4B14D267094E3007D546A /* TagsCollectionViewCell.swift */,
 				B2CAFE5526401BE400C75C3E /* Model */,
 				B22A43E22637E0AA001F1AC2 /* View */,
 				B2536E882631E6C400EADC0C /* AppDelegate.swift */,
@@ -264,8 +296,9 @@
 		B2CAFE5526401BE400C75C3E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B2CAFE5626401C0800C75C3E /* Categories.swift */,
+				62D4B16326709819007D546A /* Products.swift */,
 				B290DD502667037800565B75 /* Product.swift */,
+				B2CAFE5626401C0800C75C3E /* Categories.swift */,
 				B2CAFE5A26402A5F00C75C3E /* DataManager.swift */,
 				B290DD542667046000565B75 /* Discount.swift */,
 				B290DD572667049900565B75 /* Deals.swift */,
@@ -342,6 +375,7 @@
 				B257D0AF264A9CCE00CD69AB /* ProductDetailFirstTableViewCell.xib in Resources */,
 				B257D0CB264BF15B00CD69AB /* ProductDetailThirdCollectionViewCell.xib in Resources */,
 				B2536E902631E6C400EADC0C /* Main.storyboard in Resources */,
+				62D4B1602670977A007D546A /* Admin.storyboard in Resources */,
 				B257D0C6264BD1BF00CD69AB /* ProductDetailThirdTableViewCell.xib in Resources */,
 				B25169B0265378940003CB1A /* ProductReviewTableViewCell.xib in Resources */,
 			);
@@ -412,21 +446,28 @@
 				B257D0C5264BD1BF00CD69AB /* ProductDetailThirdTableViewCell.swift in Sources */,
 				B2E90108263698E600A24E89 /* Utility.swift in Sources */,
 				B20C2BBB263991F00001B9FA /* OrderViewController.swift in Sources */,
+				62D4B14E267094E3007D546A /* TagsCollectionViewCell.swift in Sources */,
 				B241BAFA2665000B0028FA70 /* OrderStatusCollectionViewCell.swift in Sources */,
 				B21D0F1F264703AE00EFE99B /* Extension.swift in Sources */,
 				B290DD582667049900565B75 /* Deals.swift in Sources */,
 				B20C2B9A263939E60001B9FA /* CustomTabBar.swift in Sources */,
 				B251F19F26428C10007823AA /* ProductsViewController.swift in Sources */,
+				62D4B15D2670977A007D546A /* AdminCategoriesViewController.swift in Sources */,
 				B25169AF265378940003CB1A /* ProductReviewTableViewCell.swift in Sources */,
 				B290DD512667037800565B75 /* Product.swift in Sources */,
+				62D4B15B2670977A007D546A /* AdminProductViewController.swift in Sources */,
 				B22F730B263AC413004CCEF7 /* CategoriesTableViewCell.swift in Sources */,
+				62D4B16426709819007D546A /* Products.swift in Sources */,
+				62D4B1592670977A007D546A /* CategoryTableViewCell.swift in Sources */,
 				B2CAFE5726401C0800C75C3E /* Categories.swift in Sources */,
 				B251F1AB264556DB007823AA /* PopularDealsTableViewCell.swift in Sources */,
 				B20C2BC1263992930001B9FA /* CartViewController.swift in Sources */,
 				B2389AE8265F7B35004DC23F /* AccountDetailViewController.swift in Sources */,
+				62D4B15F2670977A007D546A /* AdminProductCollectionViewCell.swift in Sources */,
 				B225BA8D2649A68600F84146 /* ProductDetailViewController.swift in Sources */,
 				B2E901032636916500A24E89 /* LoginScreenController.swift in Sources */,
 				B2E9010B2636CE5E00A24E89 /* VerificationScreenController.swift in Sources */,
+				62D4B1612670977A007D546A /* TableViewProductTableViewCell.swift in Sources */,
 				B257D0BC264BD18400CD69AB /* ProductDetailSecondTableViewCell.swift in Sources */,
 				B290DD5C266704CE00565B75 /* Users.swift in Sources */,
 				B2536E892631E6C400EADC0C /* AppDelegate.swift in Sources */,
@@ -436,8 +477,11 @@
 				B2D240BA26523F7900CEEFFF /* CartTableViewCell.swift in Sources */,
 				B241BB05266561800028FA70 /* OrderStatusDesignTableViewCell.swift in Sources */,
 				B257D0CA264BF15B00CD69AB /* ProductDetailThirdCollectionViewCell.swift in Sources */,
+				62D4B15C2670977A007D546A /* AddProductViewController.swift in Sources */,
 				B2528E5C263BDF6200598F2A /* DiscountCollectionViewCell.swift in Sources */,
 				B2536E8B2631E6C400EADC0C /* SceneDelegate.swift in Sources */,
+				62D4B15E2670977A007D546A /* AddCategoryViewController.swift in Sources */,
+				62D4B15A2670977A007D546A /* AdminCategoriesCollectionViewCell.swift in Sources */,
 				B20C2BAF263974860001B9FA /* CustomTabBarViewController.swift in Sources */,
 				B257D0AE264A9CCE00CD69AB /* ProductDetailFirstTableViewCell.swift in Sources */,
 			);
