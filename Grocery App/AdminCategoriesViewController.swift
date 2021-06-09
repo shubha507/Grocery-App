@@ -28,10 +28,10 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
     private var dict = [Int : String]()
     private var dictCategory = [String: String]()
     private var sortedDict = [Dict]()
-    private var dictCat = [[String]]()
+    //private var dictCat = [[String]]()
     private var sortedCategory = [Categories]()
   
- 
+    private var dictCat = [[String]]()
     func fetchData(){
         var row1 = [String]()
         var row2 = [String]()
@@ -82,16 +82,16 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
         self.tableViewCategory.separatorStyle = UITableViewCell.SeparatorStyle.none
         fetchData()
         self.tableViewCategory.allowsSelection = false
-        
-        
+        self.tabBarController?.tabBar.unselectedItemTintColor = UIColor.init(white: 1, alpha: 0.5)
+       // self.tabBarController = [tabTwoItem]
     }
     
     @IBAction func plusButtonTapped(_ sender: Any) {
         let sec:AddCategoryViewController = self.storyboard?.instantiateViewController(identifier: "AddCategoryViewController") as! AddCategoryViewController
         sec.selectionDelegate = self
        // sec.strname = nameTxtField.text
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Category", style: .plain, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
+      //  self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Category", style: .plain, target: nil, action: nil)
+      //  self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationController?.pushViewController(sec, animated: true)
         fetchData()
         self.tableViewCategory.reloadData()
@@ -145,8 +145,8 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
         sec.category = "\(sortedCategory[indexPath1.row].name!)"
         sec.rank = "\(sortedCategory[indexPath1.row].rank!)"
         sec.imageurl = "\(sortedCategory[indexPath1.row].url!)"
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Edit Category", style: .plain, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
+        //self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Edit Category", style: .plain, target: nil, action: nil)
+       // self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationController?.pushViewController(sec, animated: true)
         self.tableViewCategory.reloadData()
     }

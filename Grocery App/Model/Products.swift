@@ -6,58 +6,47 @@
 //
 
 import UIKit
+import Foundation
+import FirebaseAuth
+import FirebaseCore
+import FirebaseFirestore
 import FirebaseFirestoreSwift
+
 struct Product{
     
     var active : Bool?
     var categoryId : String?
     var description : String?
-    var price : Int?
+    var price : Double?
     var name : String?
     var tags : [String]?
     var url : String?
     var id : String?
-    var discount : Int?
-    var createdAt : Date?
-    var updatedAt : Date?
+    var discount : Double?
+    var createdAt : Timestamp?
+    var updatedAt : Timestamp?
     var search_keys : [String]?
-    init(active : Bool? , categoryId : String?, description : String?,price : Int?, name : String?,tags : [String]? , url : String?, id: String?, discount: Int?, createdAt: Date?, updatedAt: Date?, search_keys: [String]?){
-        self.active = active
-        self.categoryId = categoryId
-        self.description = description
-        self.price = price
-        self.name = name
-        self.tags = tags
-        self.url = url
-        self.id = id
-        self.discount = discount
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
-        self.search_keys = search_keys
+    var count: Int?
+   
+    init(data: [String: Any] )
+    {
+        
+        self.active = data["active"] as? Bool ?? true
+        self.name = data["name"] as? String ?? ""
+        self.categoryId = data["category_id"] as? String ?? ""
+        self.tags = data["tags"] as? [String] ?? []
+        self.description = data["description"] as? String ?? ""
+        self.price = data["price"] as? Double ?? 0.0
+        self.url = data["url"] as? String ?? ""
+        self.id = data["id"] as? String ?? ""
+        self.discount = data["discount"] as? Double ?? 0.0
+        self.createdAt = data["createdAt"] as? Timestamp ?? nil
+        self.updatedAt = data["updatedAt"] as? Timestamp ?? nil
+        self.search_keys = data["search_keys"] as? [String] ?? []
+        self.count = data["count"] as? Int ?? 0
+
+        
     }
 }
 
-struct Product1: Codable{
-    
-    var active : Bool?
-    var categoryId : String?
-    var description : String?
-    var price : Int?
-    var name : String?
-    var tags : [String]?
-    var url : String?
-    var id : String?
-    @DocumentID var uid:String? = UUID().uuidString
-   
-    enum CodingKeys: String, CodingKey {
-        case active
-        case categoryId = "category_id"
-        case description
-        case price
-        case name
-        case tags
-        case url
-        case id
-    }
-}
 

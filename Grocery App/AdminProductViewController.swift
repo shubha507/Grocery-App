@@ -31,9 +31,53 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
     var categoryDict = [[String]]()
     
     
+    var dictCat = [[String]]()
+    
+    func fetchCategory()
+    {
+        var row1 = [String]()
+        var row2 = [String]()
+        let db = Firestore.firestore()
+        db.collection("categories").getDocuments() { (querySnapshot, err) in
+        if let err = err {
+            print("Error getting documents: \(err)")
+        } else {
+            
+            for document in querySnapshot!.documents {
+                print("\(document.documentID) => \(document.data()["rank"] as! Int)")
+             let data = document.data()
+             let name = data["name"] as? String ?? ""
+             let rank = data["rank"] as? Int ?? 0
+             let url = data["url"] as? String ?? ""
+                let id = data["id"] as? String ?? ""
+               let newCategory = Categories(name: name, rank: rank, url: url, id: id)
+              // let newCategory = Categories1(docId: data)
+                print("document is" , document)
+             
+                
+               
+                row1.append(name)
+                row2.append(document.documentID)
+            }
+          
+            //self.tableView.reloadData()
+            self.dictCat.append(row1)
+            self.dictCat.append(row2)
+            self.tableView.reloadData()
+           
+        }
+    }
+        //tableView.reloadData()
+        
+}
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     
+       
+            
+        
         
         productTableView.delegate = self
         productTableView.dataSource = self
@@ -57,6 +101,10 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         tableView.register(CellClass.self, forCellReuseIdentifier: "Productcell1")
        
         fetchData()
+        fetchCategory()
+        
+        
+       
     }
     let label = UILabel()
     let clearButton = UIButton()
@@ -85,6 +133,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         self.view.addSubview(transparentView)
         tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y , width: frames.width, height: 0)
         self.view.addSubview(tableView)
+        categoryDict = dictCat
         clearButton.frame = CGRect(x: 270, y: CGFloat( (self.categoryDict[0].count  ) * 50) , width: 100, height: 50)
         tableView.layer.cornerRadius = 5
        
@@ -144,30 +193,18 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
             
             self.product = []
                for document in querySnapshot!.documents {
-                print("\(document.documentID) => \(document.data()["price"] as! Int)")
+                print("\(document.documentID) => \(document.data()["price"] as! Double)")
               
-                let data = document.data()
-               let active = data["active"] as? Bool ?? true
-               let name = data["name"] as? String ?? ""
-                let categoryId = data["category_id"] as? String ?? ""
-                let tags = data["tags"] as? [String] ?? [""]
-                let description = data["description"] as? String ?? ""
-               let price = data["price"] as? Int ?? 0
-                let url = data["url"] as? String ?? ""
-                let id = data["id"] as? String ?? ""
-                let discount = data["discount"] as? Int ?? 0
-                let createdAt = data["createdAt"] as? Date ?? Date.distantPast
-                let updatedAt = data["updatedAt"] as? Date ?? Date.distantPast
-                let search_keys = data["search_keys"] as? [String] ?? [""]
+                let newProduct = Product(data: document.data())
+                print(" price:" , newProduct.price ?? 0 )
+                self.stringTags = newProduct.tags ?? []
                 
-                
-                self.stringTags = tags
-                print("self.stringTags:" , tags)
-                let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: self.stringTags, url: url, id: id, discount: discount, createdAt: createdAt, updatedAt: updatedAt, search_keys: self.searchKeyValues)
+               
                 self.product.append(newProduct)
-                let newDict = Dict(stringId: document.documentID, intRankValue: price)
                 
-                self.sortedDict.append(newDict)
+                //let newDict = Dict(stringId: document.documentID, intRankValue: price)
+                
+                //self.sortedDict.append(newDict)
                }
              
               
@@ -176,32 +213,20 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
            }
        }
    }
-  /*  var product1 = [Product1]()
-    func fetchData() {
-        var db = Firestore.firestore()
-        db.collection("products").addSnapshotListener { (QuerySnapshot, error) in
-            guard let documents = QuerySnapshot?.documents else {
-                print("no docs")
-                return
-            }
-            self.product = documents.compactMap{(QueryDocumentSnapshot) -> Product1? in
-                return try? QueryDocumentSnapshot.data(as: Product1.self)
-                
-            }
-        }
-    }*/
+  
     
     
     @objc private func addProduct()
     {
         print("tapped")
         let sec:AddProductViewController = self.storyboard?.instantiateViewController(identifier: "AddProductViewController") as! AddProductViewController
-        sec.selectionDelegate2 = self
+        sec.selectionDelegateAddProductController = self
+        categoryDict = dictCat
         sec.productCategoryDict = self.categoryDict
        
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Product", style: .plain, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
-        self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
+       // self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Product", style: .plain, target: nil, action: nil)
+        //self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
+        //self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationController?.pushViewController(sec, animated: true)
         self.productTableView.reloadData()
     }
@@ -213,7 +238,8 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         let sec:AddProductViewController = self.storyboard?.instantiateViewController(identifier: "AddProductViewController") as! AddProductViewController
 
         print("arrayCategories", arrayCategories)
-        sec.selectionDelegate2 = self
+        sec.selectionDelegateAddProductController = self
+        categoryDict = dictCat
         sec.productCategoryDict = self.categoryDict
         sec.productImageid = "\(product[indexPath2.row].url!)"
         sec.uid = "\(product[indexPath2.row].id ?? "")"
@@ -226,8 +252,8 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         sec.tag = product[indexPath2.row].tags ?? [" "]
             sec.descript = "\(product[indexPath2.row].description!)"
 
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Edit Product", style: .plain, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
+       // self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Edit Product", style: .plain, target: nil, action: nil)
+       // self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         self.navigationController?.pushViewController(sec, animated: true)
         self.productTableView.reloadData()
     }
@@ -241,9 +267,12 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
     {
         print("tapped")
         print(categoryDict)
-        print("category count is" , categoryDict[0].count)
+       // fetchCategory()
+        
+     //   print("category count is" , categoryDict[0].count)
         
         addTranparentView(frames: view.frame )
+        
      
     }
     
@@ -265,7 +294,8 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         }
         else if tableView == self.tableView
         {
-        return categoryDict[0].count + 1
+         
+        return dictCat[0].count + 1
         }
         return 2
     }
@@ -344,21 +374,8 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         } else {
             self.product = []
             for document in querySnapshot!.documents {
-                print("\(document.documentID) => \(document.data()["price"] as! Int)")
+                             
              
-             let data = document.data()
-             let active = data["active"] as? Bool ?? true
-             let name = data["name"] as? String ?? ""
-             let categoryId = data["categoryId"] as? String ?? ""
-             let tags = data["tags"] as? [String] ?? [""]
-             let description = data["description"] as? String ?? ""
-             let price = data["price"] as? Int ?? 0
-             let url = data["url"] as? String ?? ""
-                let id = data["id"] as? String ?? ""
-                let discount = data["discount"] as? Int ?? 0
-                let createdAt = data["createdAt"] as? Date ?? Date.distantPast
-                let updatedAt = data["updatedAt"] as? Date ?? Date.distantPast
-                let search_keys = data["search_keys"] as? [String] ?? [""]
                 var catId: String = ""
               
                 catId = document.get("category_id") as! String
@@ -366,7 +383,9 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
                 print("cat id:" , document.get("category_id") ?? "")
                 if self.categoryUid == catId {
                     self.removeAlertView()
-                    let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags:self.stringTags, url: url, id: id, discount: discount, createdAt: createdAt, updatedAt: updatedAt, search_keys: self.searchKeyValues)
+                    let newProduct = Product(data: document.data())
+                    print(" price:" , newProduct.price ?? 0 )
+                    self.stringTags = newProduct.tags ?? []
              self.product.append(newProduct)
                     self.i = self.i+1
                 }

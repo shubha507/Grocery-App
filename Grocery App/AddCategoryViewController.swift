@@ -126,17 +126,14 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
                 print("Error writing document: \(err)")
             } else {
                 print("Document successfully written!")
-                
+                self.showCompletion(messageValue: "Document successfully written!")
                
             }
         }
         
 
     }
-    func updateData()
-    {
-        
-    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
  
@@ -167,6 +164,14 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
         self.present(alert, animated: true, completion: nil)
     }
     
+    func showCompletion( messageValue: String  )
+    {
+        let alert = UIAlertController(title: nil, message: messageValue, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (handle) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
     
     func trimString(selectedField: UITextField) -> String
     {
@@ -223,7 +228,7 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
                 } else {
                     print("Document \(self.uid) updated successfully!")
              
-                    
+                    showCompletion(messageValue: "Document successfully updated!")
                     self.uid = "nil"
                 }
             }
