@@ -17,20 +17,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let tabBarController = storyboard.instantiateViewController(identifier: "CustomTabBarViewController") as? CustomTabBarViewController
+       
        guard let scene = (scene as? UIWindowScene) else { return }
               window = UIWindow(windowScene: scene)
                 let listenHandler = Auth.auth().addStateDidChangeListener { (auth, user) in
                     if user == nil {
                         self.window?.rootViewController = LoginScreenController()
                     }else{
-                        self.window?.rootViewController = tabBarController
+                        
+                        if (false) {
+                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                            let tabBarController = storyboard.instantiateViewController(identifier: "CustomTabBarViewController") as? CustomTabBarViewController
+                           self.window?.rootViewController = tabBarController
+                        }
+                        else {
+                            let storyboard = UIStoryboard(name: "Admin", bundle: nil)
+                            let tabBarController = storyboard.instantiateViewController(identifier: "AdminTabBarController") as? UITabBarController
+                            self.window?.rootViewController = tabBarController
+                        }
                     }
                 }
        // self.window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
     }
+    
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
