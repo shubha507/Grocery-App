@@ -19,6 +19,14 @@ class OrderStatusCollectionViewCell: UICollectionViewCell {
     
     override class func awakeFromNib() {
         super.awakeFromNib()
+        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.systemGray5.cgColor
+        layer.cornerRadius = 10
     }
     
     

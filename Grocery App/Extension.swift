@@ -7,7 +7,17 @@
 
 import UIKit
 
-
+extension UIButton{
+    func roundedButton(){
+        let maskPath1 = UIBezierPath(roundedRect: bounds,
+            byRoundingCorners: [.topLeft],
+            cornerRadii: CGSize(width: 8, height: 8))
+        let maskLayer1 = CAShapeLayer()
+        maskLayer1.frame = bounds
+        maskLayer1.path = maskPath1.cgPath
+        layer.mask = maskLayer1
+    }
+}
 
 extension UIAlertController {
     
@@ -17,4 +27,11 @@ extension UIAlertController {
             contentView.backgroundColor = color
         }
     }
+}
+
+extension String {
+  var isBackspace: Bool {
+    let char = self.cString(using: String.Encoding.utf8)!
+    return strcmp(char, "\\b") == -92
+  }
 }

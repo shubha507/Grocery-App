@@ -19,7 +19,7 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
     
     private let cartItemNumberImageView : UIImageView = {
         let view = UIImageView( frame: CGRect(x: 45, y: -10, width: 30, height: 40))
-        view.image = UIImage(named: "pop")
+        view.image = UIImage(named: "sms_cha")
         return view
     }()
     
@@ -27,6 +27,7 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         let lbl = UILabel()
         lbl.textAlignment = .center
         lbl.font = UIFont.boldSystemFont(ofSize: 17)
+        lbl.textColor = .white
         return lbl
     }()
     
@@ -37,14 +38,14 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         self.delegate = self
         self.selectedIndex = 0
         setupMiddleButton()
-        configureViewController()
+        ConfigureViewController()
         cartItemNumberImageView.isHidden = true
     }
     
     //Mark :- Helper method
-
-    func configureViewController(){
-            
+    
+    func ConfigureViewController(){
+        
         tabBar.items?[0].title = "Home"
         tabBar.items?[1].title = "Order"
         tabBar.items?[3].title = "Offer"
@@ -72,11 +73,12 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         middleButton.addTarget(self, action: #selector(menuButtonAction), for: .touchUpInside)
         middleButton.imageView?.contentMode = .center
         middleButton.addSubview(imageView)
-              middleButton.layer.shadowColor = UIColor.black.cgColor
+        middleButton.layer.shadowColor = UIColor.black.cgColor
         middleButton.layer.shadowOpacity = 0.1
         middleButton.layer.shadowOffset = CGSize(width: 4, height: 4)
         cartItemNumberImageView.addSubview(cartItemNumberLabel)
         cartItemNumberLabel.anchor(top: cartItemNumberImageView.topAnchor, left: cartItemNumberImageView.leftAnchor, bottom: cartItemNumberImageView.bottomAnchor, right: cartItemNumberImageView.rightAnchor, paddingTop: 10, paddingLeft: 5, paddingBottom: 17, paddingRight: 5)
+        
         //Notification to update number of products in cart in view above cart button
         NotificationCenter.default.addObserver(self, selector: #selector(numberOfProductAddedToCart), name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
         
@@ -87,14 +89,14 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
     }
     
     //Mark :- Action
-
+    
     @objc func numberOfProductAddedToCart(){
         if AppSharedDataManager.shared.productAddedToCart.count == 0{
             cartItemNumberImageView.isHidden = true
         }else{
             cartItemNumberImageView.isHidden = false
-        cartItemNumberLabel.text = "\(AppSharedDataManager.shared.productAddedToCart.count)"
-       }
+            cartItemNumberLabel.text = "\(AppSharedDataManager.shared.productAddedToCart.count)"
+        }
     }
     
     @objc func menuButtonAction(sender: UIButton) {

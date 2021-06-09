@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseCore
+import FirebaseFirestore
+import FirebaseStorage
 
 class CartViewController : UIViewController, UITableViewDelegate, UITableViewDataSource, passQuantityChangeData {
     
     //Mark :- properties
     var dataManager = DataManager()
-    
+    let defaults = UserDefaults.standard
+    var orderDataManager = OrderDataManager()
     @IBOutlet weak var cartTblView: UITableView!
     
     @IBOutlet weak var totalLabel: UILabel!
@@ -82,12 +87,20 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     
     //Mark :- Helper Method
 
-    func totalPriceInCart()->Int?{
-        var sum = 0
+    func totalPriceInCart()->Double?{
+        var sum = 0.0
         for products in AppSharedDataManager.shared.productAddedToCart {
             sum = sum + (products.price! * products.quantity)
         }
         return sum
+    }
+    
+    func totalDiscountInCart()->Double?{
+        var totalDiscount = 0.0
+        for products in AppSharedDataManager.shared.productAddedToCart {
+            totalDiscount = totalDiscount + (products.price! * (products.discount!/100))
+        }
+        return totalDiscount
     }
     
     func configureEmptyCartViewUI(){
@@ -115,12 +128,12 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     
     //Mark :- passQuantityChangeData delegate method
 
-    func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
+    func quantityChanged(cellIndex: Int?, quant: Double?, isQuantViewOpen: Bool?) {
         if quant! > 0 {
             AppSharedDataManager.shared.productAddedToCart[cellIndex!].quantity = quant!
-            print("quant! \(quant!)")
-            totalLabel.text = "₹\(totalPriceInCart()!)"
+            print(quant!)
             cartTblView.reloadData()
+            totalLabel.text = "₹\(totalPriceInCart()!)"
         }else{
             AppSharedDataManager.shared.productAddedToCart[cellIndex!].quantity = quant!
             AppSharedDataManager.shared.productAddedToCart[cellIndex!].isAddedToCart = false
@@ -149,7 +162,7 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cartCell") as! CartTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cartCell") as? CartTableViewCell else {return UITableViewCell()}
         cell.configureCellUI(product: AppSharedDataManager.shared.productAddedToCart[indexPath.row])
         cell.cellIndex = indexPath.row
         cell.delegate = self
@@ -189,17 +202,47 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     @IBAction func checkoutButtonPressed(_ sender: Any) {
-        removeAllProductsAfterCheckout()
         configureEmptyCartViewUI()
         noProductInCartView.isHidden = false
         checkoutButtonView.isHidden = true
         cartTblView.isHidden = true
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let orderDetailVC = storyboard.instantiateViewController(withIdentifier: "OrderDetailsViewController") as! OrderDetailsViewController
-        orderDetailVC.modalPresentationStyle = .fullScreen
-        self.present(orderDetailVC, animated: true, completion: nil)
+        createOrder()
+        removeAllProductsAfterCheckout()
     }
     
-    
+    func createOrder(){
+        let db = Firestore.firestore()
+        var ref: DocumentReference? = nil
+        ref = db.collection("orders").document()
+        if let docId = ref?.documentID {
+            let orderStatusArray = self.orderDataManager.getData(id: docId)
+            ref?.setData([
+            "name" : defaults.string(forKey: "name"),
+            "contact" : Auth.auth().currentUser?.phoneNumber,
+            "createdAt" : Timestamp(date: Date()),
+            "createdBy" : Auth.auth().currentUser?.uid,
+            "currentStatus" : "placed",
+            "deliveryAddress" : defaults.string(forKey: "address"),
+            "total" : totalPriceInCart(),
+            "updatedAt" : Timestamp(date: Date()),
+                "id": ref?.documentID,
+                "allStatus" : orderStatusArray,
+                "items" : dataManager.getData(productArray: AppSharedDataManager.shared.productAddedToCart),
+                "totalDiscount" : totalDiscountInCart(),
+                            "payableAmount" : (totalPriceInCart() ?? 0.0) - (totalDiscountInCart() ?? 0.0)
+            
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let orderDetailVC = storyboard.instantiateViewController(withIdentifier: "OrderDetailsViewController") as! OrderDetailsViewController
+                orderDetailVC.modalPresentationStyle = .fullScreen
+                orderDetailVC.index = 0
+                self.present(orderDetailVC, animated: true, completion: nil)
+            }
+        }
+    }
+    }
 }
-

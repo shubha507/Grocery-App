@@ -9,6 +9,7 @@ import UIKit
 
 class OrderViewController : UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    var orderDataManager = OrderDataManager()
     
     let orderStatusArray = ["All Order","Pending","Processing","Confirmed","Delivered"]
     
@@ -25,6 +26,9 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
         orderStatusTableView.delegate = self
         orderStatusTableView.dataSource = self
         orderStatusTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+        orderDataManager.fetchOrdersData { (error) in
+            self.orderStatusTableView.reloadData()
+        }
         
     }
     
@@ -33,12 +37,9 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "OrderStatusCell", for: indexPath) as? OrderStatusCollectionViewCell
-        cell!.orderStatusLabel.text = orderStatusArray[indexPath.row]
-        cell!.layer.borderWidth = 1
-        cell!.layer.borderColor = UIColor.systemGray5.cgColor
-        cell!.layer.cornerRadius = 10
-        return cell!
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "OrderStatusCell", for: indexPath) as? OrderStatusCollectionViewCell else {return UICollectionViewCell()}
+        cell.orderStatusLabel.text = orderStatusArray[indexPath.row]
+        return cell
     }
 }
 
@@ -61,22 +62,26 @@ extension OrderViewController : UICollectionViewDelegateFlowLayout {
 extension OrderViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return self.orderDataManager.order.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "OrderCell", for: indexPath) as? OrderTableViewCell
-        return cell!
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "OrderCell", for: indexPath) as? OrderTableViewCell else { return UITableViewCell() }
+        cell.configureUI(order: self.orderDataManager.order[indexPath.row])
+        return cell
     }
     
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let orderDetailVC = storyboard.instantiateViewController(withIdentifier: "OrderDetailsViewController") as! OrderDetailsViewController
+        orderDetailVC.index = indexPath.row
         orderDetailVC.modalPresentationStyle = .fullScreen
         self.present(orderDetailVC, animated: true, completion: nil)
     }
-
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
     
 }

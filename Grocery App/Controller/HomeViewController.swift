@@ -10,7 +10,7 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 
-class HomeViewController : UIViewController, UITableViewDelegate, PerformAction, UITextFieldDelegate {
+class HomeViewController : UIViewController, UITableViewDelegate, PerformAction, UITextFieldDelegate, passQuantityChangeData {
     
     
     //Mark :- Properties
@@ -24,7 +24,6 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
     var deals = [Deals]()
     var sortedDeals = [Deals]()
     var imageUrl : String?
-    var name : String?
     
     private let imageView : UIImageView = {
         let iv = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
@@ -35,7 +34,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
     
     private let hiLabel : UILabel = {
         let lbl = UILabel()
-        lbl.text = "Hey"
+        lbl.text = "Hey,"
         lbl.textColor = .white
         lbl.font = UIFont.systemFont(ofSize: 18)
         lbl.textAlignment = .left
@@ -44,12 +43,12 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
     
     private let nameLabel : UILabel = {
         let lbl = UILabel()
-        lbl.text = "Shubha"
         lbl.textColor = .white
         lbl.font = UIFont.systemFont(ofSize: 18)
         lbl.textAlignment = .left
         return lbl
     }()
+    
     
     private let searchFoodLabel : UILabel = {
         let lbl = UILabel()
@@ -89,23 +88,23 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
     }()
     
     private let searchView : UIView = {
-       let vw = UIView()
+        let vw = UIView()
         vw.backgroundColor = UIColor(named: "buttoncolor")
         vw.layer.cornerRadius = 30
         return vw
     }()
     
     let searchCellCollectionVw: UICollectionView = {
-       let layout = UICollectionViewFlowLayout()
+        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-       let fc = UICollectionView(frame: .zero, collectionViewLayout: layout)
-       fc.register(ProductCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell1")
-       fc.backgroundColor = .white
-       fc.showsVerticalScrollIndicator = false
-       fc.layer.cornerRadius = 30
-       fc.bounces = false
-       return fc
-   }()
+        let fc = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        fc.register(ProductCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell1")
+        fc.backgroundColor = .white
+        fc.showsVerticalScrollIndicator = false
+        fc.layer.cornerRadius = 30
+        fc.bounces = false
+        return fc
+    }()
     
     private let addToCartButton : UIButton = {
         let button = UIButton(type: .system)
@@ -116,9 +115,9 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         return button
     }()
-   
+    
     //Mark :- Lifecycle Method
-
+    
     override func viewDidLoad() {
         super .viewDidLoad()
         searchCellCollectionVw.delegate = self
@@ -134,6 +133,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         fetchCategoryData()
         fetchDiscountData()
         searchTextField.addTarget(self, action: #selector(textFieldEditingDidChange(_:)), for: UIControl.Event.editingChanged)
+        print("date \(Date())")
         
     }
     
@@ -143,7 +143,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
     }
     //Mark :- Helper function
     
-func configureUI(){
+    func configureUI(){
         view.addSubview(profileButton)
         profileButton.setDimensions(height: 50, width: 50)
         profileButton.addSubview(imageView)
@@ -153,9 +153,9 @@ func configureUI(){
         
         view.addSubview(hiLabel)
         hiLabel.anchor(top: view.topAnchor, left: view.leftAnchor, paddingTop: 60, paddingLeft: 30, height: 25)
-     
-    view.addSubview(nameLabel)
-     nameLabel.anchor(top: view.topAnchor, left: hiLabel.rightAnchor, paddingTop: 60, paddingLeft: 5, height: 25)
+        
+        view.addSubview(nameLabel)
+        nameLabel.anchor(top: view.topAnchor, left: hiLabel.rightAnchor,  paddingTop: 60, paddingLeft: 5, height: 25)
         
         view.addSubview(searchFoodLabel)
         searchFoodLabel.anchor(top: hiLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 0, paddingLeft: 30, width: view.frame.width - 90, height: 25)
@@ -164,10 +164,11 @@ func configureUI(){
         searchTextField.anchor(top: searchFoodLabel.bottomAnchor, left: view.leftAnchor, paddingTop : 25, paddingLeft: 30, width: view.frame.width - 60, height: 55)
         
         view.addSubview(tblView)
-    tblView.anchor(top: searchTextField.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
+        tblView.anchor(top: searchTextField.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
         tblView.separatorStyle = .none
         tblView.allowsSelection = false
-    //to show all cells above tabbar
+        
+        //to show all cells above tabbar
         tblView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         
     }
@@ -177,147 +178,137 @@ func configureUI(){
         searchView.anchor(top: searchTextField.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
         
         searchView.addSubview(searchCellCollectionVw)
-        searchCellCollectionVw.anchor(top: self.searchView.topAnchor, left: self.searchView.leftAnchor,bottom: searchView.bottomAnchor, right: self.searchView.rightAnchor, paddingTop: 15, paddingLeft: 10,paddingBottom: 0, paddingRight: 10)
-        searchCellCollectionVw.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 50, right: 0)
+        searchCellCollectionVw.anchor(top: self.searchView.topAnchor, left: self.searchView.leftAnchor, right: self.searchView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingRight: 10, height: 400)
+        
+        searchView.addSubview(addToCartButton)
+        addToCartButton.anchor(top: self.searchCellCollectionVw.bottomAnchor, right: self.searchView.rightAnchor, paddingTop: 20, paddingRight: 30, width: 200, height: 50)
+        addToCartButton.addTarget(self, action: #selector(addToCartPressed), for: .touchUpInside)
     }
     
     func configureProfilePicture(){
+        guard let user = Auth.auth().currentUser else {return}
         let db = Firestore.firestore()
-        
-        guard let user = Auth.auth().currentUser else { return }
-        
         db.collection("users").document(user.uid).getDocument { (document, error) in
             if let document = document, document.exists {
-                let data =  document.data()
-                self.imageUrl = data?["url"] as? String
-                self.name = data?["name"] as? String
-                self.dataManager.getImageFrom(url: self.imageUrl, imageView: self.imageView)
                 self.nameLabel.isHidden = false
-                if let text = self.name {
-                    if let first = text.components(separatedBy: " ").first{
-                        self.nameLabel.text = first
-                    }
+                self.nameLabel.text = UserDefaults.standard.string(forKey: "name")
+                let data =  document.data()
+                if let url = data?["url"] as? String {
+                    self.imageUrl = url
+                self.dataManager.getImageFrom(url: self.imageUrl, imageView: self.imageView)
+                }else{
+                    self.imageView.image = UIImage(named: "profile")
                 }
             }else{
-                self.imageView.image = UIImage(named: "profile")
                 self.nameLabel.isHidden = true
+                self.imageView.image = UIImage(named: "profile")
             }
         }
     }
     
+    func quantityChanged(cellIndex: Int?, quant: Double?, isQuantViewOpen: Bool?) {
+        searchedProduct[cellIndex!].isQuantityViewOpen = isQuantViewOpen!
+        searchedProduct[cellIndex!].quantity = quant!
+        if quant! > 0 && searchedProduct[cellIndex!].isAddedToCart == false{
+            AppSharedDataManager.shared.productAddedToCart.append(searchedProduct[cellIndex!])
+            searchedProduct[cellIndex!].isAddedToCart = true
+            NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
+        }else if quant! == 0 && searchedProduct[cellIndex!].isAddedToCart == true {
+            var index = 0
+            for products in AppSharedDataManager.shared.productAddedToCart {
+                if products.id == searchedProduct[cellIndex!].id {
+                    AppSharedDataManager.shared.productAddedToCart.remove(at: index)
+                    searchedProduct[cellIndex!].isAddedToCart = false
+                    NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
+                    return
+                }else{
+                    index = index + 1
+                }
+            }
+            
+        }
+        
+    }
     //fetching categories data(First tbl cell)
     func fetchCategoryData(){
         let db = Firestore.firestore()
         db.collection("categories").getDocuments() { (querySnapshot, err) in
-        if let err = err {
-            print("Error getting documents: \(err)")
-        } else {
-            self.category = []
-            for document in querySnapshot!.documents {
-             let data = document.data()
-                print("data \(data)")
-             let name = data["name"] as? String ?? " "
-             let rank = data["rank"] as? Int ?? 0
-             let url = data["url"] as? String ?? "No url"
-             let id = data["id"]  as? String ?? " "
-                let newCategory = Categories(name: name, rank: rank, url: url,id : id)
-             self.category.append(newCategory)
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                self.category = []
+                for document in querySnapshot!.documents {
+                    let newCategory = Categories(data : document.data())
+                    self.category.append(newCategory)
+                }
+                self.tblView.reloadData()
+                print("category \(self.category)")
+                //sorting category cells according to rank
+                self.sortedCategory = self.category.sorted(by: { $0.rank! < $1.rank! })
             }
-            self.tblView.reloadData()
-            print("category \(self.category)")
-            //sorting category cells according to rank
-            self.sortedCategory = self.category.sorted(by: { $0.rank! < $1.rank! })
-          
         }
     }
-      }
     
     //fetching discount data(second tbl cell)
     func fetchDiscountData(){
         let db = Firestore.firestore()
         db.collection("discounts").getDocuments() { (querySnapshot, err) in
-        if let err = err {
-            print("Error getting documents: \(err)")
-        } else {
-            for document in querySnapshot!.documents {
-               print("\(document.documentID) => \(document.data()["rank"] as! Int)")
-             let data = document.data()
-             let rank = data["rank"] as? Int ?? 0
-             let url = data["url"] as? String ?? "No url"
-             let id = data["id"] as? String ?? " "
-             let discount = data["discount"] as? String ?? " "
-             let createdAt = data["created_at"] as? String ?? " "
-             let title = data["title"] as? String ?? " "
-             let offerTitle = data["offerTitle"] as? String ?? " "
-             let offerDescription = data["offerDescription"] as? String ?? " "
-                let newDiscount = Discount(createdAt: createdAt, discount: discount, url: url, id: id, rank: rank, title : title ,offerTitle : offerTitle, offerDescription:offerDescription )
-             self.discount.append(newDiscount)
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    print("\(document.documentID) => \(document.data()["rank"] as! Int)")
+                    let newDiscount = Discount(data: document.data() )
+                    self.discount.append(newDiscount)
+                }
+                self.tblView.reloadData()
+                //sorting category cells according to rank
+                self.sortedDiscount = self.discount.sorted(by: { $0.rank! < $1.rank! })
             }
-            self.tblView.reloadData()
-            //sorting category cells according to rank
-            self.sortedDiscount = self.discount.sorted(by: { $0.rank! < $1.rank! })
         }
     }
-}
     
     //fetching Deals data(third cell)
     func fetchDealsData(){
         let db = Firestore.firestore()
         db.collection("deals").getDocuments() { (querySnapshot, err) in
-        if let err = err {
-            print("Error getting documents: \(err)")
-        } else {
-            for document in querySnapshot!.documents {
-               print("\(document.documentID) => \(document.data()["rank"] as! Int)")
-             let data = document.data()
-             let name = data["name"] as? String ?? " "
-             let rank = data["rank"] as? Int ?? 0
-             let url = data["url"] as? String ?? "No url"
-             let id = data["id"] as? String ?? " "
-             let discount = data["discount"] as? String ?? " "
-             let createdAt = data["created_at"] as? String ?? " "
-             let newDeals = Deals(createdAt: createdAt, discount: discount, url: url, id: id, name: name, rank: rank )
-             self.deals.append(newDeals)
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    print("\(document.documentID) => \(document.data()["rank"] as! Int)")
+                    let newDeals = Deals(data: document.data() )
+                    self.deals.append(newDeals)
+                }
+                //sorting category cells according to rank
+                self.tblView.reloadData()
+                self.sortedDeals = self.deals.sorted(by: { $0.rank! < $1.rank! })
+                print("arrdeal \(self.sortedDeals)")
             }
-            //sorting category cells according to rank
-            self.tblView.reloadData()
-            self.sortedDeals = self.deals.sorted(by: { $0.rank! < $1.rank! })
-            print("arrdeal \(self.sortedDeals)")
         }
     }
-}
     
     func productsMatchingWithSearch(searchedText : String?){
         searchedProduct.removeAll()
         let db = Firestore.firestore()
-       db.collection("products").whereField("search_keys", arrayContains: searchedText!).getDocuments() { [self] (querySnapshot, err) in
-              if let err = err {
-                   print("Error getting documents: \(err)")
-              } else {
-                   for document in querySnapshot!.documents {
-                       let data = document.data()
-                       let active = data["active"] as? Bool ?? nil
-                       let name = data["name"] as? String ?? ""
-                       let categoryId = data["category_id"] as? String ?? ""
-                       let description = data["description"] as? String ?? ""
-                       let tags = data["tags"] as? [String] ?? []
-                       let price = data["price"] as? Int ?? 0
-                       let url = data["url"] as? String ?? "No url"
-                       let id = data["id"] as? String ?? ""
-                       let searchKey = data["search_keys"] as? [String] ?? []
-                       if active == true {
-                           let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: tags, url: url,searchKey: searchKey, id : id)
-                       self.searchedProduct.append(newProduct)
-                       self.searchCellCollectionVw.reloadData()
-                       }
-                   }
-              }
-    }
+        db.collection("products").whereField("search_keys", arrayContains: searchedText!).getDocuments() { [self] (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    let newProduct = Product(data : document.data())
+                    if newProduct.active == true {
+                        self.searchedProduct.append(newProduct)
+                        self.searchCellCollectionVw.reloadData()
+                    }
+                }
+            }
+        }
     }
     
     
     //Mark :- action Method
-
+    
     @objc func profileButtonTapped(){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let accountVC = storyboard.instantiateViewController(identifier: "AccountDetailViewController") as! AccountDetailViewController
@@ -333,8 +324,9 @@ func configureUI(){
     
     @objc func addToCartPressed(){
         for product in searchedProduct {
-                AppSharedDataManager.shared.productAddedToCart.append(product)
-                NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
+            AppSharedDataManager.shared.productAddedToCart.append(product)
+            product.isAddedToCart = true
+            NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
             
         }
     }
@@ -375,27 +367,28 @@ extension HomeViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CategoriesTableViewCell
+        if indexPath.row == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? CategoriesTableViewCell {
+            
             cell.collectionViewData(array: sortedCategory)
             cell.seeAllButton.addTarget(self, action: #selector(seeDetailView), for: .touchUpInside)
             cell.delegate = self
-        return cell
-        }else if indexPath.row == 1{
-            let cell1 = tableView.dequeueReusableCell(withIdentifier: "cell1") as! DiscountTableViewCell
-            cell1.collectionViewData(array: sortedDiscount)
-            return cell1
+            return cell
+        }else if indexPath.row == 1, let cell = tableView.dequeueReusableCell(withIdentifier: "cell1") as? DiscountTableViewCell {
+            cell.collectionViewData(array: sortedDiscount)
+            return cell
         }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell2") as! PopularDealsTableViewCell
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "cell2") as? PopularDealsTableViewCell{
             cell.collectionViewData(array: sortedDeals)
-                
+            
             return cell
         }
+        }
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0{
-           return 250
+            return 250
         }else if indexPath.row == 1{
             return 180
         }else{
@@ -403,7 +396,7 @@ extension HomeViewController : UITableViewDataSource {
         }
         
     }
-
+    
 }
 
 extension HomeViewController : UICollectionViewDelegate , UICollectionViewDataSource {
@@ -418,25 +411,22 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDataSo
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as! ProductCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as? ProductCollectionViewCell else {return UICollectionViewCell()}
+        cell.delegate = self
         cell.cellNumber = indexPath.row
-       cell.addHorizontalView()
-     //   cell.addVerticalView()
+        cell.addHorizontalView()
         if indexPath.row % 2 == 0{
             cell.addVerticalView()
             
         }
         cell.configureCellUI(product: searchedProduct[indexPath.row])
-        cell.greenView.isHidden = true
-        cell.plusButton.isHidden = true
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-       let productDetailVC = storyboard.instantiateViewController(identifier: "ProductDetailViewController") as! ProductDetailViewController
-       // let productDetailVC = ProductDetailViewController()
+        let productDetailVC = storyboard.instantiateViewController(identifier: "ProductDetailViewController") as! ProductDetailViewController
         productDetailVC.id  = searchedProduct[indexPath.row].id!
         productDetailVC.product = searchedProduct[indexPath.row]
         productDetailVC.modalPresentationStyle = .fullScreen

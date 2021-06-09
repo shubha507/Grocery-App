@@ -9,19 +9,22 @@ import UIKit
 
 class CartTableViewCell: UITableViewCell {
     
-    //Mark :- Properties
     var cellIndex : Int?
+    
     var dataManager = DataManager()
+    
     var delegate : passQuantityChangeData?
-    var quantity : Int?
+   
+    var quantity : Double?
+    
     @IBOutlet weak var productImageView: UIImageView!
+    
     @IBOutlet weak var productNameLabel: UILabel!
+    
     @IBOutlet weak var pricePerPeiceLabel: UILabel!
+    
     @IBOutlet weak var productQuantityLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
-    
-    //Mark :- Lifecycle Method
-
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -33,25 +36,6 @@ class CartTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-    //Mark :- Helper function
-
-    func configureCellUI(product : Product){
-        productNameLabel.text = "\(product.name!)"
-        if product.quantity == 0 {
-            quantity = 1
-            delegate?.quantityChanged(cellIndex: cellIndex, quant: quantity, isQuantViewOpen: nil)
-        }else{
-        quantity = product.quantity
-        }
-        productQuantityLabel.text = "\(quantity ?? 0)"
-        pricePerPeiceLabel.text = "₹\(product.price!)"
-        priceLabel.text = "₹\(product.price! * (quantity ?? 0))"
-        dataManager.getImageFrom(url: product.url!, imageView: productImageView)
-        
-    }
-
-    //Mark :- Action
 
     @IBAction func plusButtonPressed(_ sender: Any) {
         quantity = quantity! + 1
@@ -71,4 +55,13 @@ class CartTableViewCell: UITableViewCell {
         }
     }
     
+    func configureCellUI(product : Product){
+        productNameLabel.text = "\(product.name!)"
+        quantity = product.quantity
+        productQuantityLabel.text = "\(product.quantity)"
+        pricePerPeiceLabel.text = "₹\(product.price!)"
+        priceLabel.text = "₹\(product.price! * product.quantity)"
+        dataManager.getImageFrom(url: product.url!, imageView: productImageView)
+        
+    }
 }

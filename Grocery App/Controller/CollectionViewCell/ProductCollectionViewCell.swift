@@ -9,12 +9,14 @@ import UIKit
 
 class ProductCollectionViewCell : UICollectionViewCell {
     
-    //Mark :- Properties
-
     var isQuantityViewOpen : Bool?
+    
     var cellNumber : Int?
-    var quantity : Int?
+    
+    var quantity : Double?
+    
     var dataManager = DataManager()
+    
     var delegate : passQuantityChangeData?
     
     let minusButton : UIButton = {
@@ -37,6 +39,8 @@ class ProductCollectionViewCell : UICollectionViewCell {
         lbl.backgroundColor = UIColor(named: "mygreen")
        return lbl
     }()
+    
+    
     
     let plusGreenViewButton : UIButton = {
         let uv = UIButton(type: .system)
@@ -69,24 +73,31 @@ class ProductCollectionViewCell : UICollectionViewCell {
     let nameLabel : UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.boldSystemFont(ofSize: 20)
-        lbl.text = "Apple (1kg)"
         lbl.textColor = .black
         lbl.textAlignment = .left
-        lbl.numberOfLines = 2
+        lbl.numberOfLines = 0
         return lbl
     }()
     
-    let descriptionLabel : UILabel = {
+    let strikeOutPriceLabel : UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.systemFont(ofSize: 15)
-        lbl.textColor = .lightGray
+        lbl.font = UIFont.systemFont(ofSize: 18)
+        lbl.textColor = .systemGray2
         lbl.textAlignment = .left
         return lbl
     }()
     
     let priceLabel : UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 18)
+        lbl.font = UIFont.boldSystemFont(ofSize: 20)
+        lbl.textColor = UIColor(named: "mygreen")
+        lbl.textAlignment = .left
+        return lbl
+    }()
+    
+    let discountLabel : UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont.boldSystemFont(ofSize: 20)
         lbl.textColor = UIColor(named: "mygreen")
         lbl.textAlignment = .left
         return lbl
@@ -114,23 +125,25 @@ class ProductCollectionViewCell : UICollectionViewCell {
         return gv
     }()
     
-    //Mark :- Lifecycle Method
-
+    
     override init(frame: CGRect) {
         super .init(frame: frame)
         backgroundColor = .white
-        addSubview(cellImage)
+        contentView.addSubview(cellImage)
         cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10, width: 80, height: 160)
         
-        addSubview(nameLabel)
+        contentView.addSubview(nameLabel)
         nameLabel.anchor(top: cellImage.bottomAnchor, left: leftAnchor, paddingTop:5, paddingLeft: 10, width: frame.width-37)
-        nameLabel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
+//        nameLabel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
         
-        addSubview(descriptionLabel)
-        descriptionLabel.anchor(top: nameLabel.bottomAnchor, left: leftAnchor,  paddingTop: 5, paddingLeft: 10,  width: frame.width-37)
+        contentView.addSubview(priceLabel)
+        priceLabel.anchor(top: nameLabel.bottomAnchor, left: leftAnchor,  paddingTop: 5, paddingLeft: 10, width: frame.width-37)
         
-        addSubview(priceLabel)
-        priceLabel.anchor(top: descriptionLabel.bottomAnchor, left: leftAnchor,  paddingTop: 15, paddingLeft: 10,  width: frame.width-37)
+        contentView.addSubview(strikeOutPriceLabel)
+        strikeOutPriceLabel.anchor(top: priceLabel.bottomAnchor, left: leftAnchor,bottom: bottomAnchor,  paddingTop: 5, paddingLeft: 10,paddingBottom: 5)
+        
+        contentView.addSubview(discountLabel)
+        discountLabel.anchor(top: priceLabel.bottomAnchor, left: strikeOutPriceLabel.rightAnchor,bottom: bottomAnchor,  paddingTop: 5, paddingLeft: 10,paddingBottom: 5)
         
         contentView.addSubview(plusButton)
         plusButton.anchor( bottom: bottomAnchor, right: rightAnchor, paddingBottom: 0, paddingRight: 0, width: 35, height: 35)
@@ -147,7 +160,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //Mark :- Helper function
+    
     func addVerticalView(){
         contentView.addSubview(cellBorderView)
         cellBorderView.anchor(top: topAnchor, right: rightAnchor, paddingTop: 0, paddingRight: 0, width: 0.3, height: 300)
@@ -156,6 +169,15 @@ class ProductCollectionViewCell : UICollectionViewCell {
     func addHorizontalView(){
         contentView.addSubview(cellHorizntalBorderView)
         cellHorizntalBorderView.anchor(left: leftAnchor, bottom: bottomAnchor, paddingLeft: 0, paddingBottom: 0, width: frame.width, height: 0.3)
+    }
+    
+    @objc func plusButtonTapped(){
+        plusButton.isHidden = true
+        greenView.isHidden = false
+        quantity = quantity!+1
+        quantityLabel.text = "\(Int(quantity!))"
+        isQuantityViewOpen = true
+        delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
     }
     
     func configureStackView(){
@@ -167,13 +189,48 @@ class ProductCollectionViewCell : UICollectionViewCell {
         greenView.addSubview(stack)
         stack.anchor(top: greenView.topAnchor, left: greenView.leftAnchor, bottom: greenView.bottomAnchor, right: greenView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 35, height: 115)
     }
+
+    @objc func increaseQuantity(){
+        quantity = quantity!+1
+        quantityLabel.text = "\(Int(quantity!))"
+        isQuantityViewOpen = true
+        delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
+    }
+    
+    @objc func decreaseQuantity(){
+        if quantity! > 1{
+            quantity = quantity!-1
+            quantityLabel.text = "\(Int(quantity!))"
+            delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
+            isQuantityViewOpen = true
+        }else{
+            quantity = 0
+            plusButton.isHidden = false
+            greenView.isHidden = true
+            isQuantityViewOpen = false
+            delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
+        }
+    }
     
     func configureCellUI(product : Product){
         nameLabel.text = product.name!
-        priceLabel.text = "₹\(product.price!)"
-        descriptionLabel.text = product.description!
+        if let discount = product.discount, discount != 0.0 {
+            discountLabel.isHidden = false
+            strikeOutPriceLabel.isHidden = false
+       let exactPriceAfterDiscount = product.price!-(product.price!*(product.discount!/100))
+        priceLabel.text = "₹\(Int(exactPriceAfterDiscount))"
+        let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "₹\(Int(product.price!))")
+            attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: NSMakeRange(0, attributeString.length))
+        discountLabel.text = "\(Int(product.discount!))% off"
+        strikeOutPriceLabel.attributedText = attributeString
+        }else {
+            priceLabel.text = "₹\(Int(product.price!))"
+            discountLabel.isHidden = true
+            strikeOutPriceLabel.isHidden = true
+        }
+       
         quantity = product.quantity
-        quantityLabel.text = "\(product.quantity)"
+        quantityLabel.text = "\(Int(product.quantity))"
         isQuantityViewOpen = product.isQuantityViewOpen
         dataManager.getImageFrom(url: product.url!, imageView: cellImage)
         if isQuantityViewOpen! {
@@ -189,38 +246,4 @@ class ProductCollectionViewCell : UICollectionViewCell {
             product.isAddedToCart = true
         }
     }
-
-    //Mark :- Action
-
-    @objc func increaseQuantity(){
-        quantity = quantity!+1
-        quantityLabel.text = "\(quantity!)"
-        isQuantityViewOpen = true
-        delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
-    }
-    
-    @objc func decreaseQuantity(){
-        if quantity! > 1{
-            quantity = quantity!-1
-            quantityLabel.text = "\(quantity!)"
-            delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
-            isQuantityViewOpen = true
-        }else{
-            quantity = 0
-            plusButton.isHidden = false
-            greenView.isHidden = true
-            isQuantityViewOpen = false
-            delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
-        }
-    }
-    
-    @objc func plusButtonTapped(){
-        plusButton.isHidden = true
-        greenView.isHidden = false
-        quantity = quantity!+1
-        quantityLabel.text = "\(quantity!)"
-        isQuantityViewOpen = true
-        delegate?.quantityChanged(cellIndex: cellNumber, quant: quantity, isQuantViewOpen: isQuantityViewOpen)
-    }
-    
 }

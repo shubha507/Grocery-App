@@ -14,11 +14,12 @@ protocol PerformAction {
 
 class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
     
-    //Mark :- Properties
-
     var delegate : PerformAction?
+    
     let dataManager = DataManager()
+    
     var array1 = [Categories]()
+    
     var array = ["Vegetables","Fruits","Meat","Egg"]
     
     private let cellView : UIView = {
@@ -57,8 +58,11 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
         return fc
     }()
     
-    //Mark :- LifeCycle Methods
-
+    //created function to pass data from tableview to collectionview
+    func collectionViewData(array : [Categories]){
+        self.array1 = array
+        categoriesCellCollection.reloadData()
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -72,8 +76,6 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
         fatalError()
     }
     
-    //Mark :- Helper function
-
     func configureUI(){
         
         contentView.addSubview(cellView)
@@ -94,11 +96,6 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
         categoriesCellCollection.setDimensions(height: 135, width: cellView.frame.width)
    }
     
-    //created function to pass data from tableview to collectionview
-    func collectionViewData(array : [Categories]){
-        self.array1 = array
-        categoriesCellCollection.reloadData()
-    }
     
     func createLine(){
         let path = UIBezierPath()
@@ -121,8 +118,10 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let controller = ProductsViewController()
-        controller.pageTitle = array1[indexPath.row].name!
-        controller.productId = array1[indexPath.row].id!
+        if let name = array1[indexPath.row].name , let id = array1[indexPath.row].id {
+        controller.pageTitle = array1[indexPath.row].name
+        controller.productId = array1[indexPath.row].id
+        }
         delegate?.pushViewController(controller: controller)
     }
 
@@ -135,9 +134,11 @@ extension CategoriesTableViewCell : UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! CategoryCollectionViewCell
-        cell.cellLabel.text = "\(array1[indexPath.row].name!)"
-         dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as? CategoryCollectionViewCell else {return UICollectionViewCell()}
+        if let name = array1[indexPath.row].name , let url = array1[indexPath.row].url {
+        cell.cellLabel.text = "\(name)"
+        dataManager.getImageFrom(url: "\(url)", imageView: cell.cellImage)
+        }
         return cell
     }
 }

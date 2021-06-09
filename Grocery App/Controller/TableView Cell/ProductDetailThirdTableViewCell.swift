@@ -9,14 +9,13 @@ import UIKit
 
 class ProductDetailThirdTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, passQuantityChangeData {
     
-    //Mark :- Properties
-
     var dataManager = DataManager()
+    
     var similarProductArray = [Product]()
+    
+    
     @IBOutlet weak var ThirdCellCollectionView: UICollectionView!
     
-    //Mark :- Lifecycle Method
-
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -29,14 +28,12 @@ class ProductDetailThirdTableViewCell: UITableViewCell, UICollectionViewDelegate
         
   }
     
-    //Mark :- helper function
-   func getSimilarProductArray(array : [Product]){
+    func getSimilarProductArray(array : [Product]){
         self.similarProductArray = array
         ThirdCellCollectionView.reloadData()
     }
     
-    //Mark :- Delegate Method
-    func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
+    func quantityChanged(cellIndex: Int?, quant: Double?, isQuantViewOpen: Bool?) {
         similarProductArray[cellIndex!].quantity = quant!
         similarProductArray[cellIndex!].isQuantityViewOpen = isQuantViewOpen!
         if quant! > 0 && similarProductArray[cellIndex!].isAddedToCart == false{
@@ -63,11 +60,12 @@ class ProductDetailThirdTableViewCell: UITableViewCell, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductDetailThirdCollectionViewCell", for: indexPath) as? ProductDetailThirdCollectionViewCell
-        cell?.configureCellUI(product: similarProductArray[indexPath.row])
-        cell?.cellIndex = indexPath.row
-        cell?.delegate = self
-        return cell!
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductDetailThirdCollectionViewCell", for: indexPath) as? ProductDetailThirdCollectionViewCell else {return UICollectionViewCell()
+        }
+        cell.configureCellUI(product: similarProductArray[indexPath.row])
+        cell.cellIndex = indexPath.row
+        cell.delegate = self
+        return cell
     }
     
 }
