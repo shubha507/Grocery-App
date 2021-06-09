@@ -21,6 +21,7 @@ protocol PassActionProtocol {
 
 class AddProductViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    @IBOutlet weak var heightTagsCollectionView: NSLayoutConstraint!
     @IBOutlet weak var tagsCollectionView: UICollectionView!
     
     var productImageid = ""
@@ -68,7 +69,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var productActiveStatus: UITextField!
     @IBOutlet weak var productTags: UITextField!
     @IBOutlet weak var scrollView: UIScrollView!
-    var selectionDelegate2: PassActionProtocol?
+    var selectionDelegateAddProductController: PassActionProtocol?
     
     @IBOutlet weak var addButtonInAddProduct: UIButton!
     let transparentView = UIView()
@@ -94,27 +95,44 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
    
     
     var contentView = UIView()
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
       
-        
+      //  fetchCategory()
+      //  print("category count is" , productCategoryDict[0].count)
       
+        productActiveStatus.text = "true"
+        productCategory.text = "\(productCategoryDict[0][0])"
+        if selectedCategory == ""
+        {
+            selectedCategory = "\(productCategoryDict[0][0])"
+        }
         addButtonInAddProduct.layer.cornerRadius = 5
         addProductImage.layer.cornerRadius = addProductImage.frame.size.height/2
     
         tagsCollectionView.delegate = self
         tagsCollectionView.dataSource = self
         
-       
+        if tag.isEmpty
+        {
+            heightTagsCollectionView.constant = 0
+        }
+       else
+        {
+            heightTagsCollectionView.constant = 50
+        }
         
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Product", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
         dataManager.getImageFrom(url: "\(productImageid)", imageView: addProductImage)
-        print("category count is" , productCategoryDict[0].count)
-        print("category id is:", categoryIdd)
+       // print("category count is" , productCategoryDict[0].count)
+       // print("category id is:", categoryIdd)
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Product", style: .plain, target: nil, action: nil)
 
+        
         productDiscount.delegate = self
         productTags.delegate = self
         productCategory.delegate = self
@@ -135,13 +153,13 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
             productPrice.text = price
             productDiscount.text = discount
             var i = 0
-            while i < productCategoryDict[0].count {
-                if categoryIdd == productCategoryDict[1][i] {
-                    category = productCategoryDict[0][i]
+           while i < productCategoryDict[0].count {
+               if categoryIdd == productCategoryDict[1][i] {
+                   category = productCategoryDict[0][i]
                    
-                }
+               }
                 
-                    i = i + 1
+                  i = i + 1
                 
             }
             selectedCategory = category
@@ -237,7 +255,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         else if textField == productPrice {
             productPrice.layer.borderWidth = 2
             productPrice.layer.borderColor = UIColor.systemGreen.cgColor
-            textField.keyboardType = UIKeyboardType.numberPad
+            textField.keyboardType = UIKeyboardType.numbersAndPunctuation
             
          
         }
@@ -258,7 +276,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         else if textField == productDiscount {
             productDiscount.layer.borderWidth = 2
             productDiscount.layer.borderColor = UIColor.systemGreen.cgColor
-            textField.keyboardType = UIKeyboardType.default
+            textField.keyboardType = UIKeyboardType.numbersAndPunctuation
             
             scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
         }
@@ -287,7 +305,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
                else {
                 productTags.autocorrectionType = .no
             tag.append("\(productTags.text ?? "")")
-            
+                heightTagsCollectionView.constant = 50
             
             print("tags:" ,tag)
            
@@ -390,6 +408,10 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         let indexPath3 = IndexPath(row: sender.tag, section: 0)
         tag.remove(at: indexPath3.row)
         print("new tag list:" , tag)
+        if tag.isEmpty
+        {
+            heightTagsCollectionView.constant = 0
+        }
         tagsCollectionView.reloadData()
     }
     
@@ -466,21 +488,21 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
             }
         }
         
-        let timeStamp = NSDate().timeIntervalSince1970
-        let myTimeInterval = TimeInterval(timeStamp)
-        let  time = NSDate(timeIntervalSince1970: TimeInterval(myTimeInterval))
+       let timeStamp = NSDate().timeIntervalSince1970
+       let myTimeInterval = TimeInterval(timeStamp)
+       let  time = NSDate(timeIntervalSince1970: TimeInterval(myTimeInterval))
         db.collection("products").document("\(id)").setData([
             "active": boolValue!,
            "category_id": "\(categoryID ?? "")",
             "id": "\(id)",
             "description": trimString(selectedField: productDescription),
             "name": trimString(selectedField: productName),
-            "price": Int(trimString(selectedField: productPrice)) as Any,
-            "discount": Int(trimString(selectedField: productDiscount)) as Any,
+            "price": Double(trimString(selectedField: productPrice)) as Any,
+            "discount": Double(trimString(selectedField: productDiscount)) as Any,
 
             "search_keys": searchKey,
-            "createdAt":  time,
-            "updatedAt": time,
+            "createdAt": Timestamp(date: Date()),
+            "updatedAt": Timestamp(date: Date()),
             "tags": tag,
             
         ]) { err in
@@ -488,6 +510,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
                 print("Error writing document: \(err)")
             } else {
                 print("Document successfully written!")
+                self.showCompletion(messageValue: "Document successfully written!")
                 print("search key:" , self.searchKey)
             }
         }
@@ -500,6 +523,8 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
     var selectedTextField: UITextField!
     @IBAction func activeDropDownClicked(_ sender: Any) {
       
+        selectedTextField = productPrice
+        selectedTextField.resignFirstResponder()
         selectedTextField = productActiveStatus
         dataStorage = trueArray
         print(dataStorage)
@@ -510,8 +535,11 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     @IBAction func categoryDropDownClicked(_ sender: Any) {
+        selectedTextField = productPrice
+        selectedTextField.resignFirstResponder()
         selectedTextField = productCategory
         dataStorage = productCategoryDict
+        
         print(dataStorage)
         addTranparentView(frames: descriptionDropDownButton.frame)
        
@@ -532,6 +560,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
             print("selected category is: " , selectedCategory)
             cellP.backgroundColor = UIColor.gray
             indexPathOfSelected = indexPath.row
+            //tableView.reloadData()
             selectedCategory = ""
         }
         else if selectedActiveStatus == dataStorage[0][indexPath.row]
@@ -539,6 +568,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
             print("selected category is: " , selectedCategory)
             cellP.backgroundColor = UIColor.gray
             indexPathOfSelected = indexPath.row
+            //tableView.reloadData()
             selectedActiveStatus = ""
         }
         
@@ -551,12 +581,14 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         selectedTextField.text = dataStorage[0][indexPath.row]
+        tableView.reloadData()
         removeTranparentView()
        
     }
    
     func showAlert( messageValue: String  )
     {
+    
         let alert = UIAlertController(title: "Error!", message: messageValue, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (handle) in
             alert.dismiss(animated: true, completion: nil)
@@ -564,6 +596,15 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         self.present(alert, animated: true, completion: nil)
     }
 
+    func showCompletion( messageValue: String  )
+    {
+    
+        let alert = UIAlertController(title: nil, message: messageValue, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (handle) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
     
     func trimString(selectedField: UITextField) -> String
     {
@@ -644,7 +685,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         if uid == ""
         {
         setData2()
-        selectionDelegate2?.addTapped(name: "yes")
+        selectionDelegateAddProductController?.addTapped(name: "yes")
         }
         else
         {
@@ -674,9 +715,9 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
             }
             
-            let timeStamp = NSDate().timeIntervalSince1970
-            let myTimeInterval = TimeInterval(timeStamp)
-            let  time = NSDate(timeIntervalSince1970: TimeInterval(myTimeInterval))
+           // let timeStamp = NSDate().timeIntervalSince1970
+            //let myTimeInterval = TimeInterval(timeStamp)
+           // let  time = NSDate(timeIntervalSince1970: TimeInterval(myTimeInterval))
             
             db.collection("products").document("\(uid)").updateData([
                 "active": boolValue!,
@@ -685,10 +726,10 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
                
                 "description": trimString(selectedField: productDescription),
                 "name": trimString(selectedField: productName),
-                "price": Int(trimString(selectedField: productPrice)) as Any,
-                "discount": Int(trimString(selectedField: productDiscount)) as Any,
+                "price": Double(trimString(selectedField: productPrice)) as Any,
+                "discount": Double(trimString(selectedField: productDiscount)) as Any,
 
-                "updatedAt": time,
+                "updatedAt": Timestamp(date: Date()),
                 "tags": tag,
                 
             ]) { [self] err in
@@ -698,10 +739,11 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
                     print("tag:" , self.tag)
                     print("uid edited is:" ,  self.uid)
                     print("Document successfully updated!")
+                    showCompletion(messageValue: "Document successfully updated!")
                     self.uid = "nil"
                 }
             }
-            selectionDelegate2?.addTapped(name: "yes")
+            selectionDelegateAddProductController?.addTapped(name: "yes")
         }
     
         }
