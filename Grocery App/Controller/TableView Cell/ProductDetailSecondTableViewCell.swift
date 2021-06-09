@@ -13,6 +13,8 @@ protocol PassDetailOrReviewSelected {
 
 class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource {
     
+    //Mark :- Properties
+
     var delegate : PassDetailOrReviewSelected?
     
     let productReviewTableView : UITableView = {
@@ -27,7 +29,6 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
     
     let productDescriptionLabel : UILabel = {
         let pDL = UILabel()
-   //     pDL.text = "Lorem ipsum dolor sitamet, consectetur adipiscing elit, in seddo eiusmod tempor incididunt utlabore etdolore magna aliqua. Utenim adminim veniam, nostrud exercitation ullamco laboris nisiut aliquip exea commodo consequat Duisaute iruredolor in reprehenderit in voluptate velitesse dolore eufugiat."
         pDL.textColor = .white
         pDL.font = UIFont.systemFont(ofSize: 21)
         pDL.numberOfLines = 0
@@ -36,18 +37,14 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
     }()
 
  @IBOutlet weak var detailsButton: UIButton!
-    
  @IBOutlet weak var reviewsButton: UIButton!
-    
  @IBOutlet weak var reviewsNumberLabel: UILabel!
-    
  @IBOutlet weak var belowDetailsView: UIView!
-    
  @IBOutlet weak var belowReviewView: UIView!
-    
  @IBOutlet weak var curvedView: UIView!
     
-    
+    //Mark :- Lifecycle method
+
  override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -69,27 +66,8 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
     productReviewTableView.separatorStyle = .none
     }
     
- @IBAction func DetailsButtonPressed(_ sender: Any) {
-    delegate?.whichViewSelected(isDetailButtonSelected: true, isReviewButtonSelected: false)
-    }
     
- @IBAction func reviewButtonPressed(_ sender: Any) {
-    delegate?.whichViewSelected(isDetailButtonSelected: false, isReviewButtonSelected: true)
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Reviewcell") as! ProductReviewTableViewCell
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
+    //Mark :- Helper Function
     func configureUI(isDetailButtonSelected : Bool? , isReviewButtonSelected : Bool?) {
         if isDetailButtonSelected! {
             detailsButton.tintColor = .black
@@ -110,4 +88,27 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
             print("Review button selected")
         }
     }
+
+    //Mark :- Action
+ @IBAction func DetailsButtonPressed(_ sender: Any) {
+    delegate?.whichViewSelected(isDetailButtonSelected: true, isReviewButtonSelected: false)
+    }
+    
+ @IBAction func reviewButtonPressed(_ sender: Any) {
+    delegate?.whichViewSelected(isDetailButtonSelected: false, isReviewButtonSelected: true)
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Reviewcell") as? ProductReviewTableViewCell else {return UITableViewCell()}
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
   }

@@ -33,12 +33,12 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "OrderStatusCell", for: indexPath) as? OrderStatusCollectionViewCell
-        cell!.orderStatusLabel.text = orderStatusArray[indexPath.row]
-        cell!.layer.borderWidth = 1
-        cell!.layer.borderColor = UIColor.systemGray5.cgColor
-        cell!.layer.cornerRadius = 10
-        return cell!
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "OrderStatusCell", for: indexPath) as? OrderStatusCollectionViewCell else { return UICollectionViewCell()}
+        cell.orderStatusLabel.text = orderStatusArray[indexPath.row]
+        cell.layer.borderWidth = 1
+        cell.layer.borderColor = UIColor.systemGray5.cgColor
+        cell.layer.cornerRadius = 10
+        return cell
     }
 }
 
@@ -65,8 +65,8 @@ extension OrderViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "OrderCell", for: indexPath) as? OrderTableViewCell
-        return cell!
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "OrderCell", for: indexPath) as? OrderTableViewCell else {return UITableViewCell() }
+        return cell
     }
     
     func tableView(_ tableView: UITableView,

@@ -10,7 +10,6 @@ import FirebaseAuth
 
 class LoginScreenController: UIViewController {
     //Mark :- properties
-    var alertController : UIAlertController?
     
     private let continueWithPhoneLbl : UILabel = {
         let lbl = UILabel()
@@ -34,15 +33,7 @@ class LoginScreenController: UIViewController {
         return lbl
     }()
     
-    private let continueButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Continue" , for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = UIColor(named: "myyellow")
-        button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        return button
-    }()
+    private let continueButton = CustomButton()
         
     private let numberTextField : UITextField = {
         let numField = UITextField()
@@ -82,11 +73,6 @@ class LoginScreenController: UIViewController {
         configureUI()
         
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-      //  numberTextField.text = "+"
-    }
 
     //Mark :- Helper method
 
@@ -110,6 +96,7 @@ class LoginScreenController: UIViewController {
         continueButton.setDimensions(height: 50, width: 150)
         continueButton.anchor(right : phoneNumberView.rightAnchor , paddingRight: 10)
         continueButton.addTarget(self, action: #selector(continueButtonPushed), for: .touchUpInside)
+        continueButton.setTitle("Continue" , for: .normal)
         
         
         setupStack()
@@ -135,11 +122,13 @@ class LoginScreenController: UIViewController {
     //Mark :- Action 
 
     @objc func continueButtonPushed(){
-        if numberTextField.text?.count == 13 {
+        
+        guard let phoneNumber = numberTextField.text else { return }
+        
+        if phoneNumber.count == 13 {
         numberTextField.endEditing(true)
-            
-        guard let phnNumber = numberTextField.text else { return }
-        PhoneAuthProvider.provider().verifyPhoneNumber(phnNumber, uiDelegate: nil) { (verificationID, error) in
+    
+        PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { (verificationID, error) in
           if let error = error {
             print(error.localizedDescription)
             return
@@ -154,12 +143,12 @@ class LoginScreenController: UIViewController {
             self.present(controller, animated: true, completion: nil)
           }
         }
-        }else if numberTextField.text!.count < 13 {
-            alertController = UIAlertController(title: nil, message: "Please add country code and 10 digit phone number", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Ok", style: .default, handler: { (dismissAction: UIAlertAction!) in self.alertController?.dismiss(animated: true, completion: nil) })
-            alertController?.modalPresentationStyle = .custom
-            alertController?.addAction(action)
-            self.present(alertController!,
+        }else if phoneNumber.count < 13 {
+          let alertController = UIAlertController(title: nil, message: "Please add country code and 10 digit phone number", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default, handler: { (dismissAction: UIAlertAction!) in alertController.dismiss(animated: true, completion: nil) })
+            alertController.modalPresentationStyle = .custom
+            alertController.addAction(action)
+            self.present(alertController,
                                            animated: true,
                                            completion: nil)
         }
@@ -173,14 +162,4 @@ extension LoginScreenController : UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return range.location <= 12
     }
-    
-    
-   
-    
-    
-    
-    
-        
-    
-    
 }

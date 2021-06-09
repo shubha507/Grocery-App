@@ -9,6 +9,7 @@ import UIKit
 
 class DiscountTableViewCell : UITableViewCell, UICollectionViewDelegate {
     
+    //Mark :- Properties
     var discountArray = [Discount]()
     
     let discountCellCollection : UICollectionView = {
@@ -22,6 +23,8 @@ class DiscountTableViewCell : UITableViewCell, UICollectionViewDelegate {
        return fc
    }()
     
+    //Mark :- LifeCycle Method
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         discountCellCollection.delegate = self
@@ -33,6 +36,8 @@ class DiscountTableViewCell : UITableViewCell, UICollectionViewDelegate {
         fatalError()
     }
     
+    //Mark :- Helper function
+
     func configureUI(){
         contentView.addSubview(discountCellCollection)
         discountCellCollection.anchor(top: topAnchor, left: leftAnchor, bottom:  bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: frame.width, height: 200)
@@ -42,7 +47,6 @@ class DiscountTableViewCell : UITableViewCell, UICollectionViewDelegate {
     func collectionViewData(array : [Discount]){
         self.discountArray = array
         discountCellCollection.reloadData()
-       // print(self.array1)
     }
 }
 
@@ -52,7 +56,7 @@ extension DiscountTableViewCell : UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as! DiscountCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as? DiscountCollectionViewCell else {return UICollectionViewCell()}
         cell.configureUI(discountLbl: discountArray[indexPath.row].offerTitle, discountDescriptionLbl: discountArray[indexPath.row].offerDescription, url: discountArray[indexPath.row].url)
         return cell
 

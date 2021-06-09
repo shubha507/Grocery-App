@@ -9,13 +9,21 @@ import UIKit
 
 class ProductDetailFourthTableViewCell: UITableViewCell {
     
+    //Mark :- Properties
+
     var product: Product?
     
     @IBOutlet weak var priceLabel: UILabel!
     
+    @IBOutlet weak var addToCartButton: UIButton!
+    //Mark :- Lifecycle method
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        addToCartButton.layer.shadowColor = UIColor.darkGray.cgColor
+        addToCartButton.layer.shadowOffset = CGSize(width: 3, height: 5)
+        addToCartButton.layer.shadowOpacity = 0.5
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -23,6 +31,9 @@ class ProductDetailFourthTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    //Mark :- Action
+
     @IBAction func addToCartButtonTapped(_ sender: Any) {
         if !product!.isAddedToCart && product!.quantity > 0 {
             AppSharedDataManager.shared.productAddedToCart.append(product!)

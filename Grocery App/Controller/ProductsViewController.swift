@@ -12,12 +12,10 @@ import FirebaseFirestore
 
 class ProductsViewController : UIViewController,UICollectionViewDelegate, passQuantityChangeData{
     
-    
+    //Mark :- Properties
     
     let dataManager = DataManager()
-    
     var pageTitle : String?
-    
     var productId : String?
     
     private let backButton : UIButton = {
@@ -27,22 +25,19 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         button.addTarget(self, action: #selector(showCategoryScreen), for: .touchUpInside)
         return button
     }()
-
-    @objc func showCategoryScreen(){
-        self.navigationController?.popViewController(animated: true)
-    }
+    
     
     let productCellCollectionVw: UICollectionView = {
-       let layout = UICollectionViewFlowLayout()
+        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-       let fc = UICollectionView(frame: .zero, collectionViewLayout: layout)
-       fc.register(ProductCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell1")
-       fc.backgroundColor = .white
-       fc.showsVerticalScrollIndicator = false
-       fc.layer.cornerRadius = 30
-       fc.bounces = false
+        let fc = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        fc.register(ProductCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell1")
+        fc.backgroundColor = .white
+        fc.showsVerticalScrollIndicator = false
+        fc.layer.cornerRadius = 30
+        fc.bounces = false
         return fc
-   }()
+    }()
     
     
     private let productLabel : UILabel = {
@@ -81,7 +76,7 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         lbl.textColor = .red
         lbl.text = "Oops!"
         lbl.textAlignment = .center
-    return lbl
+        return lbl
     }()
     
     private let noProductLbl : UILabel = {
@@ -90,8 +85,10 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         lbl.textColor = .black
         lbl.numberOfLines = 0
         lbl.textAlignment = .center
-    return lbl
+        return lbl
     }()
+    
+    //Mark :- LifeCycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,47 +96,44 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         view.backgroundColor = UIColor(named: "mygreen")
         productCellCollectionVw.delegate = self
         productCellCollectionVw.dataSource = self
-     //   print("productArray \(productArray)")
-        
-        
-        
         
         self.dataManager.searchData(selectedId: productId, matchId: "category_id") { (error) in
-           // print("self.dataManager.productArray \(self.dataManager.productArray)")
-           // self.productArray = self.dataManager.productArray
-           self.productCellCollectionVw.reloadData()
+            self.productCellCollectionVw.reloadData()
             self.productCellCollectionVw.layoutIfNeeded()
             self.configureView()
-                    }
-      //  print("productArray \(self.dataManager.productArray)")
-        configureUI()
         }
+        configureUI()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         productCellCollectionVw.reloadData()
         productCellCollectionVw.layoutIfNeeded()
     }
-        
-
-func configureView(){
-    if self.dataManager.productArray.count > 0{
-        self.backView.backgroundColor = UIColor(named: "buttoncolor")
-        self.backView.addSubview(self.productCellCollectionVw)
-        self.productCellCollectionVw.anchor(top: self.backView.topAnchor, left: self.backView.leftAnchor, bottom: self.backView.bottomAnchor, right: self.backView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 10)
-        self.productCellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
-            }else{
-                self.backView.backgroundColor = UIColor(red: 163/255, green: 194/255, blue: 194/255, alpha: 1)
-                self.backView.addSubview(self.noProductView)
-                self.noProductView.anchor(top: self.backView.topAnchor, left: self.backView.leftAnchor, bottom: self.backView.bottomAnchor, right: self.backView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 10)
-                self.noProductView.addSubview(self.noProductImageView)
-                self.noProductImageView.anchor(top: self.noProductView.topAnchor, left: self.noProductView.leftAnchor, right: self.noProductView.rightAnchor, paddingTop: 40, paddingLeft: 20, paddingRight: 20, width: self.noProductView.frame.width - 40, height: 250)
-                self.noProductView.addSubview(self.oopsLbl)
-                self.oopsLbl.anchor(top: self.noProductImageView.bottomAnchor, left: self.noProductView.leftAnchor, right: self.noProductView.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 20, width: self.noProductView.frame.width - 40, height: 40)
-                self.noProductView.addSubview(self.noProductLbl)
-                self.noProductLbl.anchor(top: self.oopsLbl.bottomAnchor, left: self.noProductView.leftAnchor, right: self.noProductView.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 20, width: self.noProductView.frame.width - 40, height: 60)
-                self.noProductLbl.text = "No product available in \(self.pageTitle!) category"
-}
-}
+    
+    //Mark :- Helper Function
+    
+    
+    func configureView(){
+        if self.dataManager.productArray.count > 0{
+            self.backView.backgroundColor = UIColor(named: "buttoncolor")
+            self.backView.addSubview(self.productCellCollectionVw)
+            self.productCellCollectionVw.anchor(top: self.backView.topAnchor, left: self.backView.leftAnchor, bottom: self.backView.bottomAnchor, right: self.backView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 10)
+            self.productCellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
+        }else{
+            self.backView.backgroundColor = UIColor(red: 163/255, green: 194/255, blue: 194/255, alpha: 1)
+            self.backView.addSubview(self.noProductView)
+            self.noProductView.anchor(top: self.backView.topAnchor, left: self.backView.leftAnchor, bottom: self.backView.bottomAnchor, right: self.backView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 10)
+            self.noProductView.addSubview(self.noProductImageView)
+            self.noProductImageView.anchor(top: self.noProductView.topAnchor, left: self.noProductView.leftAnchor, right: self.noProductView.rightAnchor, paddingTop: 40, paddingLeft: 20, paddingRight: 20, width: self.noProductView.frame.width - 40, height: 250)
+            self.noProductView.addSubview(self.oopsLbl)
+            self.oopsLbl.anchor(top: self.noProductImageView.bottomAnchor, left: self.noProductView.leftAnchor, right: self.noProductView.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 20, width: self.noProductView.frame.width - 40, height: 40)
+            self.noProductView.addSubview(self.noProductLbl)
+            self.noProductLbl.anchor(top: self.oopsLbl.bottomAnchor, left: self.noProductView.leftAnchor, right: self.noProductView.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 20, width: self.noProductView.frame.width - 40, height: 60)
+            if let title = self.pageTitle {
+            self.noProductLbl.text = "No product available in \(title) category"
+            }
+        }
+    }
     
     func configureUI(){
         view.addSubview(backButton)
@@ -153,20 +147,30 @@ func configureView(){
         view.addSubview(backView)
         backView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 120, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
         
-}
+    }
+    
+    //Mark :- Action method
+    
+    @objc func showCategoryScreen(){
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    //Mark :- passQuantitychange delegate method
+    
     func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
-        dataManager.productArray[cellIndex!].isQuantityViewOpen = isQuantViewOpen!
-        dataManager.productArray[cellIndex!].quantity = quant!
-        if quant! > 0 && dataManager.productArray[cellIndex!].isAddedToCart == false{
-            AppSharedDataManager.shared.productAddedToCart.append(dataManager.productArray[cellIndex!])
-            dataManager.productArray[cellIndex!].isAddedToCart = true
+        guard let cellIndex = cellIndex, let quant = quant, let isQuantViewOpen = isQuantViewOpen else {return}
+        dataManager.productArray[cellIndex].isQuantityViewOpen = isQuantViewOpen
+        dataManager.productArray[cellIndex].quantity = quant
+        if quant > 0 && dataManager.productArray[cellIndex].isAddedToCart == false{
+            AppSharedDataManager.shared.productAddedToCart.append(dataManager.productArray[cellIndex])
+            dataManager.productArray[cellIndex].isAddedToCart = true
             NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
-        }else if quant! == 0 && dataManager.productArray[cellIndex!].isAddedToCart == true {
+        }else if quant == 0 && dataManager.productArray[cellIndex].isAddedToCart == true {
             var index = 0
             for products in AppSharedDataManager.shared.productAddedToCart {
-                if products.id == dataManager.productArray[cellIndex!].id {
+                if products.id == dataManager.productArray[cellIndex].id {
                     AppSharedDataManager.shared.productAddedToCart.remove(at: index)
-                    dataManager.productArray[cellIndex!].isAddedToCart = false
+                    dataManager.productArray[cellIndex].isAddedToCart = false
                     NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
                     return
                 }else{
@@ -177,20 +181,21 @@ func configureView(){
         }
         
     }
-   
+    
+    //Mark :- Collection View delegate method
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-       let productDetailVC = storyboard.instantiateViewController(identifier: "ProductDetailViewController") as! ProductDetailViewController
-       // let productDetailVC = ProductDetailViewController()
-        productDetailVC.id  = dataManager.productArray[indexPath.row].id!
+        let productDetailVC = storyboard.instantiateViewController(identifier: "ProductDetailViewController") as! ProductDetailViewController
+        // let productDetailVC = ProductDetailViewController()
+        productDetailVC.id  = dataManager.productArray[indexPath.row].id
         productDetailVC.product = dataManager.productArray[indexPath.row]
         productDetailVC.modalPresentationStyle = .fullScreen
         productDetailVC.productArray = dataManager.productArray
         self.present(productDetailVC, animated: true, completion: nil)
     }
-
+    
 }
 
 extension ProductsViewController : UICollectionViewDataSource {
@@ -205,11 +210,11 @@ extension ProductsViewController : UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as! ProductCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as? ProductCollectionViewCell else {return UICollectionViewCell()}
         cell.delegate = self
         cell.cellNumber = indexPath.row
-       cell.addHorizontalView()
-     //   cell.addVerticalView()
+        cell.addHorizontalView()
+        //   cell.addVerticalView()
         if indexPath.row % 2 == 0{
             cell.addVerticalView()
             

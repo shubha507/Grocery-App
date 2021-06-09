@@ -19,7 +19,6 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
     
     private let cartItemNumberImageView : UIImageView = {
         let view = UIImageView( frame: CGRect(x: 45, y: -10, width: 30, height: 40))
-       // view.backgroundColor = .red
         view.image = UIImage(named: "pop")
         return view
     }()
@@ -38,13 +37,13 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         self.delegate = self
         self.selectedIndex = 0
         setupMiddleButton()
-        ConfigureViewController()
+        configureViewController()
         cartItemNumberImageView.isHidden = true
     }
     
     //Mark :- Helper method
 
-    func ConfigureViewController(){
+    func configureViewController(){
             
         tabBar.items?[0].title = "Home"
         tabBar.items?[1].title = "Order"
@@ -60,8 +59,6 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
     
     func setupMiddleButton() {
         let buttonView = UIView(frame: CGRect(x: (self.view.bounds.width / 2)-45, y:-70 , width: 90, height: 90))
-       // buttonView.layer.borderWidth = 12
-       // buttonView.layer.borderColor = UIColor(named: "mygreen")?.cgColor
         buttonView.layer.cornerRadius = buttonView.frame.width/2
         buttonView.backgroundColor = UIColor(named: "mygreen")
         

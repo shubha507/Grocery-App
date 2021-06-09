@@ -13,12 +13,15 @@ class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITable
     
     @IBOutlet weak var statusTableView: UITableView!
     
+    @IBOutlet weak var mainView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         statusTableView.delegate = self
         statusTableView.dataSource = self
+        mainView.layer.cornerRadius = 30
+        mainView.layer.maskedCorners = [.layerMinXMinYCorner,.layerMinXMaxYCorner]
     }
 
     @IBAction func backButtonPressed(_ sender: Any) {
@@ -30,15 +33,16 @@ class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "OrderDesignCell", for: indexPath) as? OrderStatusDesignTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "OrderDesignCell", for: indexPath) as? OrderStatusDesignTableViewCell else { return UITableViewCell()}
+        
         if indexPath.row == 4{
-            cell!.lineView.isHidden = true
+            cell.lineView.isHidden = true
         }
         if indexPath.row != 0 {
-            cell!.checkmarkView.isHidden = true
+            cell.checkmarkView.isHidden = true
         }
-        cell!.statusLabel.text = statusArray[indexPath.row]
-        return cell!
+        cell.statusLabel.text = statusArray[indexPath.row]
+        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

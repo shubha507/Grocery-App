@@ -89,7 +89,7 @@ extension CategoriesViewController : UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
        let controller = ProductsViewController()
-        controller.pageTitle = dataArray[indexPath.row].name!
+        controller.pageTitle = dataArray[indexPath.row].name
 
         controller.productId = dataArray[indexPath.row].id
         self.navigationController?.pushViewController(controller, animated: true)
@@ -104,10 +104,8 @@ extension CategoriesViewController : UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! CategoryCollectionViewCell
-        cell.cellLabel.text = "\(dataArray[indexPath.row].name!)"
-      //  cell.cellImage.image = UIImage(named: "\(array[indexPath.row])")
-        dataManager.getImageFrom(url: "\(dataArray[indexPath.row].url!)", imageView: cell.cellImage)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as? CategoryCollectionViewCell else { return UICollectionViewCell()}
+        cell.configureCellUI(categoty: dataArray[indexPath.row])
         return cell
     }
     
@@ -116,11 +114,21 @@ extension CategoriesViewController : UICollectionViewDataSource {
 extension CategoriesViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width:110, height: 135 )
+        if cellCollectionVw.frame.width > 355 {
+        return CGSize(width: 110, height: 135)
+        }else{
+            return CGSize(width: 105, height: 135)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        print(cellCollectionVw.frame.width)
+        if cellCollectionVw.frame.width > 355 {
         return 10
+        }else{
+            return 5
+        }
+       
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

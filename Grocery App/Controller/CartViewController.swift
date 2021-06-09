@@ -18,6 +18,7 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var checkoutButtonView: UIView!
     @IBOutlet weak var backViewInCart: UIView!
     
+    @IBOutlet weak var checkoutButton: UIButton!
     private let noProductInCartImageView : UIImageView = {
         let iv = UIImageView(image: UIImage(named: "no-product"))
         iv.backgroundColor = UIColor(red: 163/255, green: 194/255, blue: 194/255, alpha: 1)
@@ -61,16 +62,19 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
         cartTblView.delegate = self
         cartTblView.dataSource = self
         cartTblView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+        checkoutButton.layer.shadowColor = UIColor.darkGray.cgColor
+        checkoutButton.layer.shadowOffset = CGSize(width: 3, height: 5)
+        checkoutButton.layer.shadowOpacity = 0.5
         configureEmptyCartViewUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if AppSharedDataManager.shared.productAddedToCart.count != 0 {
+        if AppSharedDataManager.shared.productAddedToCart.count != 0, let totalPrice = totalPriceInCart() {
             cartTblView.isHidden = false
             checkoutButtonView.isHidden = false
             noProductInCartView.isHidden = true
             backViewInCart.backgroundColor = UIColor(named: "buttoncolor")
-            totalLabel.text = "₹\(totalPriceInCart()!)"
+            totalLabel.text = "₹\(totalPrice)"
         cartTblView.reloadData()
         }else{
             cartTblView.isHidden = true
@@ -85,7 +89,9 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     func totalPriceInCart()->Int?{
         var sum = 0
         for products in AppSharedDataManager.shared.productAddedToCart {
-            sum = sum + (products.price! * products.quantity)
+            if let price = products.price {
+            sum = sum + (price * products.quantity)
+        }
         }
         return sum
     }
@@ -116,17 +122,17 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     //Mark :- passQuantityChangeData delegate method
 
     func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
-        if quant! > 0 {
-            AppSharedDataManager.shared.productAddedToCart[cellIndex!].quantity = quant!
-            print(quant!)
+        guard let quant = quant, let cellIndex = cellIndex , let totalPrice = totalPriceInCart(), let isQuantViewOpen = isQuantViewOpen else {return}
+        if quant > 0 {
+            AppSharedDataManager.shared.productAddedToCart[cellIndex].quantity = quant
+            totalLabel.text = "₹\(totalPrice)"
             cartTblView.reloadData()
-            totalLabel.text = "₹\(totalPriceInCart()!)"
         }else{
-            AppSharedDataManager.shared.productAddedToCart[cellIndex!].quantity = quant!
-            AppSharedDataManager.shared.productAddedToCart[cellIndex!].isAddedToCart = false
-            AppSharedDataManager.shared.productAddedToCart[cellIndex!].isQuantityViewOpen = false
-            AppSharedDataManager.shared.productAddedToCart.remove(at: cellIndex!)
-            totalLabel.text = "₹\(totalPriceInCart()!)"
+            AppSharedDataManager.shared.productAddedToCart[cellIndex].quantity = quant
+            AppSharedDataManager.shared.productAddedToCart[cellIndex].isAddedToCart = false
+            AppSharedDataManager.shared.productAddedToCart[cellIndex].isQuantityViewOpen = false
+            AppSharedDataManager.shared.productAddedToCart.remove(at: cellIndex)
+            totalLabel.text = "₹\(totalPrice)"
             if AppSharedDataManager.shared.productAddedToCart.count == 0 {
                 self.cartTblView.isHidden = true
                 self.checkoutButtonView.isHidden = true
@@ -149,7 +155,7 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cartCell") as! CartTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cartCell") as? CartTableViewCell else { return UITableViewCell()}
         cell.configureCellUI(product: AppSharedDataManager.shared.productAddedToCart[indexPath.row])
         cell.cellIndex = indexPath.row
         cell.delegate = self
