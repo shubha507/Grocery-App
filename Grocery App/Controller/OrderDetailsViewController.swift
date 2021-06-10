@@ -13,13 +13,20 @@ import FirebaseFirestore
 
 class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    
+    @IBOutlet weak var totalDiscountLbl: UILabel!
+    @IBOutlet weak var payableAmountLbl: UILabel!
+    @IBOutlet weak var totalBillAmountLbl: UILabel!
     var statusArray = ["Order Placed" , "Pending","Confirmed","Processing","Delivered"]
     
     var index : Int?
     
     var orderDataManager = OrderDataManager()
     
+    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var priceView: UIView!
+    @IBOutlet weak var descriptionTableViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var descriptionTableView: UITableView!
     @IBOutlet weak var statusTableView: UITableView!
     
     override func viewDidLoad() {
@@ -28,9 +35,20 @@ class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITable
         // Do any additional setup after loading the view.
         statusTableView.delegate = self
         statusTableView.dataSource = self
-        orderDataManager.fetchOrdersData { (error) in
+        descriptionTableView.delegate = self
+        descriptionTableView.dataSource = self
+        orderDataManager.fetchOrdersData { [self] (error) in
+            self.heightConstraint.constant = CGFloat(105 * self.orderDataManager.order[index!].allStatus!.count)
+            
+            self.payableAmountLbl.text = "₹\(self.orderDataManager.order[index!].payableAmount!)"
+            self.totalDiscountLbl.text = "-₹\(self.orderDataManager.order[index!].totalDiscount!)"
+            self.totalBillAmountLbl.text = "₹\(self.orderDataManager.order[index!].total!)"
             self.statusTableView.reloadData()
+            self.descriptionTableView.reloadData()
         }
+        descriptionTableView.layer.cornerRadius = 30
+        descriptionTableView.tableFooterView = priceView
+        
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
@@ -39,7 +57,11 @@ class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.orderDataManager.order.count > 0{
+            if tableView == self.statusTableView {
             return self.orderDataManager.order[index!].allStatus!.count
+            }else{
+            return self.orderDataManager.order[index!].items!.count
+            }
         }else{
             return 0
         }
@@ -47,27 +69,27 @@ class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "OrderDesignCell", for: indexPath) as? OrderStatusDesignTableViewCell else {return UITableViewCell()}
-        if self.orderDataManager.order.count > 0 && self.orderDataManager.order[index!].currentStatus != "declined"{
-            cell.statusLabel.text = self.orderDataManager.order[index!].allStatus?[indexPath.row].title
-            if indexPath.row == self.orderDataManager.order[index!].allStatus!.count-1{
-                cell.lineView.isHidden = true
-            }
-            cell.orderStatusDescriptionLbl.text = self.orderDataManager.order[index!].allStatus?[indexPath.row].description
-            if self.orderDataManager.order[index!].allStatus?[indexPath.row].completed == true {
-                cell.checkmarkView.isHidden = false
-            cell.updationTimeLbl.text = "\(orderDataManager.changeTimeFormat(date: (self.orderDataManager.order[index!].allStatus?[indexPath.row].updatedAt)!,format : "hh:mm a"))"
-            cell.updationDateLbl.text = "\(orderDataManager.changeTimeFormat(date: (self.orderDataManager.order[index!].allStatus?[indexPath.row].updatedAt)!,format : "dd MMMM, yyyy"))"
+        
+        if self.orderDataManager.order.count > 0 {
+            if tableView == self.statusTableView{
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "OrderDesignCell", for: indexPath) as? OrderStatusDesignTableViewCell else { return UITableViewCell() }
+            cell.configureCellUI(order: self.orderDataManager.order[index!], index: indexPath.row)
+                return cell
             }else{
-                cell.updationTimeLbl.text = "Not updated yet"
-                cell.updationDateLbl.text = "Not updated yet"
-            }
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "DescriptionTableViewCell", for: indexPath) as? DescriptionTableViewCell else { return UITableViewCell() }
+                cell.configureCellUI(order: self.orderDataManager.order[index!], index: indexPath.row)
+                return cell
+                }
         }
-        return cell
+      return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 105
+        if tableView == self.statusTableView{
+         return 105
+        }else{
+            return UITableView.automaticDimension
+        }
     }
     
 }

@@ -26,7 +26,6 @@ class OrderTableViewCell: UITableViewCell {
         cellView.layer.shadowOpacity = 0.5
         cellView.layer.shadowColor = UIColor.systemGray.cgColor
         cellView.layer.shadowOffset = CGSize(width: 2, height: 3)
-        orderStatusLabel.layer.borderColor = UIColor.green.cgColor
         orderStatusLabel.layer.borderWidth = 2
         orderStatusLabel.layer.cornerRadius = 10
         orderStatusLabel.layer.masksToBounds = true
@@ -49,24 +48,47 @@ class OrderTableViewCell: UITableViewCell {
         dataManager.getImageFrom(url: order.items![0].url!, imageView: orderedProductImageView)
        
         
-        if order.currentStatus != "delivered"{
-            self.deliveryStatusDateLbl.text = "Ordered On :\(orderDataManager.changeTimeFormat(date: order.createdAt!,format : "dd MMMM,yyyy hh:mm:s"))"
-        }else{
-            
-        }
         if  order.currentStatus! == "placed"{
             orderStatusLabel.text = "Placed"
+            self.deliveryStatusDateLbl.text = "Order Placed On: \(orderDataManager.changeTimeFormat(date: order.updatedAt!,format : "dd MMMM,yyyy hh:mm:s"))"
+            orderStatusLabel.layer.borderColor = UIColor.systemBlue.cgColor
+            orderStatusLabel.textColor = .systemBlue
         }else if order.currentStatus! == "pending"{
             orderStatusLabel.text = "Pending"
+            self.deliveryStatusDateLbl.text = "Order Placed On: \(orderDataManager.changeTimeFormat(date: order.updatedAt!,format : "dd MMMM,yyyy"))"
+            orderStatusLabel.layer.borderColor = UIColor.systemBlue.cgColor
+            orderStatusLabel.textColor = .systemBlue
         }else if order.currentStatus! == "confirmed"{
             orderStatusLabel.text = "Confirmed"
+            self.deliveryStatusDateLbl.text = "Order Confirmed On: \(orderDataManager.changeTimeFormat(date: order.updatedAt!,format : "dd MMMM,yyyy"))"
+            orderStatusLabel.layer.borderColor = UIColor.systemYellow.cgColor
+            orderStatusLabel.textColor = .systemYellow
         }else if order.currentStatus! == "processing"{
             orderStatusLabel.text = "Processing"
+            self.deliveryStatusDateLbl.text = "Order Confirmed On: \(orderDataManager.changeTimeFormat(date: order.updatedAt!,format : "dd MMMM,yyyy"))"
+            orderStatusLabel.layer.borderColor = UIColor.systemYellow.cgColor
+            orderStatusLabel.textColor = .systemYellow
         }else if order.currentStatus! == "delivered"{
             orderStatusLabel.text = "Delivered"
+            self.deliveryStatusDateLbl.text = "Order Delivered On: \(orderDataManager.changeTimeFormat(date: order.updatedAt!,format : "dd MMMM,yyyy"))"
+            orderStatusLabel.layer.borderColor = UIColor.systemGreen.cgColor
+            orderStatusLabel.textColor = .systemGreen
         }else if order.currentStatus! == "declined"{
             orderStatusLabel.text = "Declined"
+            self.deliveryStatusDateLbl.text = "Order Declined On: \(orderDataManager.changeTimeFormat(date: order.updatedAt!,format : "dd MMMM,yyyy"))"
+            orderStatusLabel.layer.borderColor = UIColor.systemRed.cgColor
+            orderStatusLabel.textColor = .systemRed
+        }else if order.currentStatus! == "dispatched" {
+            orderStatusLabel.text = "Dispatched"
+            self.deliveryStatusDateLbl.text = "Order Dispatched On: \(orderDataManager.changeTimeFormat(date: order.updatedAt!,format : "dd MMMM,yyyy"))"
+            orderStatusLabel.layer.borderColor = UIColor.systemYellow.cgColor
+            orderStatusLabel.textColor = .systemYellow
+        }else if order.currentStatus! == "packed"{
+            orderStatusLabel.text = "Packed"
+            self.deliveryStatusDateLbl.text = "Order Packed On: \(orderDataManager.changeTimeFormat(date: order.updatedAt!,format : "dd MMMM,yyyy"))"
+            orderStatusLabel.layer.borderColor = UIColor.systemYellow.cgColor
+            orderStatusLabel.textColor = .systemYellow
         }
-    }
 
+}
 }
