@@ -29,6 +29,7 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
         orderDataManager.fetchOrdersData { (error) in
             self.orderStatusTableView.reloadData()
         }
+        orderStatusTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
         
     }
     

@@ -35,6 +35,7 @@ class Product{
         self.url = data["url"] as? String ?? "No url"
         self.id = data["id"] as? String ?? ""
         self.discount = data["discount"] as? Double ?? 0.0
+        self.count = data["count"] as? Int ?? 0
         if let tags = data["tags"] {
         self.tags = tags as? [String] ?? []
         }
