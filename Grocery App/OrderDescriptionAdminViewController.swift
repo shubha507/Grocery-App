@@ -10,9 +10,12 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-
+protocol MoveToNextStateProtocol {
+    func confirmTapped(index: Int)
+}
 class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    var confirmTappedProtocol: MoveToNextStateProtocol?
     let dataManager = DataManager()
     @IBOutlet weak var moveOrderNextStateButton: UIButton!
     @IBOutlet weak var totalPriceLabel: UILabel!
@@ -22,6 +25,7 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
     var indexSelected = Int()
     var order = [Order]()
     var status = [Status]()
+
     var statusList: [String: Any] = [:]
    
         
@@ -38,13 +42,7 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
         
         self.totalPriceLabel.text = "Rs. " + "\(order[indexSelected].payableAmount ?? 0)"
     }
-    //func getData(index = Int) -> [[String :  Any]]
-    //{
-      //  if index == 0
-      //  {
-        //    let placedStatusDict : [String : Any] = ["completed": true, "createdAt": Timestamp(date: Date()), "updatedAt": Timestamp(date: Date()), "title":"Placed", "status": ]
-     //   }
-   // }
+    
     let arr: [String] = [ "placed" , "confirmed" , "processing" , "delivered"]
     func setStatevalues ()
     {
@@ -64,39 +62,19 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
         status[j].completed = true
         status[j].updatedAt = Timestamp(date: Date())
        
-       
-       // if let arr = data["allStatus"] as? [[String : Any]] {
-        //    for item in arr
-       //     {
-        //        let status = Status(data: item)
-         //       self.allStatus?.append(status)
-         //   }
-       // }
-        
-        
-       // var ref: DatabaseReference!
-        
-       // ref = Firestore.firestore().
-        statusList = status.toDictionary { $0.title ?? "" }
-        let anyDict = statusList["Order Placed"] as Any
-        let anyDict1 = statusList["Confirmed"] as Any
-        let anyDict2 = statusList["Processing"] as Any
-        let anyDict3 = statusList["Delivered"] as Any
-        let array: [[String : Any]] = [anyDict,anyDict1,anyDict2,anyDict3]
-        let placedStatusDict : [String : Any]? = anyDict as? [String : Any]
+        var array = [[String : Any]]()
+        for item in self.status
+        {
+            
+            array.append(item.getData())
+        }
         
         print("status is" , status)
         
-        
-        print("status List:" , statusList)
-        
-        //print("placedStatusDict" , placedStatusDict)
-       // db.collection("orders").document("\(id)").setData(status, merge: true)
-        //let query = db.collection("orders/*/\(id)").whereField(<#T##field: String##String#>, in: <#T##[Any]#>)
         db.collection("orders").document("\(id)").setData([
-            "allStatus" : statusList,
+            "allStatus" : array,
             "currentStatus" : "\(arr[j])",
-            
+            "updatedAt": Timestamp(date: Date()),
         ],  merge: true) { err in
             if let err = err {
                 print("Error writing document: \(err)")
@@ -109,18 +87,67 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
 
     }
     
+    func setStatevaluesDeclined ()
+    {
+        let db = Firestore.firestore()
+        
+        var i = 0
+        
+       
+        status = order[indexSelected].allStatus!
+        
+        status[i].updatedAt = Timestamp(date: Date())
+        let declinedStatus : [String:Any] = ["completed": true , "createdAt": Timestamp(date: Date()), "description": "Seller has declined your order" , "status": "declined" ,"title": "Order Declined" , "updatedAt": Timestamp(date: Date()) ]
+        var array = [[String : Any]]()
+        for item in self.status
+        {
+            if i == 0
+            {
+            array.append(item.getData())
+                
+            i = i + 1
+            }
+        }
+        array.append(declinedStatus)
+        print("status is" , status)
+        
+        db.collection("orders").document("\(id)").setData([
+            "allStatus" : array,
+            "currentStatus" : "declined",
+            "updatedAt": Timestamp(date: Date()),
+        ],  merge: true) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+                
+            }
+        }
+        
+
+    }
+   
     func showCompletion()
     {
     
-        let alert = UIAlertController(title: nil, message: "Move Order???", preferredStyle: .alert)
+        let alert = UIAlertController(title: nil, message: "Move Order???", preferredStyle: .actionSheet)
+        
+        alert.view.tintColor = UIColor.brown
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (handle) in
             self.setStatevalues()
+            self.confirmTappedProtocol?.confirmTapped(index: self.indexSelected)
             alert.dismiss(animated: true, completion: nil)
         }))
         alert.addAction(UIAlertAction(title: "Decline", style: .default, handler: { (handle) in
+            self.setStatevaluesDeclined()
+            self.confirmTappedProtocol?.confirmTapped(index: self.indexSelected)
             alert.dismiss(animated: true, completion: nil)
         }))
 
+        alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { (handle) in
+            
+            
+        }))
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -175,14 +202,5 @@ extension String {
                value: NSUnderlineStyle.single.rawValue,
                    range:NSMakeRange(0,attributeString.length))
         return attributeString
-    }
-}
-extension Array {
-    public func toDictionary<Key: Hashable>(with selectKey: (Element) -> Key) -> [Key:Element] {
-        var dict = [Key:Element]()
-        for element in self {
-            dict[selectKey(element)] = element
-        }
-        return dict
     }
 }
