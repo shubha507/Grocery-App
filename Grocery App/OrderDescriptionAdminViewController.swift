@@ -21,7 +21,7 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
     var id = String()
     var indexSelected = Int()
     var order = [Order]()
-    var status = [Status]()
+    var status = [OrderStatus]()
     var statusList: [String: Any] = [:]
    
         
@@ -82,7 +82,7 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
         let anyDict1 = statusList["Confirmed"] as Any
         let anyDict2 = statusList["Processing"] as Any
         let anyDict3 = statusList["Delivered"] as Any
-        let array: [[String : Any]] = [anyDict,anyDict1,anyDict2,anyDict3]
+      //  let array: [[String : Any]] = [anyDict,anyDict1,anyDict2,anyDict3]
         let placedStatusDict : [String : Any]? = anyDict as? [String : Any]
         
         print("status is" , status)
