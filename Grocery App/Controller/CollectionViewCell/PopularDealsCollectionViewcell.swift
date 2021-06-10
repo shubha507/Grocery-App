@@ -9,25 +9,22 @@ import UIKit
 
 class PopularDealsCollectionViewCell : UICollectionViewCell {
     
-    //Mark :- Properties
-    
     let cellImage : UIImageView = {
-       let iv = UIImageView()
-       iv.backgroundColor = UIColor(named: "cellgreen")
-       iv.layer.cornerRadius = 20
-       iv.clipsToBounds = true
-       iv.contentMode = .scaleAspectFill
+        let iv = UIImageView()
+        iv.backgroundColor = UIColor(named: "cellgreen")
+        iv.layer.cornerRadius = 20
+        iv.clipsToBounds = true
+        iv.contentMode = .scaleAspectFill
         return iv
-   }()
-   
-   let cellLabel : UILabel = {
-       let lbl = UILabel()
-       lbl.font = UIFont.systemFont(ofSize: 15)
-       lbl.textColor = .black
-       lbl.textAlignment = .center
-       return lbl
-   }()
+    }()
     
+    let cellLabel : UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont.systemFont(ofSize: 15)
+        lbl.textColor = .black
+        lbl.textAlignment = .center
+        return lbl
+    }()
     
     let discountLabel : UILabel = {
         let dIV = UILabel()
@@ -39,8 +36,6 @@ class PopularDealsCollectionViewCell : UICollectionViewCell {
         return dIV
     }()
     
-    //Mark :- Lifecycle Method
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         

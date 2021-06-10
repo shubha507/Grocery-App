@@ -12,10 +12,12 @@ import FirebaseFirestore
 
 class ProductsViewController : UIViewController,UICollectionViewDelegate, passQuantityChangeData{
     
-    //Mark :- Properties
+    
     
     let dataManager = DataManager()
+    
     var pageTitle : String?
+    
     var productId : String?
     
     private let backButton : UIButton = {
@@ -25,19 +27,22 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         button.addTarget(self, action: #selector(showCategoryScreen), for: .touchUpInside)
         return button
     }()
-    
+
+    @objc func showCategoryScreen(){
+        self.navigationController?.popViewController(animated: true)
+    }
     
     let productCellCollectionVw: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
+       let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        let fc = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        fc.register(ProductCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell1")
-        fc.backgroundColor = .white
-        fc.showsVerticalScrollIndicator = false
-        fc.layer.cornerRadius = 30
-        fc.bounces = false
+       let fc = UICollectionView(frame: .zero, collectionViewLayout: layout)
+       fc.register(ProductCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell1")
+       fc.backgroundColor = .white
+       fc.showsVerticalScrollIndicator = false
+       fc.layer.cornerRadius = 30
+       fc.bounces = false
         return fc
-    }()
+   }()
     
     
     private let productLabel : UILabel = {
@@ -76,7 +81,7 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         lbl.textColor = .red
         lbl.text = "Oops!"
         lbl.textAlignment = .center
-        return lbl
+    return lbl
     }()
     
     private let noProductLbl : UILabel = {
@@ -85,10 +90,8 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         lbl.textColor = .black
         lbl.numberOfLines = 0
         lbl.textAlignment = .center
-        return lbl
+    return lbl
     }()
-    
-    //Mark :- LifeCycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,13 +100,16 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         productCellCollectionVw.delegate = self
         productCellCollectionVw.dataSource = self
         
+        
+        
+        
         self.dataManager.searchData(selectedId: productId, matchId: "category_id") { (error) in
-            self.productCellCollectionVw.reloadData()
+           self.productCellCollectionVw.reloadData()
             self.productCellCollectionVw.layoutIfNeeded()
             self.configureView()
-        }
+                    }
         configureUI()
-    }
+        }
     
     override func viewWillAppear(_ animated: Bool) {
         productCellCollectionVw.reloadData()
@@ -181,8 +187,7 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         }
         
     }
-    
-    //Mark :- Collection View delegate method
+   
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -195,7 +200,7 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         productDetailVC.productArray = dataManager.productArray
         self.present(productDetailVC, animated: true, completion: nil)
     }
-    
+
 }
 
 extension ProductsViewController : UICollectionViewDataSource {
@@ -213,8 +218,7 @@ extension ProductsViewController : UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as? ProductCollectionViewCell else {return UICollectionViewCell()}
         cell.delegate = self
         cell.cellNumber = indexPath.row
-        cell.addHorizontalView()
-        //   cell.addVerticalView()
+       cell.addHorizontalView()
         if indexPath.row % 2 == 0{
             cell.addVerticalView()
             

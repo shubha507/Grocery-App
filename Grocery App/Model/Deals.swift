@@ -2,7 +2,7 @@
 //  Deals.swift
 //  Grocery App
 //
-//  Created by Shubha Sachan on 02/06/21.
+//  Created by Shubha Sachan on 03/06/21.
 //
 
 import UIKit
@@ -15,13 +15,13 @@ class Deals {
     var name : String?
     var rank : Int?
     
-    init(createdAt : String?, discount : String?, url : String?, id : String?, name : String?, rank : Int?){
-        self.createdAt = createdAt
-        self.discount = discount
-        self.id = id
-        self.rank = rank
-        self.name = name
-        self.url = url
+    init(data : [String : Any]){
+        self.name = data["name"] as? String ?? ""
+        self.rank = data["rank"] as? Int ?? 0
+        self.url = data["url"] as? String ?? "No url"
+        self.id = data["id"] as? String ?? ""
+        self.discount = data["discount"] as? String ?? ""
+        self.createdAt = data["created_at"] as? String ?? ""
     }
     
 }

@@ -9,34 +9,35 @@ import UIKit
 
 class ProductDetailFirstTableViewCell: UITableViewCell {
     
-    //Mark :- Properties
-
-    var quantity : Int?
-    var price : Int?
+    var quantity : Double?
+    var price : Double?
+    
     var delegate : passQuantityChangeData?
+    
     @IBOutlet weak var containerView: UIView!
+    
     @IBOutlet weak var nameLabel: UILabel!
+    
     @IBOutlet weak var decreaseQuantity: UIButton!
+    
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var perPeicePriceLabel: UILabel!
     @IBOutlet weak var quantityLabel: UILabel!
+    
     @IBOutlet weak var increaseQuantity: UIButton!
     
-    
-    //Mark :- LifeCycle
-
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     
-    //Mark :- Action
+    
     @IBAction func decreaseQuantityPressed(_ sender: Any) {
         if quantity! > 1 {
             quantity = quantity! - 1
@@ -56,6 +57,17 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
         quantityLabel.text = "\(quantity!) kg"
         priceLabel.text = "₹\(price! * quantity!)"
         delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: true)
+    }
+    
+    func configureCellUI(product : Product?){
+        if let product = product, let amount = product.price {
+        nameLabel.text = product.name
+        perPeicePriceLabel.text = " \(amount)/kg"
+            priceLabel.text = "₹\((amount) * (product.quantity ))"
+        price = amount
+        quantityLabel.text = "\(product.quantity)"
+        quantity = product.quantity
+    }
     }
     
     

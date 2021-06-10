@@ -12,20 +12,25 @@ import FirebaseFirestore
 
 class ProductDetailViewController : UIViewController, UITableViewDelegate,passQuantityChangeData,PassDetailOrReviewSelected {
     
-    //Mark :- Properties
     
     var id : String?
+    
     var isDetailButtonSelected = true
     var isReviewButtonSelected = false
+    
     var product : Product?
+    
     var productArray = [Product]()
+    
     let dataManager = DataManager()
+    
     private var similarProductArray = [Product]()
+    
     @IBOutlet weak var posterImageView: UIImageView!
+    
     @IBOutlet weak var tblVw: UITableView!
     
-    //Mark :- LifeCycle Methods
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if let product = product, let url = product.url {
@@ -33,18 +38,15 @@ class ProductDetailViewController : UIViewController, UITableViewDelegate,passQu
         }
         self.configureCells()
         self.getSimilarProduct()
-        
     }
     
-    //Mark :- Helper Function
-    
-    func getSimilarProduct(){
-        for products in productArray {
-            if products.id != self.id {
-                similarProductArray.append(products)
-            }
+func getSimilarProduct(){
+    for products in productArray {
+        if products.id != self.id {
+            similarProductArray.append(products)
         }
-        
+    }
+
     }
     
     
@@ -71,7 +73,6 @@ class ProductDetailViewController : UIViewController, UITableViewDelegate,passQu
         tblVw.reloadData()
     }
     
-    //Mark :- Action method
     
     @IBAction func backButton(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -109,7 +110,9 @@ extension ProductDetailViewController : UITableViewDataSource {
             }
         }else{
             if let cell = tableView.dequeueReusableCell(withIdentifier: "ProductDetailFourthTableViewCell") as? ProductDetailFourthTableViewCell{
-            cell.priceLabel.text = "₹\(self.product!.price! * (self.product!.quantity ))"
+                if let product = self.product,let price = product.price {
+            cell.priceLabel.text = "₹\(price * (product.quantity ))"
+                }
             cell.product = product
             return cell
         }
@@ -119,12 +122,12 @@ extension ProductDetailViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0{
-            return UITableView.automaticDimension
+           return UITableView.automaticDimension
         }else if indexPath.row == 1{
             if isDetailButtonSelected && !isReviewButtonSelected{
-                return UITableView.automaticDimension
+            return UITableView.automaticDimension
             }else if !isDetailButtonSelected && isReviewButtonSelected {
-                return 420
+            return 420
             }
             return UITableView.automaticDimension
         }else if indexPath.row == 2{

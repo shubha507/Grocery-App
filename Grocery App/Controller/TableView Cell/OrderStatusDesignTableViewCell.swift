@@ -8,22 +8,21 @@
 import UIKit
 
 class OrderStatusDesignTableViewCell: UITableViewCell {
-    
-    //Mark :- Properties
 
+    @IBOutlet weak var orderStatusDescriptionLbl: UILabel!
+    @IBOutlet weak var updationDateLbl: UILabel!
+    @IBOutlet weak var updationTimeLbl: UILabel!
     @IBOutlet weak var statusView: UIView!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var checkmarkView: UIImageView!
     @IBOutlet weak var lineView: UIView!
-    
-    //Mark :- Lifecycle Method
-
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         statusView.layer.cornerRadius = statusView.frame.width/2
         statusView.layer.borderWidth = 1
         statusView.layer.borderColor = UIColor.systemGray3.cgColor
+        checkmarkView.isHidden = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

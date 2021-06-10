@@ -9,6 +9,7 @@ import UIKit
 
 class OrderViewController : UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    var orderDataManager = OrderDataManager()
     
     let orderStatusArray = ["All Order","Pending","Processing","Confirmed","Delivered"]
     
@@ -25,6 +26,9 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
         orderStatusTableView.delegate = self
         orderStatusTableView.dataSource = self
         orderStatusTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+        orderDataManager.fetchOrdersData { (error) in
+            self.orderStatusTableView.reloadData()
+        }
         
     }
     
@@ -61,7 +65,7 @@ extension OrderViewController : UICollectionViewDelegateFlowLayout {
 extension OrderViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return self.orderDataManager.order.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -73,10 +77,13 @@ extension OrderViewController : UITableViewDelegate, UITableViewDataSource {
                    didSelectRowAt indexPath: IndexPath){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let orderDetailVC = storyboard.instantiateViewController(withIdentifier: "OrderDetailsViewController") as! OrderDetailsViewController
+        orderDetailVC.index = indexPath.row
         orderDetailVC.modalPresentationStyle = .fullScreen
         self.present(orderDetailVC, animated: true, completion: nil)
     }
-
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
     
 }

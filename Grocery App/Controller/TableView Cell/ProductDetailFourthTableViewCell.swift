@@ -9,8 +9,6 @@ import UIKit
 
 class ProductDetailFourthTableViewCell: UITableViewCell {
     
-    //Mark :- Properties
-
     var product: Product?
     
     @IBOutlet weak var priceLabel: UILabel!
@@ -31,9 +29,6 @@ class ProductDetailFourthTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-    //Mark :- Action
-
     @IBAction func addToCartButtonTapped(_ sender: Any) {
         if !product!.isAddedToCart && product!.quantity > 0 {
             AppSharedDataManager.shared.productAddedToCart.append(product!)

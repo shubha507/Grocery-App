@@ -99,7 +99,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="cart" catalog="system" width="32" height="32"/>
+        <image name="cart" catalog="system" width="128" height="102"/>
         <namedColor name="buttoncolor">
             <color red="0.9649999737739563" green="0.95999997854232788" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>

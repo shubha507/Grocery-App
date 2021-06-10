@@ -2,7 +2,7 @@
 //  Discount.swift
 //  Grocery App
 //
-//  Created by Shubha Sachan on 02/06/21.
+//  Created by Shubha Sachan on 03/06/21.
 //
 
 import UIKit
@@ -17,16 +17,16 @@ class Discount {
     var offerTitle : String?
     var offerDescription : String?
     
-    init(createdAt : String?, discount : String?, url : String?, id : String?, rank : Int?, title : String?,offerTitle : String?,offerDescription : String?){
-        self.createdAt = createdAt
-        self.discount = discount
-        self.id = id
-        self.rank = rank
-        self.url = url
-        self.title = title
-        self.offerTitle = offerTitle
-        self.offerDescription = offerDescription
+    init(data : [String : Any]){
+        self.rank = data["rank"] as? Int ?? 0
+        self.url = data["url"] as? String ?? "No url"
+        self.id = data["id"] as? String ?? " "
+        self.discount = data["discount"] as? String ?? " "
+        self.createdAt = data["created_at"] as? String ?? " "
+        self.title = data["title"] as? String ?? " "
+        self.offerTitle = data["offerTitle"] as? String ?? " "
+        self.offerDescription = data["offerDescription"] as? String ?? " "
     }
     
+    
 }
-

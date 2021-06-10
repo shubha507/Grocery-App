@@ -18,6 +18,7 @@ class DataManager {
     let activityIndicator = UIActivityIndicatorView()
     
     func getImageFrom(url: String?, imageView : UIImageView){
+        
         activityIndicator.color = .gray
         imageView.addSubview(activityIndicator)
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -53,6 +54,7 @@ class DataManager {
                 if let data = data , let response = response , ((response as? HTTPURLResponse)?.statusCode ?? 500 ) < 300 {
                     DispatchQueue.main.async {
                         if let image = UIImage(data : data) {
+                            
                             imageCache.setObject(image, forKey: posterImageUrl as AnyObject )
                             imageView.image = image
                             self.activityIndicator.stopAnimating()
@@ -79,18 +81,9 @@ class DataManager {
                 print("Error getting documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
-                    let data = document.data()
-                    let active = data["active"] as? Bool ?? nil
-                    let name = data["name"] as? String ?? ""
-                    let categoryId = data["category_id"] as? String ?? ""
-                    let description = data["description"] as? String ?? ""
-                    let tags = data["tags"] as? [String] ?? []
-                    let price = data["price"] as? Int ?? 0
-                    let url = data["url"] as? String ?? "No url"
-                    let id = data["id"] as? String ?? ""
-                    let searchKey = data["search_keys"] as? [String] ?? []
-                    if active == true {
-                        let newProduct = Product(active: active, categoryId: categoryId, description: description, price: price, name: name, tags: tags, url: url,searchKey: searchKey, id : id)
+                    let newProduct = Product(data : document.data())
+                    if newProduct.active == true {
+                        
                         self.productArray.append(newProduct)
                     }
                 }
@@ -105,6 +98,48 @@ class DataManager {
             
         }
         
+    }
+    
+    func requestOTPAgain(number : String?){
+        guard let number = number else {return}
+        PhoneAuthProvider.provider().verifyPhoneNumber(number, uiDelegate: nil) { (verificationID, error) in
+           print("verifying")
+           if let error = error {
+             print(error.localizedDescription)
+             return
+           }else{
+             guard let verificationID = verificationID else { return }
+             UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
+             }
+         }
+    }
+    
+    func getData(productArray : [Product])->[[String : Any]]{
+        var array : [[String : Any]] = []
+        for product in productArray {
+            if let price = product.price , let discount = product.discount{
+            let totalDiscount = price * (discount/100)
+                let dict : [String : Any] = [
+            "active" : product.active,
+            "categoryId" : product.categoryId,
+            "count" : product.quantity,
+            "description" : product.description,
+            "discount" : discount,
+            "id" : product.id,
+            "keys" : product.searchKey,
+            "name" : product.name,
+            "price" : product.price,
+            "tags" : product.tags,
+            "total" : price,
+            "url" : product.url,
+            "totalDiscount" : totalDiscount
+            
+            ]
+            array.append(dict)
+            }
+            
+        }
+      return array
     }
     
 }

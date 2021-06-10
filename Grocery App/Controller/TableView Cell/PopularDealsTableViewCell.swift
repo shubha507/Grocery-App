@@ -20,7 +20,7 @@ class PopularDealsTableViewCell : UITableViewCell, UICollectionViewDelegate {
         return cv
     }()
     
-     let popularDealsLabel : UILabel = {
+    let popularDealsLabel : UILabel = {
         let lbl = UILabel()
         lbl.text = "Popular Deals"
         lbl.font = UIFont.boldSystemFont(ofSize: 18)
@@ -28,7 +28,7 @@ class PopularDealsTableViewCell : UITableViewCell, UICollectionViewDelegate {
         return lbl
     }()
     
-     let seeAllButton : UIButton = {
+    let seeAllButton : UIButton = {
         let button = UIButton(type : .custom)
         let atts: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor(named : "mygreen"), .font: UIFont.systemFont(ofSize: 17)]
         let attributedTitle = NSMutableAttributedString(string: "See all", attributes: atts)
@@ -36,8 +36,8 @@ class PopularDealsTableViewCell : UITableViewCell, UICollectionViewDelegate {
         return button
     }()
     
-        
-     let popularDealsCellCollection : UICollectionView = {
+    
+    let popularDealsCellCollection : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let fc = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -79,35 +79,38 @@ class PopularDealsTableViewCell : UITableViewCell, UICollectionViewDelegate {
         
         cellView.addSubview(seeAllButton)
         seeAllButton.anchor(top: cellView.topAnchor, right: cellView.rightAnchor, paddingTop: 15, paddingRight: 20)
-
+        
         createLine()
         
         cellView.addSubview(popularDealsCellCollection)
         popularDealsCellCollection.anchor(top: popularDealsLabel.bottomAnchor, left: cellView.leftAnchor, right: cellView.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingRight: 0)
         popularDealsCellCollection.setDimensions(height: 220, width: cellView.frame.width)
-   }
+    }
     
     
     func createLine(){
         let path = UIBezierPath()
         path.move(to: CGPoint(x: 35, y: 70))
         path.addLine(to: CGPoint(x: 355, y: 70))
-
+        
+        // Create a `CAShapeLayer` that uses that `UIBezierPath`:
+        
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = path.cgPath
         shapeLayer.strokeColor = UIColor.lightGray.cgColor
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.lineWidth = 1
         shapeLayer.opacity = 0.2
-
-
+        
+        // Add that `CAShapeLayer` to your view's layer:
+        
         layer.addSublayer(shapeLayer)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(array1[indexPath.row].rank!)
     }
-
+    
 }
 
 extension PopularDealsTableViewCell : UICollectionViewDataSource {
@@ -118,8 +121,15 @@ extension PopularDealsTableViewCell : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as? PopularDealsCollectionViewCell else {return UICollectionViewCell()}
+<<<<<<< HEAD
         cell.cellLabel.text = "\(array1[indexPath.row].name!)"
         dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage)
+=======
+        if let name = array1[indexPath.row].name , let url = array1[indexPath.row].url {
+        cell.cellLabel.text = "\(name)"
+        dataManager.getImageFrom(url: "\(url)", imageView: cell.cellImage)
+        }
+>>>>>>> shubha
         return cell
     }
 }

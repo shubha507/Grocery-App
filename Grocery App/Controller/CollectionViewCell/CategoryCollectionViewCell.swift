@@ -30,12 +30,12 @@ class CategoryCollectionViewCell : UICollectionViewCell {
         return lbl
     }()
     
-    //Mark :- LifeCycle Method
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         contentView.addSubview(cellImage)
+          
+        addSubview(cellImage)
         cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0, width: 110, height: 110)
         
         contentView.addSubview(cellLabel)

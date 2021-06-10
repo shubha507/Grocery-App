@@ -9,19 +9,22 @@ import UIKit
 
 class CartTableViewCell: UITableViewCell {
     
-    //Mark :- Properties
     var cellIndex : Int?
+    
     var dataManager = DataManager()
+    
     var delegate : passQuantityChangeData?
-    var quantity : Int?
+   
+    var quantity : Double?
+    
     @IBOutlet weak var productImageView: UIImageView!
+    
     @IBOutlet weak var productNameLabel: UILabel!
+    
     @IBOutlet weak var pricePerPeiceLabel: UILabel!
+    
     @IBOutlet weak var productQuantityLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
-    
-    //Mark :- Lifecycle Method
-
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -72,4 +75,13 @@ class CartTableViewCell: UITableViewCell {
         }
     }
     
+    func configureCellUI(product : Product){
+        productNameLabel.text = "\(product.name!)"
+        quantity = product.quantity
+        productQuantityLabel.text = "\(product.quantity)"
+        pricePerPeiceLabel.text = "₹\(product.price!)"
+        priceLabel.text = "₹\(product.price! * product.quantity)"
+        dataManager.getImageFrom(url: product.url!, imageView: productImageView)
+        
+    }
 }
