@@ -172,43 +172,6 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
         dontRecieveCodeButton.centerX(inView: view)
         dontRecieveCodeButton.anchor(top : stack.bottomAnchor, paddingTop: 20)
     }
-    
-<<<<<<< HEAD
-    //Mark :- Action
-    @objc func textDidChange(textfield : UITextField){
-        guard let text = textfield.text else {return}
-        
-        if text.utf16.count == 1 {
-            switch textfield {
-            
-            case firstNumberTxtField:
-                secondNumberTxtField.becomeFirstResponder()
-                break
-                
-            case secondNumberTxtField:
-                thirdNumberTxtField.becomeFirstResponder()
-                break
-                
-            case thirdNumberTxtField:
-                fourthNumberTxtField.becomeFirstResponder()
-                break
-                
-            case fourthNumberTxtField:
-                fifthNumberTxtField.becomeFirstResponder()
-                break
-                
-            case fifthNumberTxtField:
-                sixthNumberTxtField.becomeFirstResponder()
-                break
-                
-            case sixthNumberTxtField:
-                sixthNumberTxtField.endEditing(true)
-                
-            default:
-                break
-=======
-
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if string.count == 1 {
@@ -298,7 +261,6 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
                            break
                 }
             return false
->>>>>>> shubha
             }
         
     }
@@ -357,16 +319,11 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
 
         
     @objc func verifyOTPAndCreateAccount(){
-<<<<<<< HEAD
-        let otp = "\(firstNumberTxtField.text!)\(secondNumberTxtField.text!)\(thirdNumberTxtField.text!)\(fourthNumberTxtField.text!)\(fifthNumberTxtField.text!)\(sixthNumberTxtField.text!)"
-        
-        guard let verificationID = UserDefaults.standard.string(forKey: "authVerificationID") else {return}
-=======
+
         let otpText = "\(firstNumberTxtField.text!)\(secondNumberTxtField.text!)\(thirdNumberTxtField.text!)\(fourthNumberTxtField.text!)\(fifthNumberTxtField.text!)\(sixthNumberTxtField.text!)"
         let otp = otpText.replacingOccurrences(of: " ", with: "")
         print(otp)
-        let verificationID = UserDefaults.standard.string(forKey: "authVerificationID")
->>>>>>> shubha
+        let verificationID = UserDefaults.standard.string(forKey: "authVerificationID") as! String
         
         let credential = PhoneAuthProvider.provider().credential(
             withVerificationID: verificationID,

@@ -109,27 +109,5 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
             print("Review button selected")
         }
     }
-
-    //Mark :- Action
- @IBAction func DetailsButtonPressed(_ sender: Any) {
-    delegate?.whichViewSelected(isDetailButtonSelected: true, isReviewButtonSelected: false)
-    }
-    
- @IBAction func reviewButtonPressed(_ sender: Any) {
-    delegate?.whichViewSelected(isDetailButtonSelected: false, isReviewButtonSelected: true)
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Reviewcell") as? ProductReviewTableViewCell else {return UITableViewCell()}
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
     
   }

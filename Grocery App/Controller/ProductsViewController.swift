@@ -155,15 +155,9 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         
     }
     
-    //Mark :- Action method
-    
-    @objc func showCategoryScreen(){
-        self.navigationController?.popViewController(animated: true)
-    }
-    
     //Mark :- passQuantitychange delegate method
     
-    func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
+    func quantityChanged(cellIndex: Int?, quant: Double?, isQuantViewOpen: Bool?) {
         guard let cellIndex = cellIndex, let quant = quant, let isQuantViewOpen = isQuantViewOpen else {return}
         dataManager.productArray[cellIndex].isQuantityViewOpen = isQuantViewOpen
         dataManager.productArray[cellIndex].quantity = quant

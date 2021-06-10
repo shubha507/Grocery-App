@@ -119,15 +119,10 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let controller = ProductsViewController()
-<<<<<<< HEAD
-        controller.pageTitle = array1[indexPath.row].name
-        controller.productId = array1[indexPath.row].id
-=======
         if let name = array1[indexPath.row].name , let id = array1[indexPath.row].id {
         controller.pageTitle = array1[indexPath.row].name
         controller.productId = array1[indexPath.row].id
         }
->>>>>>> shubha
         delegate?.pushViewController(controller: controller)
     }
 
@@ -141,15 +136,10 @@ extension CategoriesTableViewCell : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as? CategoryCollectionViewCell else {return UICollectionViewCell()}
-<<<<<<< HEAD
-         cell.cellLabel.text = "\(array1[indexPath.row].name!)"
-         dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage)
-=======
         if let name = array1[indexPath.row].name , let url = array1[indexPath.row].url {
         cell.cellLabel.text = "\(name)"
         dataManager.getImageFrom(url: "\(url)", imageView: cell.cellImage)
         }
->>>>>>> shubha
         return cell
     }
 }

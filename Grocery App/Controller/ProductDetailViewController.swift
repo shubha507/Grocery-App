@@ -59,7 +59,7 @@ func getSimilarProduct(){
     
     //Mark :- delegate methods
     
-    func quantityChanged(cellIndex: Int?, quant: Int?, isQuantViewOpen: Bool?) {
+    func quantityChanged(cellIndex: Int?, quant: Double?, isQuantViewOpen: Bool?) {
         guard let quant = quant, let isQuantViewOpen = isQuantViewOpen, let product = self.product else {return}
         product.quantity = quant
         product.isQuantityViewOpen = isQuantViewOpen

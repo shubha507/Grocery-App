@@ -48,7 +48,7 @@ class Product{
             self.total = total as? Double ?? 0.0
             self.totalDiscount = totalDiscount as? Double ?? 0.0
         }
-        
+        self.count = data["count"] as? Int ?? 0
     }
     
     

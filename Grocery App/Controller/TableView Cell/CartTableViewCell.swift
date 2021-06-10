@@ -39,21 +39,6 @@ class CartTableViewCell: UITableViewCell {
     
     //Mark :- Helper function
 
-    func configureCellUI(product : Product){
-        productNameLabel.text = "\(product.name!)"
-        if product.quantity == 0 {
-            quantity! = 1
-            delegate?.quantityChanged(cellIndex: cellIndex, quant: quantity!, isQuantViewOpen: nil)
-        }else{
-        quantity = product.quantity
-        }
-        productQuantityLabel.text = "\(quantity! ?? 0)"
-        pricePerPeiceLabel.text = "₹\(product.price!)"
-        priceLabel.text = "₹\(product.price! * (quantity ?? 0))"
-        dataManager.getImageFrom(url: product.url!, imageView: productImageView)
-        
-    }
-
     //Mark :- Action
 
     @IBAction func plusButtonPressed(_ sender: Any) {

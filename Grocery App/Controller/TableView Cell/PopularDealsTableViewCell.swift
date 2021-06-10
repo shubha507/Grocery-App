@@ -121,15 +121,10 @@ extension PopularDealsTableViewCell : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as? PopularDealsCollectionViewCell else {return UICollectionViewCell()}
-<<<<<<< HEAD
-        cell.cellLabel.text = "\(array1[indexPath.row].name!)"
-        dataManager.getImageFrom(url: "\(array1[indexPath.row].url!)", imageView: cell.cellImage)
-=======
         if let name = array1[indexPath.row].name , let url = array1[indexPath.row].url {
         cell.cellLabel.text = "\(name)"
         dataManager.getImageFrom(url: "\(url)", imageView: cell.cellImage)
         }
->>>>>>> shubha
         return cell
     }
 }
