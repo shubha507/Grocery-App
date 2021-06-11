@@ -20,16 +20,24 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.isHidden = true
         orderStatusCollectionView.delegate = self
         orderStatusCollectionView.dataSource = self
         orderStatusCollectionView.layer.cornerRadius = 20
         orderStatusTableView.delegate = self
         orderStatusTableView.dataSource = self
         orderStatusTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
-        orderDataManager.fetchOrdersData { (error) in
-            self.orderStatusTableView.reloadData()
-        }
+        
         orderStatusTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        DispatchQueue.main.async {
+            self.orderDataManager.fetchOrdersData { (error) in
+                self.orderStatusTableView.reloadData()
+            }
+        }
         
     }
     
@@ -71,6 +79,7 @@ extension OrderViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "OrderCell", for: indexPath) as? OrderTableViewCell else {return UITableViewCell() }
+        cell.configureUI(order: self.orderDataManager.order[indexPath.row])
         return cell
     }
     

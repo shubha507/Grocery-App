@@ -13,18 +13,15 @@ import FirebaseFirestore
 
 class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    @IBOutlet weak var totalDiscountLbl: UILabel!
-    @IBOutlet weak var payableAmountLbl: UILabel!
-    @IBOutlet weak var totalBillAmountLbl: UILabel!
     var statusArray = ["Order Placed" , "Pending","Confirmed","Processing","Delivered"]
     
     var index : Int?
+    var checkoutDoneRecently : Bool?
     
     var orderDataManager = OrderDataManager()
     
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var priceView: UIView!
     @IBOutlet weak var descriptionTableViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var descriptionTableView: UITableView!
     @IBOutlet weak var statusTableView: UITableView!
@@ -37,22 +34,49 @@ class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITable
         statusTableView.dataSource = self
         descriptionTableView.delegate = self
         descriptionTableView.dataSource = self
+        
+        descriptionTableView.register(CustomHeaderView.self,
+               forHeaderFooterViewReuseIdentifier: "sectionHeader")
+        
+        descriptionTableView.register(CustomFooterView.self,
+               forHeaderFooterViewReuseIdentifier: "sectionFooter")
+        
         orderDataManager.fetchOrdersData { [self] (error) in
             self.heightConstraint.constant = CGFloat(105 * self.orderDataManager.order[index!].allStatus!.count)
-            
-            self.payableAmountLbl.text = "₹\(self.orderDataManager.order[index!].payableAmount!)"
-            self.totalDiscountLbl.text = "-₹\(self.orderDataManager.order[index!].totalDiscount!)"
-            self.totalBillAmountLbl.text = "₹\(self.orderDataManager.order[index!].total!)"
+            self.descriptionTableViewHeightConstraint.constant = CGFloat(130 * self.orderDataManager.order[index!].items!.count) + 200
             self.statusTableView.reloadData()
             self.descriptionTableView.reloadData()
         }
         descriptionTableView.layer.cornerRadius = 30
-        descriptionTableView.tableFooterView = priceView
         
     }
     
+        
     @IBAction func backButtonPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+        
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+     func tableView(_ tableView: UITableView,
+            viewForHeaderInSection section: Int) -> UIView? {
+        if tableView == self.descriptionTableView{
+       let view = tableView.dequeueReusableHeaderFooterView(withIdentifier:
+                   "sectionHeader") as! CustomHeaderView
+       view.title.text = "Description"
+       return view
+    }
+    return UIView()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if tableView == self.descriptionTableView{
+            return 50
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -88,8 +112,29 @@ class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITable
         if tableView == self.statusTableView{
          return 105
         }else{
-            return UITableView.automaticDimension
+            return 130
         }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if tableView == self.descriptionTableView{
+            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier:
+                        "sectionFooter") as! CustomFooterView
+            if self.orderDataManager.order.count > 0 {
+            view.totalBillAmountValueLbl.text = "₹\(self.orderDataManager.order[index!].total!)"
+            view.totalDiscountValueLbl.text = "-₹\(self.orderDataManager.order[index!].totalDiscount!)"
+            view.payableAmountValueLbl.text = "₹\(self.orderDataManager.order[index!].payableAmount!)"
+            return view
+        }
+        }
+        return UIView()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if tableView == self.descriptionTableView{
+            return 150
+        }
+        return 0
     }
     
 }

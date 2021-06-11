@@ -236,12 +236,14 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
                 print("Error adding document: \(err)")
             } else {
                 print("Document added with ID: \(ref!.documentID)")
+               
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let orderDetailVC = storyboard.instantiateViewController(withIdentifier: "OrderDetailsViewController") as! OrderDetailsViewController
                 orderDetailVC.modalPresentationStyle = .fullScreen
                 orderDetailVC.index = 0
-                self.present(orderDetailVC, animated: true, completion: nil)
-            }
+                self.present(orderDetailVC, animated: true) {
+                    self.tabBarController?.selectedIndex = 1
+                }            }
         }
     }
     }

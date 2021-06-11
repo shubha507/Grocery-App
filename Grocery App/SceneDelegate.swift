@@ -24,21 +24,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     if user == nil {
                         self.window?.rootViewController = LoginScreenController()
                     }else{
-                        
-                        if (false) {
                             let storyboard = UIStoryboard(name: "Main", bundle: nil)
                             let tabBarController = storyboard.instantiateViewController(identifier: "CustomTabBarViewController") as? CustomTabBarViewController
                            self.window?.rootViewController = tabBarController
                         }
-                        else {
-                            let storyboard = UIStoryboard(name: "Admin", bundle: nil)
-                            let tabBarController = storyboard.instantiateViewController(identifier: "AdminTabBarController") as? UITabBarController
-                            self.window?.rootViewController = tabBarController
-                        }
-                    }
                 }
+//                        else {
+//                            let storyboard = UIStoryboard(name: "Admin", bundle: nil)
+//                            let tabBarController = storyboard.instantiateViewController(identifier: "AdminTabBarController") as? UITabBarController
+//                            self.window?.rootViewController = tabBarController
+//                        }
+  //                  }
+ //               }
        // self.window?.rootViewController = tabBarController
-        window?.makeKeyAndVisible()
+     window?.makeKeyAndVisible()
     }
     
 

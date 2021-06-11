@@ -42,9 +42,6 @@ class OrderStatusDesignTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    override func layoutSubviews() {
-        orderStatusDescriptionLbl.sizeToFit()
-    }
     
     
     func configureCellUI(order : Order , index : Int){

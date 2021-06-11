@@ -20,6 +20,7 @@ class OrderDataManager {
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
+                order = []
                 for document in querySnapshot!.documents {
                     let orders = Order(data: document.data() )
                     print("orders.id \(orders.id)")
