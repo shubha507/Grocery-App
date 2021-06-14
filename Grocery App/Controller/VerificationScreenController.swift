@@ -10,10 +10,17 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 
-class VerificationScreenController : UIViewController {
+class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
     
+    //Mark :- Properties
     var mobNo : String?
     
+    var dataManager = DataManager()
+    
+    private let textFieldArray = [CustomTextField]?.self
+    
+    private let textFielsIndex : [CustomTextField : Int] = [:]
+    var signinAlert = UIAlertController()
     private let arrowButton : UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "arrow.left" , withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold, scale: .large)), for: .normal)
@@ -38,7 +45,7 @@ class VerificationScreenController : UIViewController {
     
     private let codeSentLbl : UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.systemFont(ofSize: 20)
+        lbl.font = UIFont.boldSystemFont(ofSize: 20)
         lbl.textAlignment = .center
         lbl.textColor = .darkGray
         
@@ -64,7 +71,7 @@ class VerificationScreenController : UIViewController {
         attributedTitle.append(NSAttributedString(string: " Request again", attributes: boldAtts))
 
         button.setAttributedTitle(attributedTitle, for: .normal)
-        
+        button.addTarget(self, action: #selector(sendOTPAgain), for: .touchUpInside)
         return button
     }()
     
@@ -83,35 +90,47 @@ class VerificationScreenController : UIViewController {
     private let verifyButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Verify and Create Account" , for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = UIColor(named: "myyellow")
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor(red: 0, green: 255/255, blue: 0, alpha: 0.2)
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        button.isUserInteractionEnabled = false
         button.addTarget(self, action: #selector(verifyOTPAndCreateAccount), for: .touchUpInside)
         return button
     }()
     
-    
-    override func viewDidLoad() {
+    //Mark :- LifeCycle method
+ override func viewDidLoad() {
         super.viewDidLoad()
-        
+         
         firstNumberTxtField.delegate = self
         secondNumberTxtField.delegate = self
         thirdNumberTxtField.delegate = self
         fourthNumberTxtField.delegate = self
-        
+        fifthNumberTxtField.delegate = self
+        sixthNumberTxtField.delegate = self
+    
+    firstNumberTxtField.customDelegate = self
+    secondNumberTxtField.customDelegate = self
+    thirdNumberTxtField.customDelegate = self
+    fourthNumberTxtField.customDelegate = self
+    fifthNumberTxtField.customDelegate = self
+    sixthNumberTxtField.customDelegate = self
+   
+    
+    getCallButton.isHidden = true
         view.backgroundColor = .white
         configureUI()
-    }
+    
+ }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         firstNumberTxtField.becomeFirstResponder()
     }
     
-    func configureUI(){
-
-        
+    //Mark :- Helper Method
+   func configureUI(){
         view.addSubview(arrowButton)
         arrowButton.setDimensions(height: 45, width: 45)
         arrowButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 10)
@@ -123,8 +142,9 @@ class VerificationScreenController : UIViewController {
         view.addSubview(codeSentLbl)
         codeSentLbl.centerX(inView: view)
         codeSentLbl.anchor(top:verifyPhoneLbl.bottomAnchor, paddingTop: 30)
-        codeSentLbl.text = "Code is sent to \(self.mobNo!)"
-
+        if let mobNo = mobNo {
+            codeSentLbl.text = "Code is sent to \(mobNo.suffix(10))"
+        }
         setupStack()
         
         view.addSubview(getCallButton)
@@ -143,18 +163,7 @@ class VerificationScreenController : UIViewController {
         stack.axis = .horizontal
         stack.spacing = 10
         
-        firstNumberTxtField.addTarget(self, action: #selector(textDidChange(textfield:)), for: UIControl.Event.editingChanged)
-        
-        secondNumberTxtField.addTarget(self, action: #selector(textDidChange(textfield:)), for: UIControl.Event.editingChanged)
-        
-        thirdNumberTxtField.addTarget(self, action: #selector(textDidChange(textfield:)), for: UIControl.Event.editingChanged)
-        
-        fourthNumberTxtField.addTarget(self, action: #selector(textDidChange(textfield:)), for: UIControl.Event.editingChanged)
-        
-        fifthNumberTxtField.addTarget(self, action: #selector(textDidChange(textfield:)), for: UIControl.Event.editingChanged)
-        
-        sixthNumberTxtField.addTarget(self, action: #selector(textDidChange(textfield:)), for: UIControl.Event.editingChanged)
-        
+
         view.addSubview(stack)
         stack.anchor(top : codeSentLbl.bottomAnchor ,  paddingTop: 80)
         stack.centerX(inView: view)
@@ -163,57 +172,201 @@ class VerificationScreenController : UIViewController {
         dontRecieveCodeButton.centerX(inView: view)
         dontRecieveCodeButton.anchor(top : stack.bottomAnchor, paddingTop: 20)
     }
-    
-    @objc func textDidChange(textfield : UITextField){
-        let text = textfield.text
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        if text?.utf16.count == 1 {
-            switch textfield {
-            
-            case firstNumberTxtField:
-                secondNumberTxtField.becomeFirstResponder()
-                break
-                
-            case secondNumberTxtField:
-                thirdNumberTxtField.becomeFirstResponder()
-                break
-                
-            case thirdNumberTxtField:
-                fourthNumberTxtField.becomeFirstResponder()
-                break
-                
-            case fourthNumberTxtField:
-                fifthNumberTxtField.becomeFirstResponder()
-                break
-                
-            case fifthNumberTxtField:
-                sixthNumberTxtField.becomeFirstResponder()
-                break
-                
-            case sixthNumberTxtField:
-                sixthNumberTxtField.endEditing(true)
-                
-            default:
-                break
+        if string.count == 1 {
+            print(string)
+                    switch textField {
+
+                    case firstNumberTxtField:
+                        firstNumberTxtField.text = "\(string) "
+                        firstNumberTxtField.resignFirstResponder()
+                        secondNumberTxtField.becomeFirstResponder()
+                        break
+
+                    case secondNumberTxtField:
+                        secondNumberTxtField.text = "\(string) "
+                        secondNumberTxtField.resignFirstResponder()
+                        thirdNumberTxtField.becomeFirstResponder()
+                        break
+
+                    case thirdNumberTxtField:
+                        thirdNumberTxtField.text = "\(string) "
+                        thirdNumberTxtField.resignFirstResponder()
+                        fourthNumberTxtField.becomeFirstResponder()
+                        break
+
+                    case fourthNumberTxtField:
+                        fourthNumberTxtField.text = "\(string) "
+                        fourthNumberTxtField.resignFirstResponder()
+                        fifthNumberTxtField.becomeFirstResponder()
+                        break
+
+                    case fifthNumberTxtField:
+                        fifthNumberTxtField.text = "\(string) "
+                        fifthNumberTxtField.resignFirstResponder()
+                        sixthNumberTxtField.becomeFirstResponder()
+                        break
+
+                    case sixthNumberTxtField:
+                        sixthNumberTxtField.text = "\(string) "
+                        sixthNumberTxtField.resignFirstResponder()
+                        sixthNumberTxtField.endEditing(true)
+
+                    default:
+                        break
+                    }
+            return true
+        } else {
+            switch textField{
+                       case sixthNumberTxtField:
+                        sixthNumberTxtField.text = ""
+                        sixthNumberTxtField.resignFirstResponder()
+                        fifthNumberTxtField.becomeFirstResponder()
+                           break
+
+
+
+                       case fifthNumberTxtField:
+                        fifthNumberTxtField.text = ""
+                           fifthNumberTxtField.resignFirstResponder()
+                           fourthNumberTxtField.becomeFirstResponder()
+                           break
+
+
+                       case fourthNumberTxtField:
+                        fourthNumberTxtField.text = ""
+                        fourthNumberTxtField.resignFirstResponder()
+                           thirdNumberTxtField.becomeFirstResponder()
+                           break
+
+
+                       case thirdNumberTxtField:
+                        thirdNumberTxtField.text = ""
+                        thirdNumberTxtField.resignFirstResponder()
+                          secondNumberTxtField.becomeFirstResponder()
+                           break
+
+
+                       case secondNumberTxtField:
+                        secondNumberTxtField.text = ""
+                        secondNumberTxtField.resignFirstResponder()
+                           firstNumberTxtField.becomeFirstResponder()
+                           break
+
+                        case  firstNumberTxtField:
+                            firstNumberTxtField.text = ""
+
+                       default:
+                           break
+                }
+            return false
             }
+        
+    }
+    
+    func didPressBackspace(textField: CustomTextField) {
+        switch textField {
+        case sixthNumberTxtField:
+         sixthNumberTxtField.resignFirstResponder()
+         fifthNumberTxtField.becomeFirstResponder()
+            break
+
+
+
+        case fifthNumberTxtField:
+            fifthNumberTxtField.resignFirstResponder()
+            fourthNumberTxtField.becomeFirstResponder()
+            break
+
+
+        case fourthNumberTxtField:
+         fourthNumberTxtField.resignFirstResponder()
+            thirdNumberTxtField.becomeFirstResponder()
+            break
+
+
+        case thirdNumberTxtField:
+         thirdNumberTxtField.resignFirstResponder()
+           secondNumberTxtField.becomeFirstResponder()
+            break
+
+
+        case secondNumberTxtField:
+         secondNumberTxtField.resignFirstResponder()
+            firstNumberTxtField.becomeFirstResponder()
+            break
+
+         case  firstNumberTxtField:
+             break
+            
+        default:
+            break
+ }
+}
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let text1 = firstNumberTxtField.text, let text2 = secondNumberTxtField.text, let text3 = thirdNumberTxtField.text, let  text4 = fourthNumberTxtField.text, let text5 = fifthNumberTxtField.text ,let text6 = sixthNumberTxtField.text, !text1.isEmpty && !text2.isEmpty && !text3.isEmpty && !text4.isEmpty && !text5.isEmpty && !text6.isEmpty {
+            verifyButton.backgroundColor = UIColor(named: "mygreen")
+            verifyButton.isUserInteractionEnabled = true
         }
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        verifyButton.backgroundColor = UIColor(red: 0, green: 255/255, blue: 0, alpha: 0.2)
+        verifyButton.isUserInteractionEnabled = false
+    }
+
+        
     @objc func verifyOTPAndCreateAccount(){
-        let otp = "\(firstNumberTxtField.text!)\(secondNumberTxtField.text!)\(thirdNumberTxtField.text!)\(fourthNumberTxtField.text!)\(fifthNumberTxtField.text!)\(sixthNumberTxtField.text!)"
-        let verificationID = UserDefaults.standard.string(forKey: "authVerificationID")
+
+        let otpText = "\(firstNumberTxtField.text!)\(secondNumberTxtField.text!)\(thirdNumberTxtField.text!)\(fourthNumberTxtField.text!)\(fifthNumberTxtField.text!)\(sixthNumberTxtField.text!)"
+        let otp = otpText.replacingOccurrences(of: " ", with: "")
+        print(otp)
+        let verificationID = UserDefaults.standard.string(forKey: "authVerificationID") as! String
         
         let credential = PhoneAuthProvider.provider().credential(
-            withVerificationID: verificationID!,
+            withVerificationID: verificationID,
             verificationCode: otp)
+        signinAlert = UIAlertController(title: "Signing in...", message: nil, preferredStyle: .alert)
+        signinAlert.view.tintColor = UIColor.black
+            let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(x: 10,y: 5,width: 50, height: 50)) as UIActivityIndicatorView
+        loadingIndicator.style = UIActivityIndicatorView.Style.medium
+            loadingIndicator.startAnimating();
+
+        signinAlert.view.addSubview(loadingIndicator)
+            self.present(signinAlert, animated: true)
         
         Auth.auth().signIn(with: credential) { (authResult, error) in
           if let error = error {
-            print(error.localizedDescription)
+            self.signinAlert.dismiss(animated: true) {
+                let alert  = UIAlertController(title: "Enter Correct OTP", message: nil, preferredStyle: .alert)
+                
+                let actionOk = UIAlertAction(title: "Ok", style: .default) { (action) in
+                    alert.dismiss(animated: true, completion: nil)
+                }
+                alert.addAction(actionOk)
+                self.present(alert, animated: true)
+                
+            }
+            
           }else{
+            if let mobNo = self.mobNo {
+            AppSharedDataManager.shared.phnNo = mobNo
+            }
             self.present(HomeViewController(), animated: true, completion: nil)
           }
     }
+    }
+    
+    @objc func sendOTPAgain(){
+        firstNumberTxtField.text = ""
+        secondNumberTxtField.text = ""
+        thirdNumberTxtField.text = ""
+        fourthNumberTxtField.text = ""
+        fifthNumberTxtField.text = ""
+        sixthNumberTxtField.text = ""
+        dataManager.requestOTPAgain(number: mobNo)
     }
 }
 

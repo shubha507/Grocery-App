@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseCore
+import FirebaseFirestore
 
 class CategoriesViewController : UIViewController {
     
+    //Mark :- Properties
     var dataArray = [Categories]()
-    
-    var dictDocumentID = [Int : String]()
     
     let dataManager = DataManager()
     
@@ -26,8 +28,6 @@ class CategoriesViewController : UIViewController {
     @objc func showHomeScreen(){
         navigationController?.popViewController(animated: true)
     }
-    
-    private let array = ["Vegetables","Fruits","Meat","Egg","Vegetables","Fruits","Meat","Egg","Vegetables","Fruits","Meat","Egg","Vegetables","Fruits","Meat"]
     
     private let categoryLabel : UILabel = {
         let lbl = UILabel()
@@ -49,7 +49,7 @@ class CategoriesViewController : UIViewController {
        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
        let fc = UICollectionView(frame: .zero, collectionViewLayout: layout)
-       fc.register(FirstCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell")
+       fc.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell")
        fc.backgroundColor = .white
        fc.showsVerticalScrollIndicator = false
        fc.layer.cornerRadius = 30
@@ -57,6 +57,8 @@ class CategoriesViewController : UIViewController {
        return fc
    }()
     
+    //Mark :- Lifecycle method
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -80,17 +82,19 @@ class CategoriesViewController : UIViewController {
         cellCollectionVw.anchor(top: backView.topAnchor, left: backView.leftAnchor, bottom: backView.bottomAnchor, right: backView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 10)
         cellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
     }
-    
 
 }
 
 extension CategoriesViewController : UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-       print("dict \(dictDocumentID[dataArray[indexPath.row].rank!]!)")
        let controller = ProductsViewController()
+        controller.pageTitle = dataArray[indexPath.row].name!
+
+        controller.productId = dataArray[indexPath.row].id
         self.navigationController?.pushViewController(controller, animated: true)
-    }
+        
+       }
 }
 
 extension CategoriesViewController : UICollectionViewDataSource {
@@ -100,9 +104,8 @@ extension CategoriesViewController : UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as! FirstCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as? CategoryCollectionViewCell else {return UICollectionViewCell()}
         cell.cellLabel.text = "\(dataArray[indexPath.row].name!)"
-      //  cell.cellImage.image = UIImage(named: "\(array[indexPath.row])")
         dataManager.getImageFrom(url: "\(dataArray[indexPath.row].url!)", imageView: cell.cellImage)
         return cell
     }

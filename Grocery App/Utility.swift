@@ -108,3 +108,18 @@ extension UIView {
         layer.rasterizationScale = scale ? UIScreen.main.scale : 1
       }
 }
+
+protocol passQuantityChangeData {
+    func quantityChanged(cellIndex:Int?, quant: Double?, isQuantViewOpen : Bool?)
+}
+
+
+
+class AppSharedDataManager{
+    
+ static let shared = AppSharedDataManager()
+    
+    var phnNo : String?
+    
+ var productAddedToCart = [Product]()
+}

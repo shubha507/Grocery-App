@@ -7,7 +7,16 @@
 
 import UIKit
 
+//Otp text field
+
+protocol CustomTexFieldDelegate : UITextFieldDelegate {
+    func didPressBackspace(textField : CustomTextField)
+}
+
 class CustomTextField : UITextField {
+    
+    
+    var customDelegate : CustomTexFieldDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -19,11 +28,17 @@ class CustomTextField : UITextField {
         textAlignment = .center
         setDimensions(height: 50, width: 50)
         layer.shadowOpacity = 0.5
-        layer.shadowColor = UIColor.blue.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowColor = UIColor(named: "mygreen")?.cgColor
+        layer.shadowOffset = CGSize(width: 2, height: 3)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func deleteBackward() {
+        super.deleteBackward()
+            customDelegate?.didPressBackspace(textField: self)
+                
     }
 }

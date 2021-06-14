@@ -9,8 +9,9 @@ import UIKit
 import FirebaseAuth
 
 class LoginScreenController: UIViewController {
+    //Mark :- properties
     
-    var alertController : UIAlertController?
+    let countryCode = CountryCode()
     
     private let continueWithPhoneLbl : UILabel = {
         let lbl = UILabel()
@@ -26,7 +27,7 @@ class LoginScreenController: UIViewController {
     
     private let recieveCodeLabel : UILabel = {
         let lbl = UILabel()
-        lbl.text = "You'll receive a 4 digit code to verify next"
+        lbl.text = "You'll receive a 6 digit code to verify next"
         lbl.numberOfLines = 2
         lbl.font = UIFont.systemFont(ofSize: 20)
         lbl.textAlignment = .center
@@ -37,10 +38,11 @@ class LoginScreenController: UIViewController {
     private let continueButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Continue" , for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = UIColor(named: "myyellow")
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor(red: 0, green: 255/255, blue: 0, alpha: 0.2)
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        button.isUserInteractionEnabled = false
         return button
     }()
         
@@ -50,11 +52,18 @@ class LoginScreenController: UIViewController {
     numField.borderStyle = .none
     numField.keyboardAppearance = .light
     numField.keyboardType = .phonePad
-    numField.attributedText = NSAttributedString(string: "+918423821154", attributes: [.foregroundColor : UIColor(white: 1.0, alpha: 0.7)])
-    numField.textColor = .black
-    
     numField.font = UIFont.boldSystemFont(ofSize: 20)
     return numField
+    }()
+    
+    private let countryCodeTextField : UITextField = {
+        let numField = UITextField()
+        numField.backgroundColor = UIColor(white: 1, alpha: 0.1)
+        numField.borderStyle = .none
+        numField.textColor = .black
+        numField.font = UIFont.boldSystemFont(ofSize: 20)
+        numField.isUserInteractionEnabled = false
+        return numField
     }()
     
     private let enterNumberLabel : UILabel = {
@@ -69,14 +78,18 @@ class LoginScreenController: UIViewController {
     private let phoneNumberView : UIView = {
        let vw = UIView()
         vw.backgroundColor = .white
+        vw.layer.shadowColor = UIColor.systemGray.cgColor
+        vw.layer.shadowOpacity = 0.5
+        vw.layer.shadowOffset = CGSize(width: 3, height: 3)
+        
         return vw
     }()
     
-    
+    //Mark :- Lifecycle methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        numberTextField.delegate = self
         view.backgroundColor = UIColor(named: "mywhite")
         configureUI()
         
@@ -84,23 +97,26 @@ class LoginScreenController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-      //  numberTextField.text = "+"
+        numberTextField.becomeFirstResponder()
+        numberTextField.text = ""
     }
+
+    //Mark :- Helper method
 
     func configureUI(){
         
         view.addSubview(continueWithPhoneLbl)
         continueWithPhoneLbl.centerX(inView: view)
-        continueWithPhoneLbl.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 10)
+        continueWithPhoneLbl.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 15)
 
         view.addSubview(phoneWithHandImgVw)
         phoneWithHandImgVw.centerX(inView: view)
-        phoneWithHandImgVw.anchor(top : continueWithPhoneLbl.bottomAnchor , paddingTop: 10)
+        phoneWithHandImgVw.anchor(top : continueWithPhoneLbl.bottomAnchor , paddingTop: 15)
         phoneWithHandImgVw.setDimensions(height: 200, width: 200)
         
         view.addSubview(recieveCodeLabel)
         recieveCodeLabel.centerX(inView: view)
-        recieveCodeLabel.anchor(top : phoneWithHandImgVw.bottomAnchor ,left : view.leftAnchor, right: view.rightAnchor, paddingTop: 5, paddingLeft: 40, paddingRight: 40)
+        recieveCodeLabel.anchor(top : phoneWithHandImgVw.bottomAnchor ,left : view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 40, paddingRight: 40)
         
         phoneNumberView.addSubview(continueButton)
         continueButton.centerY(inView: phoneNumberView)
@@ -114,12 +130,20 @@ class LoginScreenController: UIViewController {
         view.addSubview(phoneNumberView)
         phoneNumberView.setDimensions(height: 70, width: view.frame.width)
         phoneNumberView.layer.cornerRadius = 20
-        phoneNumberView.anchor(top: recieveCodeLabel.bottomAnchor, paddingTop: 15)
+        phoneNumberView.anchor(top: recieveCodeLabel.bottomAnchor, paddingTop: 20)
         }
     
     
     func setupStack(){
-        let stack = UIStackView(arrangedSubviews: [enterNumberLabel, numberTextField])
+        let horizontalStack = UIStackView(arrangedSubviews: [countryCodeTextField, numberTextField])
+        horizontalStack.axis = .horizontal
+        horizontalStack.spacing = 0
+        countryCodeTextField.setWidth(35)
+        countryCodeTextField.text = "+91"
+            //  countryCodeTextField.text = "+\(countryCode.setCountryCode())"
+        numberTextField.addTarget(self, action: #selector(textDidChange(textfield:)), for: UIControl.Event.editingChanged)
+        
+        let stack = UIStackView(arrangedSubviews: [enterNumberLabel, horizontalStack])
         stack.axis = .vertical
         stack.spacing = 0
         
@@ -127,14 +151,29 @@ class LoginScreenController: UIViewController {
         stack.centerY(inView: phoneNumberView)
         stack.anchor(left : phoneNumberView.leftAnchor , paddingLeft: 15)
         stack.setDimensions(height: 50, width: 200)
+        
+        
+    }
+    
+    //Mark :- Action 
+
+    @objc func textDidChange(textfield: UITextField){
+        if let text = numberTextField.text, text.count == 10 {
+            textfield.endEditing(true)
+            continueButton.backgroundColor = UIColor(named: "mygreen")
+            continueButton.isUserInteractionEnabled = true
+        }else{
+            continueButton.backgroundColor = UIColor(red: 0, green: 255/255, blue: 0, alpha: 0.2)
+            continueButton.isUserInteractionEnabled = false
+        }
     }
     
     @objc func continueButtonPushed(){
-        if (numberTextField.text?.contains("+91") == true) && numberTextField.text?.count == 13 {
-        numberTextField.endEditing(true)
-            
         guard let phnNumber = numberTextField.text else { return }
-        PhoneAuthProvider.provider().verifyPhoneNumber(phnNumber, uiDelegate: nil) { (verificationID, error) in
+        let number = "+91\(phnNumber)"
+       // let number = "+\(countryCode.setCountryCode())\(phnNumber)"
+       PhoneAuthProvider.provider().verifyPhoneNumber(number, uiDelegate: nil) { (verificationID, error) in
+          print("verifying")
           if let error = error {
             print(error.localizedDescription)
             return
@@ -143,45 +182,10 @@ class LoginScreenController: UIViewController {
             UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
             let controller = VerificationScreenController()
             controller.modalPresentationStyle = .fullScreen
-            controller.mobNo = self.numberTextField.text?.replacingOccurrences(of: "+91", with: "")
-            self.present(controller, animated: true, completion: nil)
+            controller.mobNo = number
+            self.present(controller, animated: true,completion: nil)
+            }
+       
+        }
           }
-        }
-        }else if (numberTextField.text?.contains("+91") == true) && numberTextField.text!.count < 13 {
-            alertController = UIAlertController(title: nil, message: "Too Short Phone Number", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Ok", style: .default, handler: { (dismissAction: UIAlertAction!) in self.alertController?.dismiss(animated: true, completion: nil) })
-            alertController?.modalPresentationStyle = .custom
-            alertController?.addAction(action)
-            self.present(alertController!,
-                                           animated: true,
-                                           completion: nil)
-        }else if (numberTextField.text?.contains("+91") == false) {
-            alertController = UIAlertController(title: nil, message: "Please add country code +91 and 10 digit phone number", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Ok", style: .default, handler: { (dismissAction: UIAlertAction!) in self.alertController?.dismiss(animated: true, completion: nil) })
-            alertController?.modalPresentationStyle = .custom
-            alertController?.addAction(action)
-            self.present(alertController!,
-                                           animated: true,
-                                           completion: nil)
-        }
-        
-    }
-    
-}
-
-extension LoginScreenController : UITextFieldDelegate {
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        return range.location <= 12
-    }
-    
-    
-   
-    
-    
-    
-    
-        
-    
-    
-}
+      }

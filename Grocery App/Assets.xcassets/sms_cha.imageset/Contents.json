@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "sms_chat_text_pop_up-512.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
