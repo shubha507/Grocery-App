@@ -15,6 +15,10 @@ protocol MoveToNextStateProtocol {
 }
 class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    var presentState = String()
+    @IBOutlet weak var moveOrderButtonTrailing: NSLayoutConstraint!
+    @IBOutlet weak var moveOrderButtonBottom: NSLayoutConstraint!
+    @IBOutlet weak var moveOrderButtonLeading: NSLayoutConstraint!
     var confirmTappedProtocol: MoveToNextStateProtocol?
     let dataManager = DataManager()
     @IBOutlet weak var moveOrderNextStateButton: UIButton!
@@ -29,9 +33,32 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
     var statusList: [String: Any] = [:]
    
         
+    func setButtonLayout( name : String)
+    {
+        moveOrderButtonTrailing.constant = 0
+        moveOrderButtonLeading.constant = 0
+        moveOrderButtonBottom.constant = 0
+        moveOrderNextStateButton.tintColor = UIColor.white
+        moveOrderNextStateButton.isEnabled = false
+        if name == "declined"
+                {
+            moveOrderNextStateButton.setTitle("Declined", for: .normal)
+            moveOrderNextStateButton.backgroundColor = UIColor.red
+                }
+                
+                else if name == "delivered"
+                    {
+                        
+                        moveOrderNextStateButton.setTitle("Delivered", for: .normal)
+                        moveOrderNextStateButton.backgroundColor = UIColor.green
+                    
+                    }
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setButtonLayout(name: presentState)
         self.tabBarController?.tabBar.isHidden = true
         productDescriptionTableView.delegate = self
         productDescriptionTableView.dataSource = self
@@ -135,13 +162,21 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
         alert.view.tintColor = UIColor.brown
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (handle) in
             self.setStatevalues()
+            if self.presentState == "processing"
+            {
+                self.presentState = "delivered"
+                self.setButtonLayout(name: self.presentState)
+                
+            }
             self.confirmTappedProtocol?.confirmTapped(index: self.indexSelected)
             alert.dismiss(animated: true, completion: nil)
+            self.presentState = ""
         }))
         alert.addAction(UIAlertAction(title: "Decline", style: .default, handler: { (handle) in
             self.setStatevaluesDeclined()
             self.confirmTappedProtocol?.confirmTapped(index: self.indexSelected)
             alert.dismiss(animated: true, completion: nil)
+            self.presentState = ""
         }))
 
         alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { (handle) in

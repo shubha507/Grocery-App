@@ -138,6 +138,7 @@ class AdminOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         let adminOrderObject:OrderDescriptionAdminViewController = self.storyboard?.instantiateViewController(identifier: "OrderDescriptionAdminViewController") as! OrderDescriptionAdminViewController
         adminOrderObject.confirmTappedProtocol = self
         adminOrderObject.id = sortedOrder[indexPath.row].id ?? ""
+        adminOrderObject.presentState = sortedOrder[indexPath.row].currentStatus ?? ""
         adminOrderObject.order = sortedOrder
          
         i = i + 1

@@ -663,6 +663,7 @@
                 <tabBarController storyboardIdentifier="AdminTabBarController" automaticallyAdjustsScrollViewInsets="NO" id="AGK-6U-jp1" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6aI-jx-nY1">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" systemColor="systemOrangeColor"/>
                         <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -855,6 +856,9 @@
                     </view>
                     <connections>
                         <outlet property="lowerViewProductDescription" destination="vNq-Be-IGI" id="Lwg-wL-cMg"/>
+                        <outlet property="moveOrderButtonBottom" destination="eq1-Up-Xcy" id="kdQ-bi-hm3"/>
+                        <outlet property="moveOrderButtonLeading" destination="ZnH-Hg-ng6" id="pxD-HA-1HW"/>
+                        <outlet property="moveOrderButtonTrailing" destination="1Ls-6U-TVz" id="qun-1v-OFJ"/>
                         <outlet property="moveOrderNextStateButton" destination="d7Y-HB-E9N" id="rDU-7S-pRb"/>
                         <outlet property="productDescriptionTableView" destination="f9y-Z4-bY8" id="Jev-Ms-Xu3"/>
                         <outlet property="totalPriceLabel" destination="Fp4-7n-yA4" id="zgm-7e-yoD"/>
