@@ -17,6 +17,7 @@ class AdminOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     let dataManager = DataManager()
     private var order = [Order]()
 
+    var selectedStatus = ""
     var imageid = String()
     var sortedOrder = [Order]()
     
@@ -51,7 +52,86 @@ class AdminOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
 }
-    
+    func fetchDataAccordingToValue(val : String){
+       order = []
+        let db = Firestore.firestore()
+        db.collection("orders").getDocuments() { (querySnapshot, err) in
+        if let err = err {
+            print("Error getting documents: \(err)")
+        } else {
+            
+            for document in querySnapshot!.documents {
+                
+               let newOrder = Order(data: document.data())
+              // let newCategory = Categories1(docId: data)
+               // print("document is" , document)
+                var item = newOrder.items
+                
+               
+                //print(newOrder.name)
+                if newOrder.currentStatus == val
+                {
+             self.order.append(newOrder)
+                }
+            }
+          
+            
+           
+            self.sortedOrder = self.order.sorted(by: { $0.createdAt?.dateValue() ?? NSDate.distantPast > $1.createdAt?.dateValue() ?? NSDate.distantPast })
+            
+            self.orderTableView.reloadData()
+           
+           
+        }
+    }
+}
+    @IBAction func searchFilterTapped(_ sender: Any) {
+        
+        self.showAlert()
+    }
+            
+    func showAlert()
+            {
+                
+                let alert = UIAlertController(title: "Filter By Status", message: nil, preferredStyle: .alert)
+        present(alert, animated: true, completion: nil)
+                alert.view.tintColor = UIColor.black
+                alert.addAction(UIAlertAction(title: "Placed", style: .default, handler: { (handle) in
+                    self.fetchDataAccordingToValue(val: "placed")
+                    
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "Confirmed", style: .default, handler: { (handle) in
+                    self.fetchDataAccordingToValue(val: "confirmed")
+                    
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "Processing", style: .default, handler: { (handle) in
+                    self.fetchDataAccordingToValue(val: "processing")
+                    
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "Decined", style: .default, handler: { (handle) in
+                    self.fetchDataAccordingToValue(val: "declined")
+                    
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "Delivered", style: .default, handler: { (handle) in
+                    self.fetchDataAccordingToValue(val: "delivered")
+                   
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "CLEAR", style: .default, handler: { (handle) in
+                    self.order = []
+                    self.fetchData()
+                    
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "CANCEL", style: .destructive, handler: { (handle) in
+                    
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+            }
     override func viewDidLoad() {
         super.viewDidLoad()
 

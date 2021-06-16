@@ -34,29 +34,37 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
         
     func setButtonLayout( name : String)
     {
-        moveOrderButtonTrailing.constant = 0
-        moveOrderButtonLeading.constant = 0
-        moveOrderButtonBottom.constant = 0
-        moveOrderNextStateButton.tintColor = UIColor.white
-        moveOrderNextStateButton.isEnabled = false
+        
+        
         if name == "declined"
                 {
             moveOrderNextStateButton.setTitle("Declined", for: .normal)
             moveOrderNextStateButton.backgroundColor = UIColor.red
+            moveOrderNextStateButton.isEnabled = false
+            moveOrderButtonTrailing.constant = 0
+            moveOrderButtonLeading.constant = 0
+            moveOrderButtonBottom.constant = 0
+            moveOrderNextStateButton.setTitleColor(UIColor.white, for: .normal)
                 }
                 
                 else if name == "delivered"
                     {
                         
-                        moveOrderNextStateButton.setTitle("Delivered", for: .normal)
-                        moveOrderNextStateButton.backgroundColor = UIColor.green
+                    moveOrderNextStateButton.setTitle("Delivered", for: .normal)
+                    moveOrderNextStateButton.backgroundColor = UIColor.systemGreen
+                    moveOrderNextStateButton.isEnabled = false
+                    moveOrderButtonTrailing.constant = 0
+                    moveOrderButtonLeading.constant = 0
+                    moveOrderButtonBottom.constant = 0
+                    moveOrderNextStateButton.setTitleColor(UIColor.white, for: .normal)
                     
                     }
         
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setButtonLayout(name: presentState)
         self.tabBarController?.tabBar.isHidden = true
         productDescriptionTableView.delegate = self
