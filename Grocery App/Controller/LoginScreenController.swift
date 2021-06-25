@@ -13,10 +13,18 @@ class LoginScreenController: UIViewController {
     
     let countryCode = CountryCode()
     
+    private let containerView : UIView = {
+        let vw = UIView()
+        vw.backgroundColor = UIColor.white
+        vw.layer.cornerRadius = 30
+        return vw
+    }()
+    
     private let continueWithPhoneLbl : UILabel = {
         let lbl = UILabel()
         lbl.text = "Continue With Phone"
-        lbl.font = UIFont.boldSystemFont(ofSize: 25)
+        lbl.font = UIFont.boldSystemFont(ofSize: 29)
+        lbl.textColor = UIColor(named: "buttoncolor")
         return lbl
     }()
     
@@ -90,7 +98,7 @@ class LoginScreenController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(named: "mywhite")
+        view.backgroundColor = UIColor(named: "mygreen")
         configureUI()
         
     }
@@ -105,16 +113,20 @@ class LoginScreenController: UIViewController {
 
     func configureUI(){
         
+        
         view.addSubview(continueWithPhoneLbl)
         continueWithPhoneLbl.centerX(inView: view)
-        continueWithPhoneLbl.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 15)
+        continueWithPhoneLbl.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 40)
+        
+        view.addSubview(containerView)
+        containerView.anchor(top: continueWithPhoneLbl.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
 
-        view.addSubview(phoneWithHandImgVw)
+        containerView.addSubview(phoneWithHandImgVw)
         phoneWithHandImgVw.centerX(inView: view)
-        phoneWithHandImgVw.anchor(top : continueWithPhoneLbl.bottomAnchor , paddingTop: 15)
+        phoneWithHandImgVw.anchor(top : containerView.topAnchor , paddingTop: 15)
         phoneWithHandImgVw.setDimensions(height: 200, width: 200)
         
-        view.addSubview(recieveCodeLabel)
+        containerView.addSubview(recieveCodeLabel)
         recieveCodeLabel.centerX(inView: view)
         recieveCodeLabel.anchor(top : phoneWithHandImgVw.bottomAnchor ,left : view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 40, paddingRight: 40)
         
