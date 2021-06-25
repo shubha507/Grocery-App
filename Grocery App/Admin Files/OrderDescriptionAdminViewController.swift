@@ -10,10 +10,11 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import UserNotifications
 protocol MoveToNextStateProtocol {
     func confirmTapped(index: Int)
 }
-class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UNUserNotificationCenterDelegate {
 
     var presentState = String()
     @IBOutlet weak var moveOrderButtonTrailing: NSLayoutConstraint!
@@ -61,7 +62,7 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
                     }
         
     }
-    
+    let center = UNUserNotificationCenter.current()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -75,9 +76,35 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
         self.productDescriptionTableView.allowsSelection = false
         
         self.totalPriceLabel.text = "Rs. " + "\(order[indexSelected].payableAmount ?? 0)"
+        center.delegate = self
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+            
+        }
+       
     }
+    func showNotification(messageBody : String)
+    {
+        
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Hey"
+        content.body = messageBody
+        content.badge = 1
+        
+        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5, repeats: false)
+        let identifier = "Main Identifier"
+        let request = UNNotificationRequest.init(identifier: identifier, content: content, trigger: trigger)
+        center.add(request) { (error) in
+        
+                }
+
+    }
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
     
+        completionHandler([.alert, .badge, .sound])
+    }
     let arr: [String] = [ "placed" , "confirmed" , "processing" , "delivered"]
+    var localNotification = String()
     func setStatevalues ()
     {
         let db = Firestore.firestore()
@@ -95,7 +122,7 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
         status = order[indexSelected].allStatus!
         status[j].completed = true
         status[j].updatedAt = Timestamp(date: Date())
-       
+        localNotification = status[j].description ?? ""
         var array = [[String : Any]]()
         for item in self.status
         {
@@ -132,6 +159,7 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
         
         status[i].updatedAt = Timestamp(date: Date())
         let declinedStatus : [String:Any] = ["completed": true , "createdAt": Timestamp(date: Date()), "description": "Seller has declined your order" , "status": "declined" ,"title": "Order Declined" , "updatedAt": Timestamp(date: Date()) ]
+        localNotification = "Seller has declined your order"
         var array = [[String : Any]]()
         for item in self.status
         {
@@ -163,11 +191,20 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
    
     func showCompletion()
     {
-    
-        let alert = UIAlertController(title: nil, message: "Move Order???", preferredStyle: .actionSheet)
+        var i = 0
+        var j = Int()
+        while i < arr.count
+        {
+            if order[indexSelected].currentStatus == arr[i]
+            {
+                j = i + 1
+            }
+            i = i + 1
+        }
+        let alert = UIAlertController(title: "Are you sure?", message: "Do you really want to move this order to \(self.arr[j] ?? "") state.", preferredStyle: .alert)
         
-        alert.view.tintColor = UIColor.brown
-        alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (handle) in
+        alert.view.tintColor = UIColor.systemGreen
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [self] (handle) in
             self.setStatevalues()
             if self.presentState == "processing"
             {
@@ -177,22 +214,29 @@ class OrderDescriptionAdminViewController: UIViewController, UITableViewDelegate
             }
             self.confirmTappedProtocol?.confirmTapped(index: self.indexSelected)
             alert.dismiss(animated: true, completion: nil)
+            self.showNotification(messageBody: "\(self.localNotification)")
             self.presentState = ""
         }))
-        alert.addAction(UIAlertAction(title: "Decline", style: .default, handler: { (handle) in
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: { (handle) in
             self.setStatevaluesDeclined()
             self.confirmTappedProtocol?.confirmTapped(index: self.indexSelected)
             alert.dismiss(animated: true, completion: nil)
+            self.showNotification(messageBody: "\(self.localNotification)")
             self.presentState = ""
         }))
 
-        alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { (handle) in
+      //  alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { (handle) in
             
             
-        }))
-        self.present(alert, animated: true, completion: nil)
+       // }))
+        self.present(alert, animated: true, completion: {
+            alert.view.superview?.isUserInteractionEnabled = true
+            alert.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissOnTapOutside)))
+         })
     }
-    
+    @objc func dismissOnTapOutside(){
+       self.dismiss(animated: true, completion: nil)
+    }
     @IBAction func moveToNextStateButtonClicked(_ sender: Any) {
         showCompletion()
     }

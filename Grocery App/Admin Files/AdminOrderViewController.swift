@@ -94,10 +94,12 @@ class AdminOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             {
                 
                 let alert = UIAlertController(title: "Filter By Status", message: nil, preferredStyle: .alert)
-        present(alert, animated: true, completion: nil)
-                alert.view.tintColor = UIColor.black
+       
+        
+                alert.view.tintColor = UIColor.green
                 alert.addAction(UIAlertAction(title: "Placed", style: .default, handler: { (handle) in
                     self.fetchDataAccordingToValue(val: "placed")
+                    
                     
                     alert.dismiss(animated: true, completion: nil)
                 }))
@@ -121,7 +123,7 @@ class AdminOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                    
                     alert.dismiss(animated: true, completion: nil)
                 }))
-                alert.addAction(UIAlertAction(title: "CLEAR", style: .default, handler: { (handle) in
+                alert.addAction(UIAlertAction(title: "Clear Fields", style: .default, handler: { (handle) in
                     self.order = []
                     self.fetchData()
                     
@@ -131,7 +133,12 @@ class AdminOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                     
                     alert.dismiss(animated: true, completion: nil)
                 }))
-            }
+        
+        self.present(alert, animated: true, completion: {
+            alert.view.tintColor = UIColor.red
+         })
+           
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
