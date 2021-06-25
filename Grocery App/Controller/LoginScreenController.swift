@@ -51,6 +51,9 @@ class LoginScreenController: UIViewController {
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.isUserInteractionEnabled = false
+        button.layer.shadowOpacity = 1.0
+        button.layer.shadowColor = UIColor.systemGray.cgColor
+        button.layer.shadowOffset = CGSize(width: 2, height: 3)
         return button
     }()
         
@@ -123,17 +126,17 @@ class LoginScreenController: UIViewController {
 
         containerView.addSubview(phoneWithHandImgVw)
         phoneWithHandImgVw.centerX(inView: view)
-        phoneWithHandImgVw.anchor(top : containerView.topAnchor , paddingTop: 15)
+        phoneWithHandImgVw.anchor(top : containerView.topAnchor , paddingTop: 30)
         phoneWithHandImgVw.setDimensions(height: 200, width: 200)
         
         containerView.addSubview(recieveCodeLabel)
         recieveCodeLabel.centerX(inView: view)
-        recieveCodeLabel.anchor(top : phoneWithHandImgVw.bottomAnchor ,left : view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 40, paddingRight: 40)
+        recieveCodeLabel.anchor(top : phoneWithHandImgVw.bottomAnchor ,left : view.leftAnchor, right: view.rightAnchor, paddingTop: 15, paddingLeft: 40, paddingRight: 40)
         
         phoneNumberView.addSubview(continueButton)
         continueButton.centerY(inView: phoneNumberView)
         continueButton.setDimensions(height: 50, width: 150)
-        continueButton.anchor(right : phoneNumberView.rightAnchor , paddingRight: 10)
+        continueButton.anchor(right : phoneNumberView.rightAnchor , paddingRight: 15)
         continueButton.addTarget(self, action: #selector(continueButtonPushed), for: .touchUpInside)
         
         
