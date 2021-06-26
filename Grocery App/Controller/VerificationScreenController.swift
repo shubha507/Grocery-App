@@ -17,14 +17,22 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
     
     var dataManager = DataManager()
     
+    private let contentView : UIView = {
+        let vw = UIView()
+        vw.layer.cornerRadius = 30
+        vw.backgroundColor = UIColor(named: "buttoncolor")
+        return vw
+    }()
+    
     private let textFieldArray = [CustomTextField]?.self
     
     private let textFielsIndex : [CustomTextField : Int] = [:]
     var signinAlert = UIAlertController()
+    
     private let arrowButton : UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "arrow.left" , withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold, scale: .large)), for: .normal)
-        button.tintColor = .black
+        button.tintColor = .white
         button.addTarget(self, action: #selector(showLoginScreen), for: .touchUpInside)
         return button
     }()
@@ -39,7 +47,8 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
     private let verifyPhoneLbl : UILabel = {
         let lbl = UILabel()
         lbl.text = "Verify Phone"
-        lbl.font = UIFont.boldSystemFont(ofSize: 25)
+        lbl.font = UIFont.boldSystemFont(ofSize: 29)
+        lbl.textColor = .white
         return lbl
     }()
     
@@ -95,6 +104,9 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.isUserInteractionEnabled = false
+        button.layer.shadowOpacity = 1.0
+        button.layer.shadowColor = UIColor.systemGray.cgColor
+        button.layer.shadowOffset = CGSize(width: 3, height: 3)
         button.addTarget(self, action: #selector(verifyOTPAndCreateAccount), for: .touchUpInside)
         return button
     }()
@@ -119,7 +131,7 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
    
     
     getCallButton.isHidden = true
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "mygreen")
         configureUI()
     
  }
@@ -133,25 +145,28 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
    func configureUI(){
         view.addSubview(arrowButton)
         arrowButton.setDimensions(height: 45, width: 45)
-        arrowButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 10)
+    arrowButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, paddingTop: 35, paddingLeft: 20)
         
         view.addSubview(verifyPhoneLbl)
         verifyPhoneLbl.centerX(inView: view)
-        verifyPhoneLbl.centerY(inView: arrowButton, leftAnchor: arrowButton.rightAnchor,paddingLeft: 55)
-        
-        view.addSubview(codeSentLbl)
-        codeSentLbl.centerX(inView: view)
-        codeSentLbl.anchor(top:verifyPhoneLbl.bottomAnchor, paddingTop: 30)
+        verifyPhoneLbl.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 40)
+    
+    view.addSubview(contentView)
+    contentView.anchor(top: verifyPhoneLbl.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
+    
+    contentView.addSubview(codeSentLbl)
+        codeSentLbl.centerX(inView: contentView)
+        codeSentLbl.anchor(top:contentView.topAnchor, paddingTop: 50)
         if let mobNo = mobNo {
             codeSentLbl.text = "Code is sent to \(mobNo.suffix(10))"
         }
         setupStack()
         
-        view.addSubview(getCallButton)
+    contentView.addSubview(getCallButton)
         getCallButton.centerX(inView: view)
-        getCallButton.anchor(top : dontRecieveCodeButton.bottomAnchor, paddingTop: 3)
+        getCallButton.anchor(top : dontRecieveCodeButton.bottomAnchor, paddingTop: 5)
         
-        view.addSubview(verifyButton)
+    contentView.addSubview(verifyButton)
         verifyButton.setDimensions(height: 50, width: view.frame.width - 30)
         verifyButton.anchor(top : getCallButton.bottomAnchor, left : view.leftAnchor,right : view.rightAnchor, paddingTop: 10 , paddingLeft: 15, paddingRight: 15)
 
@@ -164,11 +179,11 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
         stack.spacing = 10
         
 
-        view.addSubview(stack)
+        contentView.addSubview(stack)
         stack.anchor(top : codeSentLbl.bottomAnchor ,  paddingTop: 80)
         stack.centerX(inView: view)
         
-        view.addSubview(dontRecieveCodeButton)
+        contentView.addSubview(dontRecieveCodeButton)
         dontRecieveCodeButton.centerX(inView: view)
         dontRecieveCodeButton.anchor(top : stack.bottomAnchor, paddingTop: 20)
     }
@@ -306,7 +321,7 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
 }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let text1 = firstNumberTxtField.text, let text2 = secondNumberTxtField.text, let text3 = thirdNumberTxtField.text, let  text4 = fourthNumberTxtField.text, let text5 = fifthNumberTxtField.text ,let text6 = sixthNumberTxtField.text, !text1.isEmpty && !text2.isEmpty && !text3.isEmpty && !text4.isEmpty && !text5.isEmpty && !text6.isEmpty {
+        if let text1 = firstNumberTxtField.text, let text2 = secondNumberTxtField.text, let text3 = thirdNumberTxtField.text, let  text4 = fourthNumberTxtField.text, let text5 = fifthNumberTxtField.text ,let text6 = sixthNumberTxtField.text, !text1.trimmingCharacters(in: .whitespaces).isEmpty && !text2.trimmingCharacters(in: .whitespaces).isEmpty && !text3.trimmingCharacters(in: .whitespaces).isEmpty && !text4.trimmingCharacters(in: .whitespaces).isEmpty && !text5.trimmingCharacters(in: .whitespaces).isEmpty && !text6.trimmingCharacters(in: .whitespaces).isEmpty {
             verifyButton.backgroundColor = UIColor(named: "mygreen")
             verifyButton.isUserInteractionEnabled = true
         }
@@ -331,7 +346,7 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
         signinAlert = UIAlertController(title: "Signing in...", message: nil, preferredStyle: .alert)
         signinAlert.view.tintColor = UIColor.black
             let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRect(x: 10,y: 5,width: 50, height: 50)) as UIActivityIndicatorView
-        loadingIndicator.style = UIActivityIndicatorView.Style.medium
+        loadingIndicator.style = UIActivityIndicatorView.Style.large
             loadingIndicator.startAnimating();
 
         signinAlert.view.addSubview(loadingIndicator)

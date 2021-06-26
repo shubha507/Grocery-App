@@ -8,7 +8,7 @@
 import UIKit
 import FirebaseAuth
 
-class LoginScreenController: UIViewController {
+class LoginScreenController: UIViewController,UITextFieldDelegate {
     //Mark :- properties
     
     let countryCode = CountryCode()
@@ -53,7 +53,7 @@ class LoginScreenController: UIViewController {
         button.isUserInteractionEnabled = false
         button.layer.shadowOpacity = 1.0
         button.layer.shadowColor = UIColor.systemGray.cgColor
-        button.layer.shadowOffset = CGSize(width: 2, height: 3)
+        button.layer.shadowOffset = CGSize(width: 3, height: 3)
         return button
     }()
         
@@ -101,6 +101,7 @@ class LoginScreenController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        numberTextField.delegate = self
         view.backgroundColor = UIColor(named: "mygreen")
         configureUI()
         
@@ -170,10 +171,14 @@ class LoginScreenController: UIViewController {
         
     }
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return range.location < 10
+    }
+    
     //Mark :- Action 
 
     @objc func textDidChange(textfield: UITextField){
-        if let text = numberTextField.text, text.count == 10 {
+        if let text = numberTextField.text?.trimmingCharacters(in: .whitespaces), text.count == 10 {
             textfield.endEditing(true)
             continueButton.backgroundColor = UIColor(named: "mygreen")
             continueButton.isUserInteractionEnabled = true
