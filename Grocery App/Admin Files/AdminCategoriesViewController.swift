@@ -184,7 +184,7 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
         cell.categoryPriceLabel.text = "Rank: " + " \(sortedCategory[indexPath.row].rank!)"
         dataManager.getImageFrom(url: "\(sortedCategory[indexPath.row].url!)", imageView: cell.tableViewCategoryImage)
         
-        cell.tableViewCategoryImage.layer.cornerRadius = cell.tableViewCategoryImage.frame.size.height/2
+       // cell.tableViewCategoryImage.layer.cornerRadius = cell.tableViewCategoryImage.frame.size.height/2
 
         cell.tableViewCategoryImage.layer.masksToBounds = false
         cell.tableViewCategoryImage.clipsToBounds = true

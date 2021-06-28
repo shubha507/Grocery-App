@@ -6,6 +6,10 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseCore
+import FirebaseFirestore
+import FirebaseStorage
 
 class AdminSettingsViewController: UIViewController {
 
@@ -29,6 +33,27 @@ class AdminSettingsViewController: UIViewController {
     }
     
     @IBAction func logoutButtonTapped(_ sender: Any) {
+        
+        let alertControler = UIAlertController(title: nil, message: "Do you want to logout?", preferredStyle: .alert)
+        let actionYes = UIAlertAction(title: "Yes", style: .default) { (action) in
+            let firebaseAuth = Auth.auth()
+            do {
+                try firebaseAuth.signOut()
+            } catch let signOutError as NSError {
+                print ("Error signing out: %@", signOutError)
+            }
+        }
+        
+        let actionNo = UIAlertAction(title: "No", style: .default) { (action) in
+            alertControler.dismiss(animated: true, completion: nil)
+        }
+        
+        alertControler.addAction(actionYes)
+        alertControler.addAction(actionNo)
+        alertControler.setBackgroundColor(color:.white)
+        
+        self.present(alertControler, animated: true, completion: nil)
     }
+    
     
 }
