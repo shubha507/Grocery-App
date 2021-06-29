@@ -230,7 +230,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
                
                 let userCollection = db.collection("users")
                 let id = user.uid
-                let user = users(name: name, id: id, address: addressFirstLine, phone: phoneNumber, url: url ?? nil, fcmToken: nil)
+                    let user = users(name: name, id: id, address: addressFirstLine, phone: phoneNumber, url: url ?? nil, fcmToken: nil, role: nil)
                 let userDocument = userCollection.document(id)
                 userDocument.setData(
                     user.getData()

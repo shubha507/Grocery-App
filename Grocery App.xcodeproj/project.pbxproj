@@ -22,6 +22,7 @@
 		62D4B2122671D7E5007D546A /* AdminCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D4B2042671D7E5007D546A /* AdminCategoriesViewController.swift */; };
 		62D4B2132671D7E5007D546A /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D4B2052671D7E5007D546A /* CategoryTableViewCell.swift */; };
 		62D4B2142671D7E5007D546A /* Admin.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 62D4B2062671D7E5007D546A /* Admin.storyboard */; };
+		9FD559AB2677D3F900849370 /* AdminSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD559AA2677D3F900849370 /* AdminSettingsViewController.swift */; };
 		B20C2B9A263939E60001B9FA /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2B99263939E60001B9FA /* CustomTabBar.swift */; };
 		B20C2BAF263974860001B9FA /* CustomTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BAE263974860001B9FA /* CustomTabBarViewController.swift */; };
 		B20C2BB826397F9F0001B9FA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20C2BB726397F9F0001B9FA /* HomeViewController.swift */; };
@@ -100,6 +101,7 @@
 		62D4B2042671D7E5007D546A /* AdminCategoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminCategoriesViewController.swift; sourceTree = "<group>"; };
 		62D4B2052671D7E5007D546A /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		62D4B2062671D7E5007D546A /* Admin.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Admin.storyboard; sourceTree = "<group>"; };
+		9FD559AA2677D3F900849370 /* AdminSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminSettingsViewController.swift; sourceTree = "<group>"; };
 		A9EF7194E3A7173B735F6D76 /* Pods-Grocery App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grocery App.release.xcconfig"; path = "Target Support Files/Pods-Grocery App/Pods-Grocery App.release.xcconfig"; sourceTree = "<group>"; };
 		B20C2B99263939E60001B9FA /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		B20C2BAE263974860001B9FA /* CustomTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarViewController.swift; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 				62D4B2032671D7E5007D546A /* AddCategoryViewController.swift */,
 				62D4B1FB2671D7E5007D546A /* AddProductViewController.swift */,
 				62D4B2062671D7E5007D546A /* Admin.storyboard */,
+				9FD559AA2677D3F900849370 /* AdminSettingsViewController.swift */,
 				62D4B1F92671D7E5007D546A /* AdminCategoriesCollectionViewCell.swift */,
 				62D4B2042671D7E5007D546A /* AdminCategoriesViewController.swift */,
 				62D4B2012671D7E5007D546A /* AdminOrderTableViewCell.swift */,
@@ -496,6 +499,7 @@
 				B25169AF265378940003CB1A /* ProductReviewTableViewCell.swift in Sources */,
 				B227CE2F26687E740060489D /* Users.swift in Sources */,
 				62D4B2112671D7E5007D546A /* AddCategoryViewController.swift in Sources */,
+				9FD559AB2677D3F900849370 /* AdminSettingsViewController.swift in Sources */,
 				B22F730B263AC413004CCEF7 /* CategoriesTableViewCell.swift in Sources */,
 				62D4B2082671D7E5007D546A /* AdminProductViewController.swift in Sources */,
 				B2CAFE5726401C0800C75C3E /* Categories.swift in Sources */,

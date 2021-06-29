@@ -24,7 +24,7 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
     
     var array1 = [Categories]()
     private var category = [Categories]()
-    
+    var rolle = String()
     private var dict = [Int : String]()
     private var dictCategory = [String: String]()
     private var sortedDict = [Dict]()
@@ -72,10 +72,10 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
         }
     }
 }
-   
     override func viewDidLoad() {
         super.viewDidLoad()
         //fetchData()
+       
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
         tableViewCategory.delegate = self
         tableViewCategory.dataSource = self
@@ -83,6 +83,7 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
         fetchData()
         self.tableViewCategory.allowsSelection = false
         self.tabBarController?.tabBar.unselectedItemTintColor = UIColor.init(white: 1, alpha: 0.5)
+        
        // self.tabBarController = [tabTwoItem]
     }
     
@@ -184,7 +185,7 @@ class AdminCategoriesViewController: UIViewController, UITableViewDelegate, UITa
         cell.categoryPriceLabel.text = "Rank: " + " \(sortedCategory[indexPath.row].rank!)"
         dataManager.getImageFrom(url: "\(sortedCategory[indexPath.row].url!)", imageView: cell.tableViewCategoryImage)
         
-        cell.tableViewCategoryImage.layer.cornerRadius = cell.tableViewCategoryImage.frame.size.height/2
+       // cell.tableViewCategoryImage.layer.cornerRadius = cell.tableViewCategoryImage.frame.size.height/2
 
         cell.tableViewCategoryImage.layer.masksToBounds = false
         cell.tableViewCategoryImage.clipsToBounds = true

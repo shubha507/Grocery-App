@@ -299,7 +299,14 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         }
         return 2
     }
-    
+    func strikeThrough() -> NSAttributedString {
+        let attributeString =  NSMutableAttributedString()
+        attributeString.addAttribute(
+            NSAttributedString.Key.strikethroughStyle,
+               value: NSUnderlineStyle.single.rawValue,
+                   range:NSMakeRange(0,attributeString.length))
+        return attributeString
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             if tableView == self.productTableView
             {
@@ -307,8 +314,20 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellProduct", for: indexPath) as! TableViewProductTableViewCell
                cell.tableProductName.text = "\(product[indexPath.row].name!)"
             cell.tableProductDescription.text = " \(product[indexPath.row].description!)"
-                cell.tableProductPrice.text = "Price:  " + "\(product[indexPath.row].price ?? 0)"
-                
+                if self.product[indexPath.row].discount ?? 0 > 0
+                {
+                    var priceAfterDiscount = (self.product[indexPath.row].discount ?? 0) * (self.product[indexPath.row].price ?? 0) / 100
+                    priceAfterDiscount = ((self.product[indexPath.row].price ?? 0) - priceAfterDiscount)
+                cell.tableProductPrice.text = "Rs. " + "\(Int(priceAfterDiscount))"
+                    cell.tableProductDiscountPrice.text = "Rs. " + "\(Int(self.product[indexPath.row].price ?? 0))"
+                    cell.tableProductDiscountPrice.attributedText = cell.tableProductDiscountPrice.text?.strikeThrough()
+                }
+                else
+                {
+                    cell.tableProductPrice.text = "Rs. " + "\(Int(self.product[indexPath.row].price ?? 0))"
+                        cell.tableProductDiscountPrice.text = ""
+                    
+                }
                 dataManager.getImageFrom(url: "\(product[indexPath.row].url!)", imageView: cell.tableProductImage)
                // TableViewProductTableViewCell.init(style: UITableViewCell.CellStyle, reuseIdentifier: "tableViewCellProduct" )
                 /*cell.tableProductImage.layer.cornerRadius = cell.tableProductImage.frame.size.height/2

@@ -18,6 +18,7 @@ class AdminOrderTableViewCell: UITableViewCell {
     @IBOutlet weak var orderItemsLabel: UILabel!
     @IBOutlet weak var orderStatusLabel: UILabel!
     
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
