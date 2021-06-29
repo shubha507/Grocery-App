@@ -13,6 +13,7 @@ import FirebaseStorage
 
 class AdminSettingsViewController: UIViewController {
 
+    let dataManager = DataManager()
     @IBOutlet weak var logoutButtonAdminSettingsController: UIButton!
     @IBOutlet weak var saveButtonAdminSettingsController: UIButton!
     @IBOutlet weak var profileAddressTextField: UITextField!
@@ -24,11 +25,32 @@ class AdminSettingsViewController: UIViewController {
 
         logoutButtonAdminSettingsController.layer.cornerRadius = 10
         saveButtonAdminSettingsController.layer.cornerRadius = 10
-        
+        profileNumberTextField.isEnabled = false
+        profileNumberTextField.textColor = UIColor.darkGray
         profileImage.layer.cornerRadius = 5
-        
+        checkUser()
     }
-    
+    func checkUser()
+    {
+     var role = String()
+     let db = Firestore.firestore()
+     guard let user = Auth.auth().currentUser else {return }
+     db.collection("users").document(user.uid).getDocument { (document, error) in
+         if let document = document, document.exists {
+             let data =  document.data()
+           print("user data is:" , data)
+            self.dataManager.getImageFrom(url: "\(data?["url"] ?? "")", imageView: self.profileImage )
+            self.profileNumberTextField.text = data?["phone"] as? String ?? ""
+            self.profileNameTextField.text = data?["name"] as? String ?? ""
+            self.profileAddressTextField.text = data?["address"] as? String ?? ""
+         }
+         else {
+         }
+         
+         }
+
+     
+    }
     @IBAction func saveButtonTapped(_ sender: Any) {
     }
     
