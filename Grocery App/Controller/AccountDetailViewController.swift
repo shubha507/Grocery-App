@@ -59,6 +59,9 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
         
         addressFirstLineTextField.addTarget(self, action: #selector(textFieldEditingDidChange(_:)), for: UIControl.Event.editingChanged)
         
+        logOutButton.layer.shadowOpacity = 1.0
+        logOutButton.layer.shadowColor = UIColor.systemGray.cgColor
+        logOutButton.layer.shadowOffset = CGSize(width: 3, height: 3)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -234,12 +237,6 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
                 let userDocument = userCollection.document(id)
                 userDocument.setData(
                     user.getData()
-//                    "name": name,
-//                    "address": addressFirstLine,
-//                    "id" : id,
-//                    "phone" : phoneNumber,
-//                    "url" : url,
-//                    "fcmToken" : nil
                 ){ err in
                     if let err = err {
                         print("Error adding document: \(err)")

@@ -191,8 +191,8 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         db.collection("users").document(user.uid).getDocument { (document, error) in
             if let document = document, document.exists {
                 self.nameLabel.isHidden = false
-                self.nameLabel.text = UserDefaults.standard.string(forKey: "name")
                 let data =  document.data()
+                self.nameLabel.text = data?["name"] as? String
                 if let url = data?["url"] as? String {
                     self.imageUrl = url
                 self.dataManager.getImageFrom(url: self.imageUrl, imageView: self.imageView)

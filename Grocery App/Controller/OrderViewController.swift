@@ -11,7 +11,7 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
     
     var orderDataManager = OrderDataManager()
     
-    let orderStatusArray = ["All Order","Pending","Processing","Confirmed","Delivered"]
+    let orderStatusArray = ["All Order","Pending","Processing","Confirmed","Delivered","Declined"]
     
     @IBOutlet weak var orderStatusCollectionView: UICollectionView!
     
@@ -27,7 +27,8 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
         orderStatusTableView.delegate = self
         orderStatusTableView.dataSource = self
         orderStatusTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
-        
+        orderStatusCollectionView.allowsMultipleSelection = false
+        orderStatusCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .left)
         orderStatusTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
         
     }
@@ -53,6 +54,10 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
         cell.layer.cornerRadius = 10
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.row)
+    }
 }
 
 extension OrderViewController : UICollectionViewDelegateFlowLayout {
@@ -66,7 +71,7 @@ extension OrderViewController : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top:0, left: 20, bottom: 0, right: 0)
+        return UIEdgeInsets(top:0, left: 20, bottom: 0, right: 70)
     }
     
 }
