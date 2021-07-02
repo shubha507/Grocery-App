@@ -29,7 +29,6 @@ class OrderTableViewCell: UITableViewCell {
         orderStatusLabel.layer.borderWidth = 2
         orderStatusLabel.layer.cornerRadius = 10
         orderStatusLabel.layer.masksToBounds = true
-       // orderStatusLabel.con
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

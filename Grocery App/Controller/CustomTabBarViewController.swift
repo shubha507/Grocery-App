@@ -17,12 +17,6 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
         return iv
     }()
     
-//    private let cartItemNumberImageView : UIImageView = {
-//        let view = UIImageView( frame: CGRect(x: 45, y: -10, width: 30, height: 40))
-//        view.image = UIImage(named: "sms_cha")
-//        return view
-//    }()
-    
     private let cartItemNumberView : UIView = {
         let view = UIView( frame: CGRect(x: 45, y: -15, width: 30, height: 30))
         view.layer.cornerRadius = view.frame.height/2

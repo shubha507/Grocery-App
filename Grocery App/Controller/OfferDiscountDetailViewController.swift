@@ -49,10 +49,8 @@ class OfferDiscountDetailViewController: UIViewController,filterSelected {
         print(" item  \(filterSelected)" )
         if filterSelected == "Highest Price" {
             fetchProducts(filter : true)
-           // discountDetailTableView.reloadData()
         }else{
             fetchProducts(filter : false)
-          //  discountDetailTableView.reloadData()
         }
     }
     
@@ -86,7 +84,6 @@ extension OfferDiscountDetailViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let productDetailVC = storyboard.instantiateViewController(identifier: "ProductDetailViewController") as! ProductDetailViewController
-        // let productDetailVC = ProductDetailViewController()
         productDetailVC.id  = discountProductArray[indexPath.row].id
         productDetailVC.product = discountProductArray[indexPath.row]
         productDetailVC.modalPresentationStyle = .fullScreen

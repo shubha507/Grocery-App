@@ -55,7 +55,6 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
         orderStatusTableView.dataSource = self
         
         orderStatusTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
-       // index = 0
         
         collectionView(orderStatusCollectionView, didSelectItemAt: IndexPath(item: 0, section: 0))
         }

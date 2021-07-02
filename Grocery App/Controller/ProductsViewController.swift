@@ -99,10 +99,6 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         view.backgroundColor = UIColor(named: "mygreen")
         productCellCollectionVw.delegate = self
         productCellCollectionVw.dataSource = self
-        
-        
-        
-        
         self.dataManager.searchData(selectedId: productId, matchId: "category_id") { (error) in
            self.productCellCollectionVw.reloadData()
             self.productCellCollectionVw.layoutIfNeeded()
