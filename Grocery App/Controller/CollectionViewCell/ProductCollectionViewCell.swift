@@ -230,6 +230,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
         }
        
         quantity = product.quantity
+        
         quantityLabel.text = "\(Int(product.quantity))"
         isQuantityViewOpen = product.isQuantityViewOpen
         dataManager.getImageFrom(url: product.url!, imageView: cellImage)

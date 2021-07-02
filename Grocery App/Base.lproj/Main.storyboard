@@ -864,6 +864,7 @@
                                                                         <constraint firstItem="YRP-gp-BaJ" firstAttribute="top" secondItem="jh7-tU-OFD" secondAttribute="top" constant="10" id="DnE-ie-bSB"/>
                                                                         <constraint firstItem="LJl-dM-2Tv" firstAttribute="top" secondItem="eK8-jR-40A" secondAttribute="bottom" constant="5" id="Fm2-q0-VMC"/>
                                                                         <constraint firstItem="YRP-gp-BaJ" firstAttribute="leading" secondItem="jh7-tU-OFD" secondAttribute="leading" constant="10" id="Gsd-CT-LEz"/>
+                                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Uqx-eL-bfe" secondAttribute="bottom" constant="5" id="HzV-CF-GKy"/>
                                                                         <constraint firstAttribute="bottom" secondItem="Pcp-Ao-E8H" secondAttribute="bottom" constant="10" id="Qei-ad-dar"/>
                                                                         <constraint firstItem="LJl-dM-2Tv" firstAttribute="leading" secondItem="Uqx-eL-bfe" secondAttribute="trailing" constant="10" id="RHj-Qc-sjf"/>
                                                                         <constraint firstItem="Uqx-eL-bfe" firstAttribute="top" secondItem="YRP-gp-BaJ" secondAttribute="bottom" constant="10" id="RyT-vc-Xmt"/>
@@ -953,6 +954,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="2WE-Xs-MVc"/>
                     <connections>
+                        <outlet property="contentView" destination="LYD-aG-RAm" id="0Lm-Fi-Q0y"/>
                         <outlet property="orderStatusCollectionView" destination="Yx1-uS-6gi" id="CDX-m7-sch"/>
                         <outlet property="orderStatusTableView" destination="sXH-dc-xir" id="LhE-kK-ELX"/>
                     </connections>
@@ -1109,8 +1111,9 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fzG-Sa-TF8">
-                                                <rect key="frame" x="20" y="210" width="30" height="30"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="fzG-Sa-TF8">
+                                                <rect key="frame" x="20" y="211.5" width="30" height="27"/>
+                                                <color key="tintColor" name="mygreen"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="DkZ-ij-kXp"/>
                                                     <constraint firstAttribute="width" constant="30" id="kiE-EK-OsE"/>
@@ -1738,6 +1741,7 @@
         <image name="natures_basket" width="480" height="360"/>
         <image name="open" width="241" height="209"/>
         <image name="pencil" catalog="system" width="128" height="113"/>
+        <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="phone.fill" catalog="system" width="128" height="114"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="profile" width="600" height="600"/>

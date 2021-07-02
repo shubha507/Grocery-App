@@ -23,7 +23,9 @@ class Product{
     var totalDiscount : Double?
     var keys : [String]?
     var total : Double?
-    
+    var quantity = 0.0
+    var isQuantityViewOpen = false
+    var isAddedToCart = false
     
     
     init(data : [String : Any]){
@@ -34,6 +36,15 @@ class Product{
         self.price = data["price"] as? Double ?? 0.0
         self.url = data["url"] as? String ?? "No url"
         self.id = data["id"] as? String ?? ""
+        if AppSharedDataManager.shared.productAddedToCart.count > 0{
+            for product in AppSharedDataManager.shared.productAddedToCart {
+                if product.id == self.id {
+                    self.quantity = product.quantity
+                    self.isAddedToCart = true
+                    self.isQuantityViewOpen = true
+                }
+            }
+            }
         self.discount = data["discount"] as? Double ?? 0.0
         self.count = data["count"] as? Int ?? 0
         if let tags = data["tags"] {
@@ -50,10 +61,7 @@ class Product{
             self.totalDiscount = totalDiscount as? Double ?? 0.0
         }
         self.count = data["count"] as? Int ?? 0
-    }
+        }
     
     
-    var quantity = 0.0
-    var isQuantityViewOpen = false
-    var isAddedToCart = false
 }

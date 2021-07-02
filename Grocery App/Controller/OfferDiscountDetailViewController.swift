@@ -39,6 +39,11 @@ class OfferDiscountDetailViewController: UIViewController,filterSelected {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        discountDetailTableView.reloadData()
+    }
+    
     func selectedFilterName(item: String) {
         self.filterSelected = item
         print(" item  \(filterSelected)" )
@@ -78,6 +83,16 @@ class OfferDiscountDetailViewController: UIViewController,filterSelected {
 
 extension OfferDiscountDetailViewController : UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let productDetailVC = storyboard.instantiateViewController(identifier: "ProductDetailViewController") as! ProductDetailViewController
+        // let productDetailVC = ProductDetailViewController()
+        productDetailVC.id  = discountProductArray[indexPath.row].id
+        productDetailVC.product = discountProductArray[indexPath.row]
+        productDetailVC.modalPresentationStyle = .fullScreen
+        productDetailVC.productArray = discountProductArray
+        self.present(productDetailVC, animated: true, completion: nil)
+    }
 }
 
 extension OfferDiscountDetailViewController : UITableViewDataSource {
@@ -108,6 +123,7 @@ extension OfferDiscountDetailViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 80
     }
+    
     
     
 }

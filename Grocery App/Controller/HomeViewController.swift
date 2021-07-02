@@ -106,16 +106,6 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         return fc
     }()
     
-    private let addToCartButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Add to Cart >>" , for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(named: "mygreen")
-        button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        return button
-    }()
-    
     //Mark :- Lifecycle Method
     
     override func viewDidLoad() {
@@ -133,16 +123,20 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         fetchCategoryData()
         fetchDiscountData()
         searchTextField.addTarget(self, action: #selector(textFieldEditingDidChange(_:)), for: UIControl.Event.editingChanged)
-        print("date \(Date())")
+        searchCellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
+        
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureProfilePicture()
+        searchCellCollectionVw.reloadData()
+        
     }
-    //Mark :- Helper function
     
+    
+    //Mark :- Helper function
     func configureUI(){
         view.addSubview(profileButton)
         profileButton.setDimensions(height: 50, width: 50)
@@ -178,11 +172,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         searchView.anchor(top: searchTextField.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
         
         searchView.addSubview(searchCellCollectionVw)
-        searchCellCollectionVw.anchor(top: self.searchView.topAnchor, left: self.searchView.leftAnchor, right: self.searchView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingRight: 10, height: 400)
-        
-        searchView.addSubview(addToCartButton)
-        addToCartButton.anchor(top: self.searchCellCollectionVw.bottomAnchor, right: self.searchView.rightAnchor, paddingTop: 20, paddingRight: 30, width: 200, height: 50)
-        addToCartButton.addTarget(self, action: #selector(addToCartPressed), for: .touchUpInside)
+        searchCellCollectionVw.anchor(top: self.searchView.topAnchor, left: self.searchView.leftAnchor,bottom: self.searchView.bottomAnchor, right: self.searchView.rightAnchor, paddingTop: 15, paddingLeft: 10,paddingBottom: 0, paddingRight: 10)
     }
     
     func configureProfilePicture(){
@@ -304,6 +294,19 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
                 }
             }
         }
+        db.collection("products").whereField("tags", arrayContains: searchedText!).getDocuments() { [self] (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    let newProduct = Product(data : document.data())
+                    if newProduct.active == true {
+                        self.searchedProduct.append(newProduct)
+                        self.searchCellCollectionVw.reloadData()
+                    }
+                }
+            }
+        }
     }
     
     
@@ -322,15 +325,6 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         self.navigationController?.pushViewController(categoryVC, animated: true)
     }
     
-    @objc func addToCartPressed(){
-        for product in searchedProduct {
-            AppSharedDataManager.shared.productAddedToCart.append(product)
-            product.isAddedToCart = true
-            NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
-            
-        }
-    }
-    
     //Mark :- perform action delegate method
     func pushViewController(controller: UIViewController) {
         self.navigationController?.pushViewController(controller, animated: true)
@@ -340,6 +334,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
     @objc func textFieldEditingDidChange(_ textField: UITextField){
         if let text = textField.text {
             if text.count > 0 {
+                searchCellCollectionVw.reloadData()
                 tblView.isHidden = true
                 searchView.isHidden = false
                 configureSearchView()
