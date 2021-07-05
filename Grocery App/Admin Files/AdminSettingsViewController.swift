@@ -11,7 +11,7 @@ import FirebaseCore
 import FirebaseFirestore
 import FirebaseStorage
 
-class AdminSettingsViewController: UIViewController {
+class AdminSettingsViewController: UIViewController, UITextFieldDelegate {
 
     let dataManager = DataManager()
     @IBOutlet weak var logoutButtonAdminSettingsController: UIButton!
@@ -23,11 +23,17 @@ class AdminSettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        profileAddressTextField.delegate = self
+        profileNameTextField.delegate = self
         logoutButtonAdminSettingsController.layer.cornerRadius = 10
         saveButtonAdminSettingsController.layer.cornerRadius = 10
         profileNumberTextField.isEnabled = false
         profileNumberTextField.textColor = UIColor.darkGray
         profileImage.layer.cornerRadius = 5
+        checkUser()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         checkUser()
     }
     func checkUser()
@@ -51,9 +57,97 @@ class AdminSettingsViewController: UIViewController {
 
      
     }
+    func showAlert( messageValue: String  )
+    {
+        let alert = UIAlertController(title: "Error!", message: messageValue, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (handle) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
     @IBAction func saveButtonTapped(_ sender: Any) {
+        if profileAddressTextField.text!.isEmpty {
+            print("input field/fields missing")
+            showAlert(messageValue: "Value of field missing")
+            profileAddressTextField.layer.borderWidth = 2
+            profileAddressTextField.layer.borderColor = UIColor.systemRed.cgColor
+        }
+        else if profileNameTextField.text!.isEmpty  {
+            print("input field/fields missing")
+            showAlert(messageValue: "Value of field missing")
+            profileNameTextField.layer.borderWidth = 2
+            profileNameTextField.layer.borderColor = UIColor.systemRed.cgColor
+        }
+        else
+        {
+        let db = Firestore.firestore()
+        let user = Auth.auth().currentUser
+        db.collection("users").document(user?.uid ?? "").updateData([
+            
+           "address": "\(profileAddressTextField.text ?? "")",
+            "name": "\(profileNameTextField.text ?? "")"
+            
+        ]) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+                
+            }
+        }
+        }
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == profileAddressTextField {
+            if textField.text!.isEmpty {
+            print("empty field type again")
+                profileAddressTextField.layer.borderWidth = 2
+                profileAddressTextField.layer.borderColor = UIColor.systemRed.cgColor
+            }
+            else {
+            return textField.resignFirstResponder()
+            }
+           
+        }
+        else if textField == profileNameTextField {
+            
+            if textField.text!.isEmpty {
+            print("empty field type again")
+                profileNameTextField.layer.borderWidth = 2
+                profileNameTextField.layer.borderColor = UIColor.systemRed.cgColor
+            }
+            else {
+            return textField.resignFirstResponder()
+            }
+        }
+        return textField.resignFirstResponder()
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == profileAddressTextField {
+            profileAddressTextField.layer.borderWidth = 2
+            profileAddressTextField.layer.borderColor = UIColor.systemGreen.cgColor
+            textField.keyboardType = UIKeyboardType.default
+        }
+        else if textField == profileNameTextField {
+            profileNameTextField.layer.borderWidth = 2
+            profileNameTextField.layer.borderColor = UIColor.systemGreen.cgColor
+            textField.keyboardType = UIKeyboardType.default
+        }
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == profileAddressTextField {
+            profileAddressTextField.layer.borderWidth = 0
+            profileAddressTextField.layer.borderColor = UIColor.white.cgColor
+        }
+        else if textField == profileNameTextField {
+            profileNameTextField.layer.borderWidth = 0
+            profileNameTextField.layer.borderColor = UIColor.white.cgColor
+        }
+    }
     @IBAction func logoutButtonTapped(_ sender: Any) {
         
         let alertControler = UIAlertController(title: nil, message: "Do you want to logout?", preferredStyle: .alert)

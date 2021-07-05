@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
        guard let scene = (scene as? UIWindowScene) else { return }
               window = UIWindow(windowScene: scene)
                 let listenHandler = Auth.auth().addStateDidChangeListener { (auth, user) in
-                    if user == nil {
+                    if (user == nil)  {
                         self.window?.rootViewController = LoginScreenController()
                     }
                    // else{
@@ -35,7 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                       else {
                      //   let storyboard = UIStoryboard(name: "Admin", bundle: nil)
                       //  let tabBarController = storyboard.instantiateViewController(identifier: "AdminTabBarController") as? UITabBarController
-                      // self.window?.rootViewController = tabBarController
+                      //self.window?.rootViewController = tabBarController
                         var role : String?
                         let db = Firestore.firestore()
                         guard let user = Auth.auth().currentUser else {return}
@@ -50,14 +50,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                  self.window?.rootViewController = tabBarController
                                 }
                                 else{
-                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                  let storyboard = UIStoryboard(name: "Main", bundle: nil)
                                         let tabBarController = storyboard.instantiateViewController(identifier: "CustomTabBarViewController") as? CustomTabBarViewController
-                                        self.window?.rootViewController = tabBarController
+                                       self.window?.rootViewController = tabBarController
                                 }
                                 }
                             
-                            else {
-                            }
+                            
                             
                             }
                        

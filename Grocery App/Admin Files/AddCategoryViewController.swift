@@ -183,13 +183,13 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
     @IBAction func addButtonTapped(_ sender: Any) {
         if newCategoryTxtField.text!.isEmpty {
             print("input field/fields missing")
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input category name")
             newCategoryTxtField.layer.borderWidth = 2
             newCategoryTxtField.layer.borderColor = UIColor.systemRed.cgColor
         }
         else if newRankTxtField.text!.isEmpty  {
             print("input field/fields missing")
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product rank")
             newRankTxtField.layer.borderWidth = 2
             newRankTxtField.layer.borderColor = UIColor.systemRed.cgColor
         }

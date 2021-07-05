@@ -255,7 +255,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         else if textField == productPrice {
             productPrice.layer.borderWidth = 2
             productPrice.layer.borderColor = UIColor.systemGreen.cgColor
-            textField.keyboardType = UIKeyboardType.numbersAndPunctuation
+            textField.keyboardType = UIKeyboardType.asciiCapableNumberPad
             
          
         }
@@ -619,40 +619,40 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         {
             productName.layer.borderWidth = 2
             productName.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product name")
             print("input field/fields missing")
         }
         else if productDescription.text!.isEmpty {
             productDescription.layer.borderWidth = 2
             productDescription.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product description")
         }
         else if productPrice.text!.isEmpty {
             productPrice.layer.borderWidth = 2
             productPrice.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product price")
         }
         else if productCategory.text!.isEmpty {
             productCategory.layer.borderWidth = 2
             productCategory.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product category")
         }
        
         
         else if productActiveStatus.text!.isEmpty {
             productActiveStatus.layer.borderWidth = 2
             productActiveStatus.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product status")
         }
         else if productDiscount.text!.isEmpty {
             productDiscount.layer.borderWidth = 2
             productDiscount.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product discount")
         }
         else if tag.isEmpty {
             productTags.layer.borderWidth = 2
             productTags.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product tags")
         }
         else if productName.text?.count ?? 0 >= 200
         {
