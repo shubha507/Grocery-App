@@ -146,6 +146,7 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
                 self.noProductInCartView.isHidden = false
                 NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
             }
+            NotificationCenter.default.post(name: NSNotification.Name("quantityChangedInCart"), object: nil)
             cartTblView.reloadData()
             
         }

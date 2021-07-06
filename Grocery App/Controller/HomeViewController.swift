@@ -24,6 +24,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
     var deals = [Deals]()
     var sortedDeals = [Deals]()
     var imageUrl : String?
+    var isHidden : Bool?
     
     private let imageView : UIImageView = {
         let iv = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
@@ -106,8 +107,8 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         return fc
     }()
     
-    //Mark :- Lifecycle Method
     
+    //Mark :- Lifecycle Method
     override func viewDidLoad() {
         super .viewDidLoad()
         searchCellCollectionVw.delegate = self
@@ -124,15 +125,15 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         fetchDiscountData()
         searchTextField.addTarget(self, action: #selector(textFieldEditingDidChange(_:)), for: UIControl.Event.editingChanged)
         searchCellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
-        
-        
+        isHidden = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureProfilePicture()
-        searchCellCollectionVw.reloadData()
-        
+        if let searchViewVisible = isHidden , searchViewVisible{
+            productsMatchingWithSearch(searchedText: searchTextField.text)
+        }
     }
     
     
@@ -215,10 +216,15 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
                     index = index + 1
                 }
             }
-            
+        }else if quant! > 0 && searchedProduct[cellIndex!].isAddedToCart == true {
+            for products in AppSharedDataManager.shared.productAddedToCart {
+                if products.id == searchedProduct[cellIndex!].id {
+                    products.quantity = quant!
+                }
         }
-        
+      }
     }
+    
     //fetching categories data(First tbl cell)
     func fetchCategoryData(){
         let db = Firestore.firestore()
@@ -332,6 +338,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
     
     //Mark :- searchTextField delegate method
     @objc func textFieldEditingDidChange(_ textField: UITextField){
+        isHidden = true
         if let text = textField.text {
             if text.count > 0 {
                 searchCellCollectionVw.reloadData()

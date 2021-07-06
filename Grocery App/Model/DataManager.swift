@@ -75,7 +75,7 @@ class DataManager {
         let db = Firestore.firestore()
         
         guard let id = matchId else {return}
-        
+        productArray = []
         db.collection("products").whereField(id, isEqualTo: selectedId).getDocuments() { [self] (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")

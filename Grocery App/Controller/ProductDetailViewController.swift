@@ -79,8 +79,13 @@ func getSimilarProduct(){
                     index = index + 1
                 }
             }
-            
+        }else if quant > 0 && product.isAddedToCart == true {
+            for products in AppSharedDataManager.shared.productAddedToCart {
+                if products.id == product.id {
+                    products.quantity = quant
+                }
         }
+      }
     }
     
     func whichViewSelected(isDetailButtonSelected: Bool?, isReviewButtonSelected: Bool?) {
