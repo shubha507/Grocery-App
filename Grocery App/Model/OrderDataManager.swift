@@ -25,6 +25,7 @@ class OrderDataManager {
                     let orders = Order(data: document.data() )
                     print("orders.id \(orders.id)")
                     self.order.append(orders)
+                    
                 }
                 //sorting category cells according to rank
                 

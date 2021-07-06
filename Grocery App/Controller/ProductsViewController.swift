@@ -157,6 +157,7 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         guard let cellIndex = cellIndex, let quant = quant, let isQuantViewOpen = isQuantViewOpen else {return}
         dataManager.productArray[cellIndex].isQuantityViewOpen = isQuantViewOpen
         dataManager.productArray[cellIndex].quantity = quant
+        print(quant)
         if quant > 0 && dataManager.productArray[cellIndex].isAddedToCart == false{
             AppSharedDataManager.shared.productAddedToCart.append(dataManager.productArray[cellIndex])
             dataManager.productArray[cellIndex].isAddedToCart = true

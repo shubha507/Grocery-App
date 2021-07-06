@@ -227,7 +227,6 @@ class ProductCollectionViewCell : UICollectionViewCell {
             discountLabel.isHidden = true
             strikeOutPriceLabel.isHidden = true
         }
-       
         quantity = product.quantity
         
         quantityLabel.text = "\(Int(product.quantity))"

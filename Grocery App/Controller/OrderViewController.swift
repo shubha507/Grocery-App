@@ -11,6 +11,7 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
     
     var orderDataManager = OrderDataManager()
     var index : Int?
+    var currentOffset : CGFloat?
     
     @IBOutlet weak var contentView: UIView!
     
@@ -92,6 +93,7 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.index = indexPath.row
+        self.currentOffset = collectionView.contentOffset.x
         if indexPath.row == 0 {
             fetchOrder()
         }else if indexPath.row == 1 {
@@ -109,7 +111,9 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
         }
         orderStatusCollectionView.scrollToItem(at: IndexPath(item: index ?? 0, section: 0), at: .centeredHorizontally, animated: true)
         orderStatusCollectionView.reloadData()
-        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.orderStatusCollectionView.contentOffset.x = self.currentOffset ?? 0
+        }
     }
     
     func fetchOrder(){

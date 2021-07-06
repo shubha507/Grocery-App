@@ -10,6 +10,10 @@ import UIKit
 class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     
     //Mark :- Properties
+    
+    let tabBarItemImages = [ #imageLiteral(resourceName: "noun_menu_3127023"), #imageLiteral(resourceName: "noun_Store_3499096") , nil, #imageLiteral(resourceName: "noun_Gift_1546455"), #imageLiteral(resourceName: "noun_help_863488")]
+    let tabBarItemTitle = ["Home", "Order", nil,"Offer","About Us"]
+    
     private let imageView : UIImageView = {
         let iv = UIImageView(frame: CGRect(x: 11, y: 14, width: 40, height: 40))
         iv.image = UIImage(named: "noun_cart_1533490")
@@ -53,15 +57,13 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
     
     func ConfigureViewController(){
         
-        tabBar.items?[0].title = "Home"
-        tabBar.items?[1].title = "Order"
-        tabBar.items?[3].title = "Offer"
-        tabBar.items?[4].title = "More"
-        tabBar.items?[0].image = #imageLiteral(resourceName: "noun_menu_3127023")
-        tabBar.items?[1].image = #imageLiteral(resourceName: "noun_Store_3499096")
-        tabBar.items?[3].image = #imageLiteral(resourceName: "noun_Gift_1546455")
-        tabBar.items?[4].image = #imageLiteral(resourceName: "noun_help_863488")
-        tabBar.items?[2].title = nil
+       if let items = tabBar.items {
+        for i in 0..<tabBarItemImages.count {
+            let tabBarItem = items[i]
+            tabBarItem.image = tabBarItemImages[i]
+            tabBarItem.title = tabBarItemTitle[i]
+        }
+        }
     }
     
     

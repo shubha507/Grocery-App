@@ -131,7 +131,6 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     func quantityChanged(cellIndex: Int?, quant: Double?, isQuantViewOpen: Bool?) {
         if quant! > 0 {
             AppSharedDataManager.shared.productAddedToCart[cellIndex!].quantity = quant!
-            print(quant!)
             cartTblView.reloadData()
             totalLabel.text = "₹\(totalPriceInCart()!)"
         }else{

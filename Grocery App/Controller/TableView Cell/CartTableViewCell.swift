@@ -63,6 +63,7 @@ class CartTableViewCell: UITableViewCell {
     func configureCellUI(product : Product){
         productNameLabel.text = "\(product.name!)"
         quantity = product.quantity
+        print("cart \(quantity!)")
         productQuantityLabel.text = "\(Int(product.quantity))"
         pricePerPeiceLabel.text = "₹\(product.price!)"
         priceLabel.text = "₹\(product.price! * product.quantity)"
