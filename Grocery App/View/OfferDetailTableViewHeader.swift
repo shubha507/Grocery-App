@@ -40,6 +40,7 @@ required init?(coder: NSCoder) {
         sectionTitle.anchor(top: contentView.topAnchor, left: contentView.leftAnchor,bottom: contentView.bottomAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 20)
         sectionTitle.font = UIFont.boldSystemFont(ofSize: 20)
         sectionTitle.text = "Filter By"
+        sectionTitle.textColor = .systemGray4
         
         contentView.addSubview(filterTextField)
         filterTextField.anchor(top: contentView.topAnchor, left: sectionTitle.rightAnchor,bottom: contentView.bottomAnchor, paddingTop: 20, paddingLeft: 10, paddingBottom: 20,width : 110)

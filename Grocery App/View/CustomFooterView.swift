@@ -59,7 +59,7 @@ class CustomFooterView: UITableViewHeaderFooterView {
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = UIColor(named: "buttoncolor")
         configureContents()
     }
 
@@ -70,26 +70,27 @@ required init?(coder: NSCoder) {
     func configureContents(){
         
         contentView.addSubview(view)
-        view.anchor(top: contentView.topAnchor, left: contentView.leftAnchor, right: contentView.rightAnchor, paddingTop: 3, paddingLeft: 20, paddingRight: 20, height: 1)
-        view.backgroundColor = .systemGray4
+        view.anchor(top: contentView.topAnchor, left: contentView.leftAnchor, bottom : contentView.bottomAnchor, right: contentView.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 20, paddingRight: 0)
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 30
         
-        contentView.addSubview(totalBillAmountLbl)
-        totalBillAmountLbl.anchor(top: view.bottomAnchor, left: contentView.leftAnchor, paddingTop: 20, paddingLeft: 10)
+        view.addSubview(totalBillAmountLbl)
+        totalBillAmountLbl.anchor(top: view.topAnchor, left: view.leftAnchor, paddingTop: 20, paddingLeft: 10)
         
-        contentView.addSubview(totalDiscountLbl)
-        totalDiscountLbl.anchor(top: totalBillAmountLbl.bottomAnchor, left: contentView.leftAnchor, paddingTop: 20, paddingLeft: 10)
+        view.addSubview(totalDiscountLbl)
+        totalDiscountLbl.anchor(top: totalBillAmountLbl.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10)
         
-        contentView.addSubview(payableAmountLbl)
-        payableAmountLbl.anchor(top: totalDiscountLbl.bottomAnchor, left: contentView.leftAnchor,bottom: contentView.bottomAnchor, paddingTop: 20, paddingLeft: 10,paddingBottom: 20)
+        view.addSubview(payableAmountLbl)
+        payableAmountLbl.anchor(top: totalDiscountLbl.bottomAnchor, left: view.leftAnchor,bottom: view.bottomAnchor, paddingTop: 10, paddingLeft: 10,paddingBottom: 10)
         
-        contentView.addSubview(totalBillAmountValueLbl)
-        totalBillAmountValueLbl.anchor(top: view.bottomAnchor, right: contentView.rightAnchor, paddingTop: 20, paddingRight: 10)
+        view.addSubview(totalBillAmountValueLbl)
+        totalBillAmountValueLbl.anchor(top: view.topAnchor, right: view.rightAnchor, paddingTop: 20, paddingRight: 10)
         
-        contentView.addSubview(totalDiscountValueLbl)
-        totalDiscountValueLbl.anchor(top: totalBillAmountValueLbl.bottomAnchor, right: contentView.rightAnchor, paddingTop: 20, paddingRight: 10)
+        view.addSubview(totalDiscountValueLbl)
+        totalDiscountValueLbl.anchor(top: totalBillAmountValueLbl.bottomAnchor, right: view.rightAnchor, paddingTop: 10, paddingRight: 10)
         
-        contentView.addSubview(payableAmountValueLbl)
-        payableAmountValueLbl.anchor(top: totalDiscountValueLbl.bottomAnchor,bottom: contentView.bottomAnchor, right: contentView.rightAnchor, paddingTop: 20,paddingBottom: 20, paddingRight: 10)
+        view.addSubview(payableAmountValueLbl)
+        payableAmountValueLbl.anchor(top: totalDiscountValueLbl.bottomAnchor,bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 10,paddingBottom: 10, paddingRight: 10)
         
     }
     

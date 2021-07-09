@@ -72,8 +72,6 @@
 		B257D0CB264BF15B00CD69AB /* ProductDetailThirdCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B257D0C9264BF15B00CD69AB /* ProductDetailThirdCollectionViewCell.xib */; };
 		B263D628266F580D00157214 /* OrderDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B263D627266F580D00157214 /* OrderDataManager.swift */; };
 		B263D64D2670E2CE00157214 /* DescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B263D64C2670E2CE00157214 /* DescriptionTableViewCell.swift */; };
-		B2A75EF22695CC8600DF5F16 /* NetworkErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A75EF12695CC8600DF5F16 /* NetworkErrorView.swift */; };
-		B2A75EF52695F1C200DF5F16 /* NetworkErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2A75EF42695F1C200DF5F16 /* NetworkErrorView.xib */; };
 		B2B36A96264D58B50016B41C /* ProductDetailSecondTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2B36A95264D58B50016B41C /* ProductDetailSecondTableViewCell.xib */; };
 		B2B5DF6E26727D3C007D1D5E /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B5DF6D26727D3C007D1D5E /* CustomHeaderView.swift */; };
 		B2B5DF7126728193007D1D5E /* CustomFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B5DF7026728193007D1D5E /* CustomFooterView.swift */; };
@@ -156,8 +154,6 @@
 		B257D0C9264BF15B00CD69AB /* ProductDetailThirdCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductDetailThirdCollectionViewCell.xib; sourceTree = "<group>"; };
 		B263D627266F580D00157214 /* OrderDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDataManager.swift; sourceTree = "<group>"; };
 		B263D64C2670E2CE00157214 /* DescriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionTableViewCell.swift; sourceTree = "<group>"; };
-		B2A75EF12695CC8600DF5F16 /* NetworkErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorView.swift; sourceTree = "<group>"; };
-		B2A75EF42695F1C200DF5F16 /* NetworkErrorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NetworkErrorView.xib; sourceTree = "<group>"; };
 		B2B36A95264D58B50016B41C /* ProductDetailSecondTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductDetailSecondTableViewCell.xib; sourceTree = "<group>"; };
 		B2B5DF6D26727D3C007D1D5E /* CustomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
 		B2B5DF7026728193007D1D5E /* CustomFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFooterView.swift; sourceTree = "<group>"; };
@@ -209,8 +205,6 @@
 				B2B5DF6D26727D3C007D1D5E /* CustomHeaderView.swift */,
 				B2B5DF7026728193007D1D5E /* CustomFooterView.swift */,
 				B20F5FF0268C30E8007B6D42 /* OfferDetailTableViewHeader.swift */,
-				B2A75EF12695CC8600DF5F16 /* NetworkErrorView.swift */,
-				B2A75EF42695F1C200DF5F16 /* NetworkErrorView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -412,7 +406,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2A75EF52695F1C200DF5F16 /* NetworkErrorView.xib in Resources */,
 				B2536E952631E6C800EADC0C /* LaunchScreen.storyboard in Resources */,
 				B22A43E72637EE55001F1AC2 /* GoogleService-Info.plist in Resources */,
 				B2536E922631E6C800EADC0C /* Assets.xcassets in Resources */,
@@ -497,7 +490,6 @@
 				62D4B2102671D7E5007D546A /* OrderDescriptionTableViewCell.swift in Sources */,
 				B241BAFA2665000B0028FA70 /* OrderStatusCollectionViewCell.swift in Sources */,
 				B263D64D2670E2CE00157214 /* DescriptionTableViewCell.swift in Sources */,
-				B2A75EF22695CC8600DF5F16 /* NetworkErrorView.swift in Sources */,
 				B21D0F1F264703AE00EFE99B /* Extension.swift in Sources */,
 				B20C2B9A263939E60001B9FA /* CustomTabBar.swift in Sources */,
 				B227CE2626687DE50060489D /* Product.swift in Sources */,

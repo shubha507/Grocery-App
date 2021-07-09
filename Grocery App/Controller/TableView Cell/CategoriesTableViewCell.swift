@@ -48,7 +48,6 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
         
      let categoriesCellCollection : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
         let fc = UICollectionView(frame: .zero, collectionViewLayout: layout)
         fc.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell")
         fc.backgroundColor = .white
@@ -80,7 +79,7 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
     func configureUI(){
         
         contentView.addSubview(cellView)
-        cellView.setDimensions(height: 235, width: 360)
+        cellView.setDimensions(height: 480, width: 360)
         cellView.anchor(top: topAnchor, left : leftAnchor,right: rightAnchor, paddingTop: 17, paddingLeft: 15,paddingRight: 15)
         backgroundColor = UIColor(named: "buttoncolor")
         
@@ -94,7 +93,7 @@ class CategoriesTableViewCell : UITableViewCell, UICollectionViewDelegate {
         
         cellView.addSubview(categoriesCellCollection)
         categoriesCellCollection.anchor(top: categoryLabel.bottomAnchor, left: cellView.leftAnchor, bottom: cellView.bottomAnchor, right: cellView.rightAnchor, paddingTop: 23, paddingLeft: 0, paddingBottom: 25, paddingRight: 0)
-        categoriesCellCollection.setDimensions(height: 135, width: cellView.frame.width)
+        categoriesCellCollection.setDimensions(height: 400, width: cellView.frame.width)
    }
     
     
@@ -147,7 +146,7 @@ extension CategoriesTableViewCell : UICollectionViewDataSource {
 extension CategoriesTableViewCell : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width:110, height: 135 )
+        return CGSize(width:UIScreen.main.bounds.width/414 * 110, height: UIScreen.main.bounds.height/896 * 135 )
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -155,10 +154,10 @@ extension CategoriesTableViewCell : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 15
+        return UIScreen.main.bounds.width/414 * 10
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 10, left: UIScreen.main.bounds.width/414*20, bottom: 0, right: UIScreen.main.bounds.width/414*10)
     }
 }

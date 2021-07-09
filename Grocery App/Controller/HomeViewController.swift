@@ -363,7 +363,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
 extension HomeViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -388,7 +388,7 @@ extension HomeViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0{
-            return 250
+            return 500
         }else if indexPath.row == 1{
             return 180
         }else{

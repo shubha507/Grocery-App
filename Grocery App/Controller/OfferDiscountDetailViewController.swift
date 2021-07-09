@@ -30,7 +30,7 @@ class OfferDiscountDetailViewController: UIViewController,filterSelected {
         discountDetailTableView.delegate = self
         discountDetailTableView.dataSource = self
         titleLabel.text = self.titl
-        
+        titleLabel.font = UIFont.boldSystemFont(ofSize: UIScreen.main.bounds.width/414 * 29)
         discountDetailTableView.register(OfferDetailTableViewHeader.self,
                forHeaderFooterViewReuseIdentifier: "offerSectionHeader")
         

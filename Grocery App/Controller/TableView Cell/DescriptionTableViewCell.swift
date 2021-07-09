@@ -21,6 +21,7 @@ class DescriptionTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         actualPriceLbl.isHidden = true
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -40,6 +41,12 @@ class DescriptionTableViewCell: UITableViewCell {
             attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: NSMakeRange(0, attributeString.length))
             actualPriceLbl.attributedText = attributeString
             actualPriceLbl.textColor = .darkGray
+        }
+        
+        if index == (order.items!.count-1){
+            print("index \(index)")
+            layer.cornerRadius = 30
+            layer.maskedCorners = [.layerMinXMaxYCorner,.layerMaxXMaxYCorner]
         }
     }
 }
