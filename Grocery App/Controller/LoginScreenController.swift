@@ -17,13 +17,14 @@ class LoginScreenController: UIViewController,UITextFieldDelegate {
         let vw = UIView()
         vw.backgroundColor = UIColor.white
         vw.layer.cornerRadius = 30
+        vw.layer.maskedCorners = [.layerMaxXMinYCorner,.layerMinXMinYCorner]
         return vw
     }()
     
     private let continueWithPhoneLbl : UILabel = {
         let lbl = UILabel()
         lbl.text = "Continue With Phone"
-        lbl.font = UIFont.boldSystemFont(ofSize: 29)
+        lbl.font = UIFont.boldSystemFont(ofSize: UIScreen.main.bounds.width / 414 * 29)
         lbl.textColor = UIColor(named: "buttoncolor")
         return lbl
     }()
@@ -100,7 +101,6 @@ class LoginScreenController: UIViewController,UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         numberTextField.delegate = self
         view.backgroundColor = UIColor(named: "mygreen")
         configureUI()
@@ -117,18 +117,21 @@ class LoginScreenController: UIViewController,UITextFieldDelegate {
 
     func configureUI(){
         
-        
         view.addSubview(continueWithPhoneLbl)
         continueWithPhoneLbl.centerX(inView: view)
         continueWithPhoneLbl.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 40)
         
+        
         view.addSubview(containerView)
-        containerView.anchor(top: continueWithPhoneLbl.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
+        containerView.anchor(top: continueWithPhoneLbl.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 15,paddingLeft: 0, paddingBottom: 0,paddingRight: 0)
+       
 
         containerView.addSubview(phoneWithHandImgVw)
         phoneWithHandImgVw.centerX(inView: view)
         phoneWithHandImgVw.anchor(top : containerView.topAnchor , paddingTop: 30)
-        phoneWithHandImgVw.setDimensions(height: 200, width: 200)
+        phoneWithHandImgVw.setHeight(UIScreen.main.bounds.height / 896 * 200)
+        let aspectRatioConstraint = NSLayoutConstraint(item: phoneWithHandImgVw , attribute: .height, relatedBy: .equal , toItem:phoneWithHandImgVw ,attribute: .width, multiplier: (1.0 / 1.0) ,constant: 0)
+        phoneWithHandImgVw.addConstraint(aspectRatioConstraint)
         
         containerView.addSubview(recieveCodeLabel)
         recieveCodeLabel.centerX(inView: view)

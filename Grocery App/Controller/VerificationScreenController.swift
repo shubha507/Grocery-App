@@ -20,6 +20,7 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
     private let contentView : UIView = {
         let vw = UIView()
         vw.layer.cornerRadius = 30
+        vw.layer.maskedCorners = [.layerMaxXMinYCorner,.layerMinXMinYCorner]
         vw.backgroundColor = UIColor(named: "buttoncolor")
         return vw
     }()
@@ -47,7 +48,7 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
     private let verifyPhoneLbl : UILabel = {
         let lbl = UILabel()
         lbl.text = "Verify Phone"
-        lbl.font = UIFont.boldSystemFont(ofSize: 29)
+        lbl.font = UIFont.boldSystemFont(ofSize: UIScreen.main.bounds.width / 414 * 29)
         lbl.textColor = .white
         return lbl
     }()
@@ -160,7 +161,7 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
         if let mobNo = mobNo {
             codeSentLbl.text = "Code is sent to \(mobNo.suffix(10))"
         }
-        setupStack()
+    setupStack()
         
     contentView.addSubview(getCallButton)
         getCallButton.centerX(inView: view)
@@ -180,7 +181,7 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
         
 
         contentView.addSubview(stack)
-        stack.anchor(top : codeSentLbl.bottomAnchor ,  paddingTop: 80)
+        stack.anchor(top : codeSentLbl.bottomAnchor ,  paddingTop: UIScreen.main.bounds.height / 10.5)
         stack.centerX(inView: view)
         
         contentView.addSubview(dontRecieveCodeButton)

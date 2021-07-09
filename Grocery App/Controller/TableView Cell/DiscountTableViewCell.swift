@@ -61,7 +61,7 @@ extension DiscountTableViewCell : UICollectionViewDataSource {
 extension DiscountTableViewCell : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width:frame.width - 80, height: 165 )
+        return CGSize(width:UIScreen.main.bounds.width - 80, height: 165 )
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

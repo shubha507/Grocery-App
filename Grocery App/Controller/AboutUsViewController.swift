@@ -57,6 +57,10 @@ class AboutUsViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         backButton.isHidden = true
+        titleLabel.font = UIFont.boldSystemFont(ofSize: UIScreen.main.bounds.width/414 * 29)
+        timingLabel.font = UIFont.boldSystemFont(ofSize: UIScreen.main.bounds.width/414 * 20)
+        phnNoLabel.font = UIFont.boldSystemFont(ofSize: UIScreen.main.bounds.width/414 * 20)
+        addressLabel.font = UIFont.boldSystemFont(ofSize: UIScreen.main.bounds.width/414 * 20)
       configureStoreData()
         }
     

@@ -159,6 +159,7 @@
                             <constraint firstItem="QGg-SW-q4B" firstAttribute="trailing" secondItem="v7E-7v-y7n" secondAttribute="trailing" id="GwP-6o-ph0"/>
                             <constraint firstItem="YPR-F8-Prr" firstAttribute="top" secondItem="v7E-7v-y7n" secondAttribute="top" constant="40" id="LGi-d0-5JC"/>
                             <constraint firstItem="QGg-SW-q4B" firstAttribute="top" secondItem="YPR-F8-Prr" secondAttribute="bottom" constant="15" id="OjD-Zj-dYY"/>
+                            <constraint firstItem="nod-Oi-llM" firstAttribute="height" secondItem="h7X-l1-pIZ" secondAttribute="height" multiplier="0.334821" id="ZfZ-ne-d6l"/>
                             <constraint firstAttribute="bottom" secondItem="QGg-SW-q4B" secondAttribute="bottom" id="bBX-N9-A3Q"/>
                             <constraint firstItem="K6G-pU-GJP" firstAttribute="leading" secondItem="v7E-7v-y7n" secondAttribute="leading" constant="30" id="bUI-fs-Jsc"/>
                             <constraint firstItem="YPR-F8-Prr" firstAttribute="centerX" secondItem="h7X-l1-pIZ" secondAttribute="centerX" id="lS8-Gs-bLX"/>
@@ -364,7 +365,7 @@
                                                             <rect key="frame" x="10" y="10" width="364" height="237"/>
                                                             <subviews>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UgC-Kl-tAd">
-                                                                    <rect key="frame" x="10" y="35" width="128" height="192"/>
+                                                                    <rect key="frame" x="10" y="35" width="128" height="135"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="135" id="TlN-LP-6Qv"/>
                                                                         <constraint firstAttribute="width" constant="128" id="nTf-XW-w0b"/>
@@ -398,10 +399,10 @@
                                                                 <constraint firstItem="YyX-V1-FHn" firstAttribute="leading" secondItem="UgC-Kl-tAd" secondAttribute="trailing" constant="10" id="TCJ-pe-aG5"/>
                                                                 <constraint firstItem="pDn-33-pdO" firstAttribute="leading" secondItem="UgC-Kl-tAd" secondAttribute="trailing" constant="10" id="VZM-V9-Nog"/>
                                                                 <constraint firstItem="pDn-33-pdO" firstAttribute="top" secondItem="Ezs-OY-PjC" secondAttribute="bottom" constant="10" id="Y0f-Wk-vR0"/>
-                                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="pDn-33-pdO" secondAttribute="bottom" constant="5" id="YeW-F6-qic"/>
+                                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="pDn-33-pdO" secondAttribute="bottom" constant="10" id="YeW-F6-qic"/>
                                                                 <constraint firstAttribute="trailing" secondItem="YyX-V1-FHn" secondAttribute="trailing" constant="10" id="kmb-17-PPi"/>
                                                                 <constraint firstItem="Ezs-OY-PjC" firstAttribute="top" secondItem="YyX-V1-FHn" secondAttribute="bottom" constant="10" id="o2m-Za-7vl"/>
-                                                                <constraint firstAttribute="bottom" secondItem="UgC-Kl-tAd" secondAttribute="bottom" constant="10" id="qnE-2E-uDS"/>
+                                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="UgC-Kl-tAd" secondAttribute="bottom" constant="10" id="qnE-2E-uDS"/>
                                                                 <constraint firstItem="UgC-Kl-tAd" firstAttribute="top" secondItem="PSO-jf-Xah" secondAttribute="top" constant="35" id="vIR-6V-idP"/>
                                                                 <constraint firstItem="YyX-V1-FHn" firstAttribute="top" secondItem="PSO-jf-Xah" secondAttribute="top" constant="35" id="zTw-9h-ccI"/>
                                                             </constraints>
@@ -1419,6 +1420,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y5A-65-CL8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5747.826086956522" y="531.69642857142856"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="lR3-Z1-rHI">
+            <objects>
+                <viewController id="tBb-ub-rD4" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="YYn-HU-1sn">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="hQi-w6-gCA"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gg3-4G-f0Q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6755" y="792"/>
         </scene>
         <!--Order Details View Controller-->
         <scene sceneID="RkU-dX-325">

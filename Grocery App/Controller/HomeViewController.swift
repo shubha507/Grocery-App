@@ -122,7 +122,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         searchTextField.addTarget(self, action: #selector(textFieldEditingDidChange(_:)), for: UIControl.Event.editingChanged)
         searchCellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
         isHidden = false
-        tblView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 130, right: 0)
+        tblView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom:UIScreen.main.bounds.height/896 * 60, right: 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -162,9 +162,6 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         tblView.anchor(top: searchTextField.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
         tblView.separatorStyle = .none
         tblView.allowsSelection = false
-        
-        //to show all cells above tabbar
-        tblView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         
     }
     
