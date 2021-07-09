@@ -196,6 +196,19 @@ class LoginScreenController: UIViewController,UITextFieldDelegate {
           print("verifying")
           if let error = error {
             print(error.localizedDescription)
+            let alertControler = UIAlertController(title: nil, message: error.localizedDescription , preferredStyle: .alert)
+            let actionTry = UIAlertAction(title: "Try Again", style: .default) { (action) in
+                self.continueButtonPushed()
+            }
+            let actionOk = UIAlertAction(title: "Ok", style: .default) { (action) in
+                alertControler.dismiss(animated: true, completion: nil)
+            }
+            alertControler.addAction(actionOk)
+            alertControler.addAction(actionTry)
+            
+            alertControler.setBackgroundColor(color:.white)
+            
+            self.present(alertControler, animated: true, completion: nil)
             return
           }else{
             guard let verificationID = verificationID else { return }

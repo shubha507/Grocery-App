@@ -168,7 +168,10 @@
                     <tabBarItem key="tabBarItem" title="Item" id="5u7-V5-Ma6"/>
                     <connections>
                         <outlet property="addressLabel" destination="qHw-Q9-qb4" id="XiC-Fm-1ba"/>
+                        <outlet property="backButton" destination="K6G-pU-GJP" id="z8P-YJ-lpw"/>
+                        <outlet property="contentView" destination="QGg-SW-q4B" id="F3K-a6-YMs"/>
                         <outlet property="phnNoLabel" destination="j0c-rG-hMC" id="V37-e6-PkD"/>
+                        <outlet property="storeImageView" destination="nod-Oi-llM" id="mON-AO-SAu"/>
                         <outlet property="timingLabel" destination="5VZ-rJ-RTz" id="tPJ-IG-cdK"/>
                         <outlet property="titleLabel" destination="YPR-F8-Prr" id="N5y-WC-6b1"/>
                     </connections>
@@ -1761,7 +1764,7 @@
             <color red="0.33399999141693115" green="0.67299997806549072" blue="0.40799999237060547" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="myorange">
-            <color red="0.91140401360000001" green="0.4329325557" blue="0.35683354740000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.91100001335144043" green="0.43299999833106995" blue="0.35699999332427979" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

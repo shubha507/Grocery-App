@@ -1,9 +1,8 @@
-//
 //  HomeViewController.swift
 //  Grocery App
-//
+
 //  Created by Shubha Sachan on 28/04/21.
-//
+
 
 import UIKit
 import FirebaseAuth
@@ -120,12 +119,10 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         configureUI()
         self.navigationController?.navigationBar.isHidden = true
         searchView.isHidden = true
-        fetchDealsData()
-        fetchCategoryData()
-        fetchDiscountData()
         searchTextField.addTarget(self, action: #selector(textFieldEditingDidChange(_:)), for: UIControl.Event.editingChanged)
         searchCellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
         isHidden = false
+        tblView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 130, right: 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -134,6 +131,9 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         if let searchViewVisible = isHidden , searchViewVisible{
             productsMatchingWithSearch(searchedText: searchTextField.text)
         }
+        fetchDealsData()
+        fetchCategoryData()
+        fetchDiscountData()
     }
     
     
@@ -180,7 +180,11 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         guard let user = Auth.auth().currentUser else {return}
         let db = Firestore.firestore()
         db.collection("users").document(user.uid).getDocument { (document, error) in
-            if let document = document, document.exists {
+            if let error = error {
+                print("profile picture error \(error.localizedDescription)")
+                self.nameLabel.isHidden = true
+                self.imageView.image = UIImage(named: "profile")
+            }else if let document = document, document.exists {
                 self.nameLabel.isHidden = false
                 let data =  document.data()
                 self.nameLabel.text = data?["name"] as? String
@@ -190,9 +194,6 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
                 }else{
                     self.imageView.image = UIImage(named: "profile")
                 }
-            }else{
-                self.nameLabel.isHidden = true
-                self.imageView.image = UIImage(named: "profile")
             }
         }
     }
@@ -230,7 +231,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         let db = Firestore.firestore()
         db.collection("categories").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                print("Error getting category documents: \(err)")
             } else {
                 self.category = []
                 for document in querySnapshot!.documents {
@@ -250,7 +251,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         let db = Firestore.firestore()
         db.collection("discounts").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                print("Error getting discount documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
                     print("\(document.documentID) => \(document.data()["rank"] as! Int)")
@@ -269,7 +270,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         let db = Firestore.firestore()
         db.collection("deals").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                print("Error getting deals documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
                     print("\(document.documentID) => \(document.data()["rank"] as! Int)")

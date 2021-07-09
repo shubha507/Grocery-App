@@ -353,9 +353,10 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
             self.present(signinAlert, animated: true)
         
         Auth.auth().signIn(with: credential) { (authResult, error) in
-          if let error = error {
+            if let error = error {
+                if error.localizedDescription == "The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code SMS and be sure to use the verification code provided by the user." {
             self.signinAlert.dismiss(animated: true) {
-                let alert  = UIAlertController(title: "Enter Correct OTP", message: nil, preferredStyle: .alert)
+                let alert  = UIAlertController(title: "Incorrect Otp Entered", message: nil, preferredStyle: .alert)
                 
                 let actionOk = UIAlertAction(title: "Ok", style: .default) { (action) in
                     alert.dismiss(animated: true, completion: nil)
@@ -364,7 +365,23 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
                 self.present(alert, animated: true)
                 
             }
-            
+                }else{
+                    self.signinAlert.dismiss(animated: true){
+                    let alertControler = UIAlertController(title: nil, message: error.localizedDescription , preferredStyle: .alert)
+                    let actionTry = UIAlertAction(title: "Try Again", style: .default) { (action) in
+                        self.verifyOTPAndCreateAccount()
+                    }
+                    let actionOk = UIAlertAction(title: "Ok", style: .default) { (action) in
+                        alertControler.dismiss(animated: true, completion: nil)
+                    }
+                    alertControler.addAction(actionOk)
+                    alertControler.addAction(actionTry)
+                    
+                    alertControler.setBackgroundColor(color:.white)
+                    
+                    self.present(alertControler, animated: true, completion: nil)
+                    }
+                }
           }else{
             if let mobNo = self.mobNo {
             AppSharedDataManager.shared.phnNo = mobNo

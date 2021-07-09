@@ -44,7 +44,7 @@ class DataManager {
             
             URLSession.shared.dataTask(with: posterImageUrl) { (data, response, error) in
                 if let error = error {
-                    print("DataTask error: \(error.localizedDescription)")
+                    print("DataTask error1: \(error.localizedDescription)")
                     DispatchQueue.main.async(execute: {
                         self.activityIndicator.stopAnimating()
                     })
