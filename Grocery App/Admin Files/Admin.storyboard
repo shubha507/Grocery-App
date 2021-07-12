@@ -373,7 +373,15 @@
                     <tabBarItem key="tabBarItem" title="Products" image="gift" catalog="system" id="fMS-WO-5Cm">
                         <color key="badgeColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBarItem>
-                    <navigationItem key="navigationItem" title="Products" id="BA4-qk-66Z"/>
+                    <navigationItem key="navigationItem" title="Products" id="BA4-qk-66Z">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="nMg-8a-SLM">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="WyR-Ff-Ls9">
+                                <rect key="frame" x="302" y="7" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="productTableView" destination="uWm-BE-TeK" id="uVO-6p-W4i"/>
                     </connections>

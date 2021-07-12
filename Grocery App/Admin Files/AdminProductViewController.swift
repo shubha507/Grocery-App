@@ -20,6 +20,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var productTableView: UITableView!
     
    
+    var searchController = UISearchController()
     private var product = [Product]()
     var categoryDropDown = [Categories]()
     let transparentView = UIView()
@@ -78,6 +79,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
        
             
         
+        searchController = UISearchController(searchResultsController: nil)
         
         productTableView.delegate = self
         productTableView.dataSource = self
@@ -271,8 +273,9 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         
      //   print("category count is" , categoryDict[0].count)
         
-        addTranparentView(frames: view.frame )
-        
+        //addTranparentView(frames: view.frame )
+        self.navigationItem.searchController = searchController
+        //self.navigationItem.rightBarButtonItems = [searchController]
      
     }
     

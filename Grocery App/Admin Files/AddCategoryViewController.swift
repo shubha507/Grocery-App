@@ -139,7 +139,10 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
  
         addButton.layer.cornerRadius = 5
         addCategoryImage.layer.cornerRadius = addCategoryImage.frame.size.height/2
+        if imageurl != ""
+        {
         dataManager.getImageFrom(url: "\(imageurl)", imageView: addCategoryImage)
+        }
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Category", style: .plain, target: nil, action: nil)
         newCategoryTxtField.delegate = self
         newRankTxtField.delegate = self
