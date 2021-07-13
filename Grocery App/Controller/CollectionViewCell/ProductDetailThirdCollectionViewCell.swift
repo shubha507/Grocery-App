@@ -21,9 +21,11 @@ class ProductDetailThirdCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var minusButton: UIButton!
     
+    @IBOutlet weak var discountLabl: UILabel!
+    
     @IBOutlet weak var quantityLabel: UILabel!
     
-    @IBOutlet weak var similarProductPerPeicePriceLabel: UILabel!
+    @IBOutlet weak var similarProductDiscountedPriceLabel: UILabel!
     @IBOutlet weak var similarProductImageView: UIImageView!
     
     @IBOutlet weak var similarProductPriceLabel: UILabel!
@@ -48,7 +50,7 @@ class ProductDetailThirdCollectionViewCell: UICollectionViewCell {
         minusButton.layer.cornerRadius = 10
         minusButton.layer.maskedCorners = [.layerMinXMinYCorner]
         quantity = quantity! + 1
-        quantityLabel.text = "\(quantity!)"
+        quantityLabel.text = "\(Int(quantity!))"
         isQuantityViewOpen = true
         delegate?.quantityChanged(cellIndex: cellIndex, quant: quantity!, isQuantViewOpen: isQuantityViewOpen)
     }
@@ -56,7 +58,7 @@ class ProductDetailThirdCollectionViewCell: UICollectionViewCell {
     @IBAction func minusButtonPressed(_ sender: Any) {
         if quantity! > 1 {
             quantity = quantity! - 1
-            quantityLabel.text = "\(quantity!)"
+            quantityLabel.text = "\(Int(quantity!))"
             isQuantityViewOpen = true
             delegate?.quantityChanged(cellIndex: cellIndex, quant: quantity!, isQuantViewOpen: isQuantityViewOpen)
         }else{
@@ -72,10 +74,8 @@ class ProductDetailThirdCollectionViewCell: UICollectionViewCell {
     
     func configureCellUI(product : Product?){
         quantity = product!.quantity ?? 0.0
-        quantityLabel.text = "\(product!.quantity ?? 0.0)"
+        quantityLabel.text = "\(Int(product!.quantity ?? 0.0))"
         isQuantityViewOpen = product!.isQuantityViewOpen ?? nil
-        similarProductPriceLabel.text = "\(product!.price ?? 0.0)"
-        similarProductPerPeicePriceLabel.text = "\(product!.price ?? 0.0)/kg"
         similarProductNameLabel.text = product!.name ?? ""
         dataManager.getImageFrom(url: product!.url, imageView: similarProductImageView)
         if isQuantityViewOpen! {
@@ -87,6 +87,17 @@ class ProductDetailThirdCollectionViewCell: UICollectionViewCell {
         }else{
             minusButton.isHidden = true
             quantityLabel.isHidden = true
+        }
+        if let discount = product?.discount, discount > 0 {
+            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "₹\(Int(product!.price ?? 0.0))")
+                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: NSMakeRange(0, attributeString.length))
+            similarProductPriceLabel.attributedText = attributeString
+            similarProductDiscountedPriceLabel.text = "₹\(Int(product!.price!-(product!.price!*(product!.discount!/100))))"
+            discountLabl.text = "\(Int(product!.discount!))%off"
+        }else{
+            similarProductDiscountedPriceLabel.text = "₹\(Int(product!.price ?? 0.0))"
+            similarProductPriceLabel.isHidden = true
+            discountLabl.isHidden = true
         }
         
     }

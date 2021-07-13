@@ -32,21 +32,21 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fruit Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nI5-eF-MX3">
-                        <rect key="frame" x="10" y="198" width="131" height="24"/>
+                        <rect key="frame" x="10" y="195.5" width="131" height="24"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="₹17.00/kg" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vx2-OJ-GtI">
-                        <rect key="frame" x="10" y="227" width="131" height="17"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <color key="textColor" systemColor="systemGray2Color"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="₹17.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vx2-OJ-GtI">
+                        <rect key="frame" x="10" y="224.5" width="50" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" name="mygreen"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="₹17.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G0b-R3-9o1">
                         <rect key="frame" x="10" y="257" width="131" height="20.5"/>
-                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                        <color key="textColor" name="mygreen"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" systemColor="systemGrayColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GLt-dp-BIN">
@@ -95,6 +95,15 @@
                             </button>
                         </subviews>
                     </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10% off" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QyO-VN-T9u">
+                        <rect key="frame" x="65" y="224.5" width="60" height="20.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="60" id="RQV-dk-Y2A"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="1" green="0.10571245437217391" blue="0.16438811302302314" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
@@ -106,25 +115,27 @@
                 <constraint firstItem="3JT-Dv-uOi" firstAttribute="leading" secondItem="nI5-eF-MX3" secondAttribute="trailing" constant="40" id="Vbf-e2-YwW"/>
                 <constraint firstItem="Vx2-OJ-GtI" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="Yex-e4-jaH"/>
                 <constraint firstItem="nI5-eF-MX3" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="ZkI-VA-ViN"/>
+                <constraint firstItem="QyO-VN-T9u" firstAttribute="leading" secondItem="Vx2-OJ-GtI" secondAttribute="trailing" constant="5" id="aEk-Aw-oiW"/>
                 <constraint firstItem="Vx2-OJ-GtI" firstAttribute="top" secondItem="nI5-eF-MX3" secondAttribute="bottom" constant="5" id="aLh-zf-EYW"/>
                 <constraint firstAttribute="bottom" secondItem="G0b-R3-9o1" secondAttribute="bottom" constant="11.5" id="bDA-9v-h0b"/>
                 <constraint firstAttribute="bottom" secondItem="GLt-dp-BIN" secondAttribute="bottom" id="cMQ-74-9G4"/>
-                <constraint firstItem="G0b-R3-9o1" firstAttribute="top" secondItem="Vx2-OJ-GtI" secondAttribute="bottom" constant="13" id="gBv-Zu-fwZ"/>
+                <constraint firstItem="G0b-R3-9o1" firstAttribute="top" secondItem="Vx2-OJ-GtI" secondAttribute="bottom" constant="12" id="gBv-Zu-fwZ"/>
+                <constraint firstItem="QyO-VN-T9u" firstAttribute="top" secondItem="nI5-eF-MX3" secondAttribute="bottom" constant="5" id="iU2-8k-pDP"/>
                 <constraint firstItem="3JT-Dv-uOi" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="jvk-4b-85x"/>
                 <constraint firstItem="eVK-wx-Y5z" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="kQ6-An-gn1"/>
                 <constraint firstAttribute="trailing" secondItem="3JT-Dv-uOi" secondAttribute="trailing" id="pIE-a7-Wse"/>
-                <constraint firstItem="3JT-Dv-uOi" firstAttribute="leading" secondItem="Vx2-OJ-GtI" secondAttribute="trailing" constant="40" id="qOY-oy-9PA"/>
                 <constraint firstAttribute="bottom" secondItem="3JT-Dv-uOi" secondAttribute="bottom" id="r27-qG-gZF"/>
                 <constraint firstItem="3JT-Dv-uOi" firstAttribute="leading" secondItem="G0b-R3-9o1" secondAttribute="trailing" constant="40" id="tXs-ic-QSb"/>
             </constraints>
             <size key="customSize" width="207" height="267"/>
             <connections>
+                <outlet property="discountLabl" destination="QyO-VN-T9u" id="tGr-Uc-Q57"/>
                 <outlet property="minusButton" destination="cCk-pY-MSh" id="Mu3-Ci-55x"/>
                 <outlet property="plusButton" destination="Zq0-hb-6Yg" id="bzG-fh-Fbl"/>
                 <outlet property="quantityLabel" destination="PyD-pn-hhX" id="vCZ-0k-V2B"/>
+                <outlet property="similarProductDiscountedPriceLabel" destination="Vx2-OJ-GtI" id="6Bk-Kg-v3b"/>
                 <outlet property="similarProductImageView" destination="eVK-wx-Y5z" id="JpF-9V-9iQ"/>
                 <outlet property="similarProductNameLabel" destination="nI5-eF-MX3" id="yBU-2r-Nht"/>
-                <outlet property="similarProductPerPeicePriceLabel" destination="Vx2-OJ-GtI" id="6Bk-Kg-v3b"/>
                 <outlet property="similarProductPriceLabel" destination="G0b-R3-9o1" id="UeW-hF-BX3"/>
             </connections>
             <point key="canvasLocation" x="89.855072463768124" y="143.63839285714286"/>
@@ -139,8 +150,8 @@
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
-        <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemGrayColor">
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

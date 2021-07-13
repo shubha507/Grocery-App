@@ -388,7 +388,7 @@ extension HomeViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0{
-            return 500
+            return UIScreen.main.bounds.height/896 * 440
         }else if indexPath.row == 1{
             return 180
         }else{
@@ -430,7 +430,7 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDataSo
         productDetailVC.id  = searchedProduct[indexPath.row].id!
         productDetailVC.product = searchedProduct[indexPath.row]
         productDetailVC.modalPresentationStyle = .fullScreen
-        productDetailVC.productArray = searchedProduct
+        productDetailVC.tags = searchedProduct[indexPath.row].tags
         self.present(productDetailVC, animated: true, completion: nil)
     }
     

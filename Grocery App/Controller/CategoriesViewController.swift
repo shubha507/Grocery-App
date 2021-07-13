@@ -63,7 +63,6 @@ class CategoriesViewController : UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(named: "mygreen")
-        print("dataArray \(dataArray)")
         
         cellCollectionVw.delegate = self
         cellCollectionVw.dataSource = self
@@ -115,19 +114,19 @@ extension CategoriesViewController : UICollectionViewDataSource {
 extension CategoriesViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width:110, height: 135 )
+        return CGSize(width:UIScreen.main.bounds.width/414 * 110, height: UIScreen.main.bounds.height/896 * 135 )
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
+        return 15
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
+        return UIScreen.main.bounds.width/414 * 10
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 15, left: 10, bottom: 0, right: 10)
+        return UIEdgeInsets(top:UIScreen.main.bounds.height/896 * 15, left: UIScreen.main.bounds.width/414*10, bottom: 0, right: UIScreen.main.bounds.width/414*10)
     }
     
     

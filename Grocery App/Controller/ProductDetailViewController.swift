@@ -20,9 +20,11 @@ class ProductDetailViewController : UIViewController, UITableViewDelegate,passQu
     
     var product : Product?
     
-    var productArray = [Product]()
+    var tags : [String]?
     
-    let dataManager = DataManager()
+   // var productArray = [Product]()
+    
+    var dataManager = DataManager()
     
     private var similarProductArray = [Product]()
     
@@ -37,11 +39,19 @@ class ProductDetailViewController : UIViewController, UITableViewDelegate,passQu
         self.dataManager.getImageFrom(url: url, imageView: posterImageView)
         }
         self.configureCells()
-        self.getSimilarProduct()
+        tblVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.dataManager.getSimilarProducts(tags: tags) { (error) in
+            self.getSimilarProduct()
+            print("self.dataManager.productArray \(self.dataManager.productArray)")
+            self.tblVw.reloadData()
+       }
     }
     
 func getSimilarProduct(){
-    for products in productArray {
+    for products in dataManager.productArray {
         if products.id != self.id {
             similarProductArray.append(products)
         }

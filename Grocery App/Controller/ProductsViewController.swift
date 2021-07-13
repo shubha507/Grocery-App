@@ -196,8 +196,8 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         productDetailVC.id  = dataManager.productArray[indexPath.row].id
         productDetailVC.product = dataManager.productArray[indexPath.row]
         productDetailVC.modalPresentationStyle = .fullScreen
-        productDetailVC.productArray = dataManager.productArray
-        self.present(productDetailVC, animated: true, completion: nil)
+        productDetailVC.tags = dataManager.productArray[indexPath.row].tags
+            self.present(productDetailVC, animated: true, completion: nil)
     }
 
 }

@@ -22,7 +22,7 @@ class CustomTabBarViewController: UITabBarController, UITabBarControllerDelegate
     }()
     
     private let cartItemNumberView : UIView = {
-        let view = UIView( frame: CGRect(x: 45, y: -15, width: 30, height: 30))
+        let view = UIView( frame: CGRect(x: 60, y: -10, width: 30, height: 30))
         view.layer.cornerRadius = view.frame.height/2
         view.layer.shadowOpacity = 1.0
         view.layer.shadowColor = UIColor.gray.cgColor

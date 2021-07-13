@@ -19,8 +19,14 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     var orderDataManager = OrderDataManager()
     @IBOutlet weak var cartTblView: UITableView!
     
+    @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var total: UILabel!
+    
     @IBOutlet weak var totalLabel: UILabel!
+    
     @IBOutlet weak var checkoutButtonView: UIView!
+    
     @IBOutlet weak var backViewInCart: UIView!
     
     private let noProductInCartImageView : UIImageView = {
@@ -66,6 +72,13 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
         cartTblView.delegate = self
         cartTblView.dataSource = self
         cartTblView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+        
+        tableViewHeightConstraint.constant = (UIScreen.main.bounds.height/896)*450
+        
+        total.font = UIFont.systemFont(ofSize: UIScreen.main.bounds.width/414 * 27)
+        
+        totalLabel.font = UIFont.systemFont(ofSize: UIScreen.main.bounds.width/414 * 27)
+        
         configureEmptyCartViewUI()
     }
     

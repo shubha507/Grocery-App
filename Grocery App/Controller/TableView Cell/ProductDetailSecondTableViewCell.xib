@@ -42,12 +42,6 @@
                                     <action selector="reviewButtonPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="yZ9-5f-Cfg"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(257)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ug-mk-XCb">
-                                <rect key="frame" x="245" y="29.5" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" systemColor="systemGray2Color"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YMD-II-ySa" customClass="curvedView" customModule="Grocery_App" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="70" width="360" height="375"/>
                                 <subviews>
@@ -114,8 +108,6 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="YMD-II-ySa" secondAttribute="bottom" id="3D0-6y-Oy5"/>
-                            <constraint firstItem="0ug-mk-XCb" firstAttribute="centerY" secondItem="Hrv-RT-HR0" secondAttribute="centerY" id="8PR-Po-tmO"/>
-                            <constraint firstItem="0ug-mk-XCb" firstAttribute="leading" secondItem="Hrv-RT-HR0" secondAttribute="trailing" constant="1" id="KkW-HF-tsS"/>
                             <constraint firstItem="31b-ga-AX2" firstAttribute="leading" secondItem="jee-Tj-du3" secondAttribute="leading" constant="60" id="Njf-f0-hSk"/>
                             <constraint firstItem="Hrv-RT-HR0" firstAttribute="height" secondItem="31b-ga-AX2" secondAttribute="height" multiplier="0.9" id="g9N-dC-YrI"/>
                             <constraint firstAttribute="trailing" secondItem="YMD-II-ySa" secondAttribute="trailing" id="iKq-W0-OCQ"/>
@@ -147,7 +139,6 @@
                 <outlet property="curvedView" destination="YMD-II-ySa" id="xak-dQ-JLw"/>
                 <outlet property="detailsButton" destination="31b-ga-AX2" id="GBG-6I-g8S"/>
                 <outlet property="reviewsButton" destination="Hrv-RT-HR0" id="0bY-VD-YRh"/>
-                <outlet property="reviewsNumberLabel" destination="0ug-mk-XCb" id="0dR-KO-Y9S"/>
             </connections>
             <point key="canvasLocation" x="69.565217391304358" y="162.05357142857142"/>
         </tableViewCell>
@@ -161,9 +152,6 @@
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

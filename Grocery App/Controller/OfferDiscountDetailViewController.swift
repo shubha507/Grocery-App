@@ -87,7 +87,7 @@ extension OfferDiscountDetailViewController : UITableViewDelegate {
         productDetailVC.id  = discountProductArray[indexPath.row].id
         productDetailVC.product = discountProductArray[indexPath.row]
         productDetailVC.modalPresentationStyle = .fullScreen
-        productDetailVC.productArray = discountProductArray
+        productDetailVC.tags = discountProductArray[indexPath.row].tags
         self.present(productDetailVC, animated: true, completion: nil)
     }
 }

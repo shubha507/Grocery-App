@@ -38,8 +38,6 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
     
  @IBOutlet weak var reviewsButton: UIButton!
     
- @IBOutlet weak var reviewsNumberLabel: UILabel!
-    
  @IBOutlet weak var belowDetailsView: UIView!
     
  @IBOutlet weak var belowReviewView: UIView!
@@ -50,13 +48,17 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
  override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+    
+    self.reviewsButton.isHidden = true
+    self.belowDetailsView.isHidden = true
+    
     belowDetailsView.layer.cornerRadius = 25
     belowReviewView.layer.cornerRadius = 25
     
     curvedView.layer.cornerRadius = 30
     curvedView.layer.masksToBounds = true
     
-        curvedView.addSubview(productDescriptionLabel)
+    curvedView.addSubview(productDescriptionLabel)
     productDescriptionLabel.anchor(top: curvedView.topAnchor, left: curvedView.leftAnchor,bottom: curvedView.bottomAnchor, right: curvedView.rightAnchor, paddingTop: 25, paddingLeft: 15,paddingBottom: 25, paddingRight: 15)
     
     curvedView.addSubview(productReviewTableView)
@@ -93,7 +95,7 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
         if isDetailButtonSelected! {
             detailsButton.tintColor = .black
             reviewsButton.tintColor = .gray
-            belowDetailsView.isHidden = false
+            belowDetailsView.isHidden = true
             belowReviewView.isHidden = true
         productDescriptionLabel.isHidden = false
         productReviewTableView.isHidden = true

@@ -97,8 +97,8 @@ class ProductCollectionViewCell : UICollectionViewCell {
     
     let discountLabel : UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 20)
-        lbl.textColor = UIColor(named: "mygreen")
+        lbl.font = UIFont.systemFont(ofSize: 18)
+        lbl.textColor = .systemRed
         lbl.textAlignment = .left
         return lbl
     }()
@@ -136,13 +136,13 @@ class ProductCollectionViewCell : UICollectionViewCell {
         nameLabel.anchor(top: cellImage.bottomAnchor, left: leftAnchor, paddingTop:5, paddingLeft: 10, width: frame.width-37)
         
         contentView.addSubview(priceLabel)
-        priceLabel.anchor(top: nameLabel.bottomAnchor, left: leftAnchor,  paddingTop: 5, paddingLeft: 10, width: frame.width-37)
+        priceLabel.anchor(top: nameLabel.bottomAnchor, left: leftAnchor,  paddingTop: 5, paddingLeft: 10)
         
         contentView.addSubview(strikeOutPriceLabel)
-        strikeOutPriceLabel.anchor(top: priceLabel.bottomAnchor, left: leftAnchor,bottom: bottomAnchor,  paddingTop: 5, paddingLeft: 10,paddingBottom: 5)
+        strikeOutPriceLabel.anchor(top: priceLabel.bottomAnchor, left: leftAnchor,bottom: bottomAnchor,  paddingTop: 5, paddingLeft: 10,paddingBottom: 5,width: frame.width-37)
         
         contentView.addSubview(discountLabel)
-        discountLabel.anchor(top: priceLabel.bottomAnchor, left: strikeOutPriceLabel.rightAnchor,bottom: bottomAnchor,  paddingTop: 5, paddingLeft: 10,paddingBottom: 5)
+        discountLabel.anchor(top: nameLabel.bottomAnchor, left: priceLabel.rightAnchor,bottom: strikeOutPriceLabel.topAnchor,  paddingTop: 5, paddingLeft: 5,paddingBottom:5)
         
         contentView.addSubview(plusButton)
         plusButton.anchor( bottom: bottomAnchor, right: rightAnchor, paddingBottom: 0, paddingRight: 0, width: 35, height: 35)

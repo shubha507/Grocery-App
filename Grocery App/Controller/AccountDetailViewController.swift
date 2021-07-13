@@ -37,8 +37,10 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
     @IBOutlet weak var nameView: UIView!
     @IBOutlet weak var addressFirstLineView: UIView!
     
+    @IBOutlet weak var mainView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        mainView.layer.maskedCorners = [.layerMaxXMinYCorner,.layerMinXMinYCorner]
         nameTextField.delegate = self
         addressFirstLineTextField.delegate = self
         profileImageView.layer.cornerRadius = profileImageView.frame.width/2

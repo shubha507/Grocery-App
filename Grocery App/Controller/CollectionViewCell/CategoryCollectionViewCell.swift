@@ -36,7 +36,7 @@ class CategoryCollectionViewCell : UICollectionViewCell {
         contentView.addSubview(cellImage)
           
         addSubview(cellImage)
-        cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0, width: 110, height: 110)
+        cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0, width: 110, height : 110)
         
         contentView.addSubview(cellLabel)
         cellLabel.anchor(top: cellImage.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 110, height: 25)

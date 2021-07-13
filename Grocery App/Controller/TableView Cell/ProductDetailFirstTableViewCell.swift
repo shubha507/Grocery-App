@@ -11,6 +11,7 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
     
     var quantity : Double?
     var price : Double?
+    var product : Product?
     
     private let addToCartButton : UIButton = {
         let button = UIButton(type: .system)
@@ -27,8 +28,11 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
     
     var delegate : passQuantityChangeData?
     
+    @IBOutlet weak var discountedPrice: UILabel!
     @IBOutlet weak var containerView: UIView!
     
+    @IBOutlet weak var discountLbl: UILabel!
+    @IBOutlet weak var priceIntoQuantity: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     
     @IBOutlet weak var decreaseQuantity: UIButton!
@@ -55,10 +59,12 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
     }
     
     @objc func addToCartButtonPressed(){
+        priceIntoQuantity.text = "₹\(Int(self.price ?? 0.0))/kg"
         addToCartButton.isHidden = true
         quantityStackView.isHidden = false
         quantity = 1
         quantityLabel.text = "\(Int(quantity!)) kg"
+        delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: true)
     }
     
     
@@ -66,12 +72,15 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
         if quantity! > 1 {
             quantity = quantity! - 1
             quantityLabel.text = "\(Int(quantity!)) kg"
+            priceIntoQuantity.text = "₹\(Int((self.price ?? 0.0) * (quantity ?? 0.0)) )/kg"
+
             delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: true)
         }else if quantity! == 1{
-            self.quantity = quantity! - 1
+            quantity = quantity! - 1
             addToCartButton.isHidden = false
             quantityStackView.isHidden = true
             quantityLabel.text = "\(Int(quantity!)) kg"
+            priceIntoQuantity.text = "₹\(Int((self.price ?? 0.0) * (quantity ?? 0.0)) )/kg"
             delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: false)
         }
     }
@@ -79,23 +88,39 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
     @IBAction func increaseQuantityPressed(_ sender: Any) {
         quantity = quantity! + 1
         quantityLabel.text = "\(Int(quantity!)) kg"
+        priceIntoQuantity.text = "₹\(Int((self.price ?? 0.0) * (quantity ?? 0.0)) )/kg"
         delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: true)
     }
     
     func configureCellUI(product : Product?){
         if let product = product {
+        self.product = product
         nameLabel.text = product.name
-        perPeicePriceLabel.text = "₹\(product.price!)/kg"
-        price = product.price!
         quantityLabel.text = "\(Int(product.quantity)) kg"
         quantity = product.quantity
-            if product.isAddedToCart {
+        if product.isAddedToCart {
                 addToCartButton.isHidden = true
                 quantityStackView.isHidden = false
             }else{
                 addToCartButton.isHidden = false
                 quantityStackView.isHidden = true
             }
+        if let discount = product.discount , discount > 0 {
+            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "₹\(Int(product.price!))/kg")
+                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: NSMakeRange(0, attributeString.length))
+            perPeicePriceLabel.attributedText = attributeString
+            discountedPrice.text = "₹\(Int(product.price!-(product.price!*(product.discount!/100))))/kg"
+            discountLbl.text = "\(Int(product.discount!))%off"
+            priceIntoQuantity.text = "₹\(Int(product.price!-(product.price!*(product.discount!/100))))/kg"
+            price = product.price!-(product.price!*(product.discount!/100))
+        }else{
+            discountLbl.isHidden = true
+            discountedPrice.isHidden = true
+            perPeicePriceLabel.text = "₹\(Int(product.price!))/kg"
+            perPeicePriceLabel.textColor = UIColor(named: "mygreen")
+            priceIntoQuantity.text = "₹\(Int(product.price! * product.quantity))/kg"
+            price = product.price!
+        }
     }
         
     }
