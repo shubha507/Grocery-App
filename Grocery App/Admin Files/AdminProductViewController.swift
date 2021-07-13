@@ -13,14 +13,14 @@ import FirebaseFirestoreSwift
 class CellClass: UITableViewCell {
     
 }
-class AdminProductViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AdminProductViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate {
  private let Button = UIButton()
     let dataManager = DataManager()
     
     @IBOutlet weak var productTableView: UITableView!
     
    
-    var searchController = UISearchController()
+    let searchController = UISearchController(searchResultsController: nil)
     private var product = [Product]()
     var categoryDropDown = [Categories]()
     let transparentView = UIView()
@@ -79,7 +79,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
        
             
         
-        searchController = UISearchController(searchResultsController: nil)
+        
         
         productTableView.delegate = self
         productTableView.dataSource = self
@@ -96,6 +96,9 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         rightBarButtonItem2.image = buttonIcon2
         self.navigationItem.rightBarButtonItems = [rightBarButtonItem, rightBarButtonItem2]
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
+        searchBarSetup()
+       // searchController.isActive = false
+        
         self.productTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
      
         tableView.delegate = self
@@ -107,6 +110,14 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         
         
        
+    }
+    private func searchBarSetup()
+    {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        navigationItem.searchController = nil
+       // searchController.hidesNavigationBarDuringPresentation = false
+        //searchController.isActive = false
     }
     let label = UILabel()
     let clearButton = UIButton()
@@ -267,14 +278,17 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
     
     @objc private func filter()
     {
+        //searchController.isActive = true
         print("tapped")
-        print(categoryDict)
+        //print(categoryDict)
+        navigationItem.searchController = searchController
+        searchController.isActive = true
        // fetchCategory()
         
      //   print("category count is" , categoryDict[0].count)
         
         //addTranparentView(frames: view.frame )
-        self.navigationItem.searchController = searchController
+        
         //self.navigationItem.rightBarButtonItems = [searchController]
      
     }
@@ -428,6 +442,27 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         }
     }
     }
+    func productsMatchingWithSearch(searchedText : String?){
+        
+        let db = Firestore.firestore()
+        db.collection("products").whereField("search_keys", arrayContains: searchedText!).getDocuments() {  (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                self.product = []
+                for document in querySnapshot!.documents {
+                    let newProduct = Product(data : document.data())
+                    self.stringTags = newProduct.tags ?? []
+                    self.product.append(newProduct)
+                    
+                }
+                self.productTableView.reloadData()
+                print(self.product)
+            }
+           
+
+        }
+    }
     
 }
 extension AdminProductViewController: PassActionProtocol
@@ -441,3 +476,21 @@ extension AdminProductViewController: PassActionProtocol
     
 }
 
+extension AdminProductViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else {return}
+        if searchText == ""
+        {
+           fetchData()
+        }
+        else
+        {
+            print("search text is:" , searchText.lowercased())
+            productsMatchingWithSearch(searchedText: searchText.lowercased())
+        }
+        self.productTableView.reloadData()
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        navigationItem.searchController = nil
+    }
+}
