@@ -334,6 +334,10 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
+    func presentViewController(controller: UIViewController) {
+        self.present(controller, animated: true)
+    }
+    
     //Mark :- searchTextField delegate method
     @objc func textFieldEditingDidChange(_ textField: UITextField){
         isHidden = true
@@ -374,6 +378,7 @@ extension HomeViewController : UITableViewDataSource {
             cell.delegate = self
             return cell
         }else if indexPath.row == 1, let cell = tableView.dequeueReusableCell(withIdentifier: "cell1") as? DiscountTableViewCell {
+            cell.delegate = self
             cell.collectionViewData(array: sortedDiscount)
             return cell
         }else{

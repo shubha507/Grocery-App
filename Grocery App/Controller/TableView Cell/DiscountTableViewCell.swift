@@ -9,6 +9,8 @@ import UIKit
 
 class DiscountTableViewCell : UITableViewCell, UICollectionViewDelegate {
     
+    var delegate : PerformAction?
+    
     var discountArray = [Discount]()
     
     let discountCellCollection : UICollectionView = {
@@ -55,6 +57,15 @@ extension DiscountTableViewCell : UICollectionViewDataSource {
         cell.configureUI(discountLbl: discountArray[indexPath.row].offerTitle, discountDescriptionLbl: discountArray[indexPath.row].offerDescription, url: discountArray[indexPath.row].url)
         return cell
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let offerDetailController = storyboard.instantiateViewController(identifier: "OfferDiscountDetailViewController") as! OfferDiscountDetailViewController
+        offerDetailController.modalPresentationStyle = .fullScreen
+        offerDetailController.titl = discountArray[indexPath.row].offerTitle!
+        offerDetailController.discount = discountArray[indexPath.row].discount!
+        delegate?.presentViewController(controller: offerDetailController)
     }
 }
 
