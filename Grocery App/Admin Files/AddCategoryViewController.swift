@@ -139,7 +139,10 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
  
         addButton.layer.cornerRadius = 5
         addCategoryImage.layer.cornerRadius = addCategoryImage.frame.size.height/2
+        if imageurl != ""
+        {
         dataManager.getImageFrom(url: "\(imageurl)", imageView: addCategoryImage)
+        }
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Category", style: .plain, target: nil, action: nil)
         newCategoryTxtField.delegate = self
         newRankTxtField.delegate = self
@@ -183,13 +186,13 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
     @IBAction func addButtonTapped(_ sender: Any) {
         if newCategoryTxtField.text!.isEmpty {
             print("input field/fields missing")
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input category name")
             newCategoryTxtField.layer.borderWidth = 2
             newCategoryTxtField.layer.borderColor = UIColor.systemRed.cgColor
         }
         else if newRankTxtField.text!.isEmpty  {
             print("input field/fields missing")
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product rank")
             newRankTxtField.layer.borderWidth = 2
             newRankTxtField.layer.borderColor = UIColor.systemRed.cgColor
         }
