@@ -1,9 +1,8 @@
-//
 //  HomeViewController.swift
 //  Grocery App
-//
+
 //  Created by Shubha Sachan on 28/04/21.
-//
+
 
 import UIKit
 import FirebaseAuth
@@ -24,6 +23,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
     var deals = [Deals]()
     var sortedDeals = [Deals]()
     var imageUrl : String?
+    var isHidden : Bool?
     
     private let imageView : UIImageView = {
         let iv = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
@@ -106,18 +106,8 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         return fc
     }()
     
-    private let addToCartButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Add to Cart >>" , for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(named: "mygreen")
-        button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        return button
-    }()
     
     //Mark :- Lifecycle Method
-    
     override func viewDidLoad() {
         super .viewDidLoad()
         searchCellCollectionVw.delegate = self
@@ -129,20 +119,25 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         configureUI()
         self.navigationController?.navigationBar.isHidden = true
         searchView.isHidden = true
-        fetchDealsData()
-        fetchCategoryData()
-        fetchDiscountData()
         searchTextField.addTarget(self, action: #selector(textFieldEditingDidChange(_:)), for: UIControl.Event.editingChanged)
-        print("date \(Date())")
-        
+        searchCellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
+        isHidden = false
+        tblView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom:UIScreen.main.bounds.height/896 * 60, right: 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureProfilePicture()
+        if let searchViewVisible = isHidden , searchViewVisible{
+            productsMatchingWithSearch(searchedText: searchTextField.text)
+        }
+        fetchDealsData()
+        fetchCategoryData()
+        fetchDiscountData()
     }
-    //Mark :- Helper function
     
+    
+    //Mark :- Helper function
     func configureUI(){
         view.addSubview(profileButton)
         profileButton.setDimensions(height: 50, width: 50)
@@ -168,9 +163,6 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         tblView.separatorStyle = .none
         tblView.allowsSelection = false
         
-        //to show all cells above tabbar
-        tblView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
-        
     }
     
     func configureSearchView(){
@@ -178,30 +170,27 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         searchView.anchor(top: searchTextField.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
         
         searchView.addSubview(searchCellCollectionVw)
-        searchCellCollectionVw.anchor(top: self.searchView.topAnchor, left: self.searchView.leftAnchor, right: self.searchView.rightAnchor, paddingTop: 15, paddingLeft: 10, paddingRight: 10, height: 400)
-        
-        searchView.addSubview(addToCartButton)
-        addToCartButton.anchor(top: self.searchCellCollectionVw.bottomAnchor, right: self.searchView.rightAnchor, paddingTop: 20, paddingRight: 30, width: 200, height: 50)
-        addToCartButton.addTarget(self, action: #selector(addToCartPressed), for: .touchUpInside)
+        searchCellCollectionVw.anchor(top: self.searchView.topAnchor, left: self.searchView.leftAnchor,bottom: self.searchView.bottomAnchor, right: self.searchView.rightAnchor, paddingTop: 15, paddingLeft: 10,paddingBottom: 0, paddingRight: 10)
     }
     
     func configureProfilePicture(){
         guard let user = Auth.auth().currentUser else {return}
         let db = Firestore.firestore()
         db.collection("users").document(user.uid).getDocument { (document, error) in
-            if let document = document, document.exists {
+            if let error = error {
+                print("profile picture error \(error.localizedDescription)")
+                self.nameLabel.isHidden = true
+                self.imageView.image = UIImage(named: "profile")
+            }else if let document = document, document.exists {
                 self.nameLabel.isHidden = false
-                self.nameLabel.text = UserDefaults.standard.string(forKey: "name")
                 let data =  document.data()
+                self.nameLabel.text = data?["name"] as? String
                 if let url = data?["url"] as? String {
                     self.imageUrl = url
                 self.dataManager.getImageFrom(url: self.imageUrl, imageView: self.imageView)
                 }else{
                     self.imageView.image = UIImage(named: "profile")
                 }
-            }else{
-                self.nameLabel.isHidden = true
-                self.imageView.image = UIImage(named: "profile")
             }
         }
     }
@@ -225,16 +214,21 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
                     index = index + 1
                 }
             }
-            
+        }else if quant! > 0 && searchedProduct[cellIndex!].isAddedToCart == true {
+            for products in AppSharedDataManager.shared.productAddedToCart {
+                if products.id == searchedProduct[cellIndex!].id {
+                    products.quantity = quant!
+                }
         }
-        
+      }
     }
+    
     //fetching categories data(First tbl cell)
     func fetchCategoryData(){
         let db = Firestore.firestore()
         db.collection("categories").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                print("Error getting category documents: \(err)")
             } else {
                 self.category = []
                 for document in querySnapshot!.documents {
@@ -254,7 +248,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         let db = Firestore.firestore()
         db.collection("discounts").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                print("Error getting discount documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
                     print("\(document.documentID) => \(document.data()["rank"] as! Int)")
@@ -273,7 +267,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         let db = Firestore.firestore()
         db.collection("deals").getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                print("Error getting deals documents: \(err)")
             } else {
                 for document in querySnapshot!.documents {
                     print("\(document.documentID) => \(document.data()["rank"] as! Int)")
@@ -304,6 +298,19 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
                 }
             }
         }
+        db.collection("products").whereField("tags", arrayContains: searchedText!).getDocuments() { [self] (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    let newProduct = Product(data : document.data())
+                    if newProduct.active == true {
+                        self.searchedProduct.append(newProduct)
+                        self.searchCellCollectionVw.reloadData()
+                    }
+                }
+            }
+        }
     }
     
     
@@ -322,15 +329,6 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         self.navigationController?.pushViewController(categoryVC, animated: true)
     }
     
-    @objc func addToCartPressed(){
-        for product in searchedProduct {
-            AppSharedDataManager.shared.productAddedToCart.append(product)
-            product.isAddedToCart = true
-            NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
-            
-        }
-    }
-    
     //Mark :- perform action delegate method
     func pushViewController(controller: UIViewController) {
         self.navigationController?.pushViewController(controller, animated: true)
@@ -338,8 +336,10 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
     
     //Mark :- searchTextField delegate method
     @objc func textFieldEditingDidChange(_ textField: UITextField){
+        isHidden = true
         if let text = textField.text {
             if text.count > 0 {
+                searchCellCollectionVw.reloadData()
                 tblView.isHidden = true
                 searchView.isHidden = false
                 configureSearchView()
@@ -363,7 +363,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
 extension HomeViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -388,7 +388,7 @@ extension HomeViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0{
-            return 250
+            return 500
         }else if indexPath.row == 1{
             return 180
         }else{

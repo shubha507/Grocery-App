@@ -44,7 +44,7 @@ class DataManager {
             
             URLSession.shared.dataTask(with: posterImageUrl) { (data, response, error) in
                 if let error = error {
-                    print("DataTask error: \(error.localizedDescription)")
+                    print("DataTask error1: \(error.localizedDescription)")
                     DispatchQueue.main.async(execute: {
                         self.activityIndicator.stopAnimating()
                     })
@@ -75,7 +75,7 @@ class DataManager {
         let db = Firestore.firestore()
         
         guard let id = matchId else {return}
-        
+        productArray = []
         db.collection("products").whereField(id, isEqualTo: selectedId).getDocuments() { [self] (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")

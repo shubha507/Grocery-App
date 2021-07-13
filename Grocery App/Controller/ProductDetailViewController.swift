@@ -63,8 +63,29 @@ func getSimilarProduct(){
         guard let quant = quant, let isQuantViewOpen = isQuantViewOpen, let product = self.product else {return}
         product.quantity = quant
         product.isQuantityViewOpen = isQuantViewOpen
-        print("isQuantViewOpen \(isQuantViewOpen)")
-        tblVw.reloadData()
+        if quant > 0 && product.isAddedToCart == false{
+            AppSharedDataManager.shared.productAddedToCart.append(product)
+            product.isAddedToCart = true
+            NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
+        }else if quant == 0 && product.isAddedToCart == true {
+            var index = 0
+            for products in AppSharedDataManager.shared.productAddedToCart {
+                if products.id == product.id {
+                    AppSharedDataManager.shared.productAddedToCart.remove(at: index)
+                    product.isAddedToCart = false
+                    NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
+                    return
+                }else{
+                    index = index + 1
+                }
+            }
+        }else if quant > 0 && product.isAddedToCart == true {
+            for products in AppSharedDataManager.shared.productAddedToCart {
+                if products.id == product.id {
+                    products.quantity = quant
+                }
+        }
+      }
     }
     
     func whichViewSelected(isDetailButtonSelected: Bool?, isReviewButtonSelected: Bool?) {
@@ -81,19 +102,14 @@ func getSimilarProduct(){
 
 extension ProductDetailViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0{
             if let cell = tableView.dequeueReusableCell(withIdentifier: "ProductDetailFirstTableViewCell") as? ProductDetailFirstTableViewCell, let product = self.product {
             cell.delegate = self
-            cell.nameLabel.text = self.product!.name
-                cell.perPeicePriceLabel.text = " \(self.product!.price)/kg"
-                cell.priceLabel.text = "₹\(self.product!.price! * (self.product?.quantity ?? 0))"
-            cell.price = self.product!.price!
-            cell.quantityLabel.text = "\(self.product!.quantity)"
-            cell.quantity = self.product!.quantity ?? 0
+            cell.configureCellUI(product: product)
             return cell
             }
         }else if indexPath.row == 1{
@@ -108,14 +124,6 @@ extension ProductDetailViewController : UITableViewDataSource {
             cell.getSimilarProductArray(array: self.similarProductArray)
             return cell
             }
-        }else{
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "ProductDetailFourthTableViewCell") as? ProductDetailFourthTableViewCell{
-                if let product = self.product,let price = product.price {
-            cell.priceLabel.text = "₹\(price * (product.quantity ))"
-                }
-            cell.product = product
-            return cell
-        }
         }
         return UITableViewCell()
     }
@@ -136,9 +144,8 @@ extension ProductDetailViewController : UITableViewDataSource {
             }else{
                 return 360
             }
-        }else {
-            return 120
         }
+        return 0
     }
     
 }

@@ -131,7 +131,6 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     func quantityChanged(cellIndex: Int?, quant: Double?, isQuantViewOpen: Bool?) {
         if quant! > 0 {
             AppSharedDataManager.shared.productAddedToCart[cellIndex!].quantity = quant!
-            print(quant!)
             cartTblView.reloadData()
             totalLabel.text = "₹\(totalPriceInCart()!)"
         }else{
@@ -147,6 +146,7 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
                 self.noProductInCartView.isHidden = false
                 NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
             }
+            NotificationCenter.default.post(name: NSNotification.Name("quantityChangedInCart"), object: nil)
             cartTblView.reloadData()
             
         }

@@ -34,6 +34,8 @@ class OrderStatusDesignTableViewCell: UITableViewCell {
         checkmarkView.isHidden = true
         updationDateLbl.isHidden = true
         updationTimeLbl.isHidden = true
+        updationDateLbl.font = UIFont.systemFont(ofSize: UIScreen.main.bounds.width/414 * 15)
+        updationTimeLbl.font = UIFont.systemFont(ofSize: UIScreen.main.bounds.width/414 * 17)
         
     }
 

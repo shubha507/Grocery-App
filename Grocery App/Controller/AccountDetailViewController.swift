@@ -59,6 +59,9 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
         
         addressFirstLineTextField.addTarget(self, action: #selector(textFieldEditingDidChange(_:)), for: UIControl.Event.editingChanged)
         
+        logOutButton.layer.shadowOpacity = 1.0
+        logOutButton.layer.shadowColor = UIColor.systemGray.cgColor
+        logOutButton.layer.shadowOffset = CGSize(width: 3, height: 3)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,9 +72,9 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
     
     @objc func textFieldEditingDidChange(_ textfield: UITextField){
         if textfield == nameTextField {
-            userDetail.name = nameTextField.text
+            userDetail.name = nameTextField.text?.trimmingCharacters(in: .whitespaces)
         }else{
-            userDetail.address = addressFirstLineTextField.text
+            userDetail.address = addressFirstLineTextField.text?.trimmingCharacters(in: .whitespaces)
         }
         
         if userDetail.canSaveData {
@@ -234,12 +237,6 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
                 let userDocument = userCollection.document(id)
                 userDocument.setData(
                     user.getData()
-//                    "name": name,
-//                    "address": addressFirstLine,
-//                    "id" : id,
-//                    "phone" : phoneNumber,
-//                    "url" : url,
-//                    "fcmToken" : nil
                 ){ err in
                     if let err = err {
                         print("Error adding document: \(err)")
@@ -264,23 +261,38 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
            
         }
         }else{
-                if let nameEdit = nameEdited, let addressEdit = addressEdited, (addressEdit != true && nameEdit == true){
+                if let nameEdit = nameEdited, let addressEdit = addressEdited, (addressEdit == false  && nameEdit == true){
                     db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["name" : nameTextField.text])
                     defaults.setValue(nameTextField.text, forKey: "name")
+                    print("only name edited ")
                     configureUserDetails()
                     nameEdited = false
                     
+                }else if let nameEdit = nameEdited, (addressEdited == nil && nameEdit == true){
+                    db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["name" : nameTextField.text])
+                    defaults.setValue(nameTextField.text, forKey: "name")
+                    print("only name edited ")
+                    configureUserDetails()
+                    nameEdited = false
                 }else if let addressEdit = addressEdited,let nameEdit = nameEdited, (addressEdit == true && nameEdit != true) {
                     db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["address" : addressFirstLineTextField.text])
                     defaults.setValue(addressFirstLineTextField.text, forKey: "address")
+                    print("only address edited ")
                     configureUserDetails()
                     addressEdited = false
-                    
+                }
+                else if let addressEdit = addressEdited,(nameEdited == nil && addressEdit == true) {
+                    db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["address" : addressFirstLineTextField.text])
+                    defaults.setValue(addressFirstLineTextField.text, forKey: "address")
+                    print("only address edited ")
+                    configureUserDetails()
+                    addressEdited = false
                 }else if  let nameEdit = nameEdited, let addressEdit = addressEdited, (addressEdit == true && nameEdit == true) {
                     db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["name" : nameTextField.text])
                     db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["address" : addressFirstLineTextField.text])
                     defaults.setValue(addressFirstLineTextField.text, forKey: "address")
                     defaults.setValue(nameTextField.text, forKey: "name")
+                    print("both edited ")
                     configureUserDetails()
                     nameEdited = false
                     addressEdited = false

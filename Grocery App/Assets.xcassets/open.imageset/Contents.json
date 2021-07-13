@@ -1,10 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "vegetables.png",
-      "idiom" : "universal"
-    },
-    {
+      "filename" : "open.png",
       "idiom" : "universal"
     }
   ],

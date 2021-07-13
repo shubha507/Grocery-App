@@ -134,7 +134,6 @@ class ProductCollectionViewCell : UICollectionViewCell {
         
         contentView.addSubview(nameLabel)
         nameLabel.anchor(top: cellImage.bottomAnchor, left: leftAnchor, paddingTop:5, paddingLeft: 10, width: frame.width-37)
-//        nameLabel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
         
         contentView.addSubview(priceLabel)
         priceLabel.anchor(top: nameLabel.bottomAnchor, left: leftAnchor,  paddingTop: 5, paddingLeft: 10, width: frame.width-37)
@@ -228,8 +227,8 @@ class ProductCollectionViewCell : UICollectionViewCell {
             discountLabel.isHidden = true
             strikeOutPriceLabel.isHidden = true
         }
-       
         quantity = product.quantity
+        
         quantityLabel.text = "\(Int(product.quantity))"
         isQuantityViewOpen = product.isQuantityViewOpen
         dataManager.getImageFrom(url: product.url!, imageView: cellImage)

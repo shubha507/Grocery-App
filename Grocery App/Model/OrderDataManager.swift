@@ -25,6 +25,30 @@ class OrderDataManager {
                     let orders = Order(data: document.data() )
                     print("orders.id \(orders.id)")
                     self.order.append(orders)
+                    
+                }
+                //sorting category cells according to rank
+                
+            }
+            if order.count > 0 {
+                callback(false)
+            }else{
+                callback(true)
+            }
+        }
+    }
+    
+    func fetchOrdersDataAccordingStatus(status : String , callback: @escaping(_ error : Bool)-> Void){
+        let db = Firestore.firestore()
+        db.collection("orders").whereField("createdBy", isEqualTo: Auth.auth().currentUser?.uid).whereField("currentStatus", isEqualTo: status).order(by: "createdAt", descending: true).getDocuments() { [self] (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                order = []
+                for document in querySnapshot!.documents {
+                    let orders = Order(data: document.data() )
+                    print("orders.id \(orders.id)")
+                    self.order.append(orders)
                 }
                 //sorting category cells according to rank
                 

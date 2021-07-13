@@ -113,7 +113,9 @@ protocol passQuantityChangeData {
     func quantityChanged(cellIndex:Int?, quant: Double?, isQuantViewOpen : Bool?)
 }
 
-
+protocol filterSelected {
+    func selectedFilterName(item: String)
+}
 
 class AppSharedDataManager{
     

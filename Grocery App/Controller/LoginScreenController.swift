@@ -8,15 +8,24 @@
 import UIKit
 import FirebaseAuth
 
-class LoginScreenController: UIViewController {
+class LoginScreenController: UIViewController,UITextFieldDelegate {
     //Mark :- properties
     
     let countryCode = CountryCode()
     
+    private let containerView : UIView = {
+        let vw = UIView()
+        vw.backgroundColor = UIColor.white
+        vw.layer.cornerRadius = 30
+        vw.layer.maskedCorners = [.layerMaxXMinYCorner,.layerMinXMinYCorner]
+        return vw
+    }()
+    
     private let continueWithPhoneLbl : UILabel = {
         let lbl = UILabel()
         lbl.text = "Continue With Phone"
-        lbl.font = UIFont.boldSystemFont(ofSize: 25)
+        lbl.font = UIFont.boldSystemFont(ofSize: UIScreen.main.bounds.width / 414 * 29)
+        lbl.textColor = UIColor(named: "buttoncolor")
         return lbl
     }()
     
@@ -43,6 +52,9 @@ class LoginScreenController: UIViewController {
         button.layer.cornerRadius = 20
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.isUserInteractionEnabled = false
+        button.layer.shadowOpacity = 1.0
+        button.layer.shadowColor = UIColor.systemGray.cgColor
+        button.layer.shadowOffset = CGSize(width: 3, height: 3)
         return button
     }()
         
@@ -89,8 +101,8 @@ class LoginScreenController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = UIColor(named: "mywhite")
+        numberTextField.delegate = self
+        view.backgroundColor = UIColor(named: "mygreen")
         configureUI()
         
     }
@@ -107,21 +119,28 @@ class LoginScreenController: UIViewController {
         
         view.addSubview(continueWithPhoneLbl)
         continueWithPhoneLbl.centerX(inView: view)
-        continueWithPhoneLbl.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 15)
-
-        view.addSubview(phoneWithHandImgVw)
-        phoneWithHandImgVw.centerX(inView: view)
-        phoneWithHandImgVw.anchor(top : continueWithPhoneLbl.bottomAnchor , paddingTop: 15)
-        phoneWithHandImgVw.setDimensions(height: 200, width: 200)
+        continueWithPhoneLbl.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 40)
         
-        view.addSubview(recieveCodeLabel)
+        
+        view.addSubview(containerView)
+        containerView.anchor(top: continueWithPhoneLbl.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 15,paddingLeft: 0, paddingBottom: 0,paddingRight: 0)
+       
+
+        containerView.addSubview(phoneWithHandImgVw)
+        phoneWithHandImgVw.centerX(inView: view)
+        phoneWithHandImgVw.anchor(top : containerView.topAnchor , paddingTop: 30)
+        phoneWithHandImgVw.setHeight(UIScreen.main.bounds.height / 896 * 200)
+        let aspectRatioConstraint = NSLayoutConstraint(item: phoneWithHandImgVw , attribute: .height, relatedBy: .equal , toItem:phoneWithHandImgVw ,attribute: .width, multiplier: (1.0 / 1.0) ,constant: 0)
+        phoneWithHandImgVw.addConstraint(aspectRatioConstraint)
+        
+        containerView.addSubview(recieveCodeLabel)
         recieveCodeLabel.centerX(inView: view)
-        recieveCodeLabel.anchor(top : phoneWithHandImgVw.bottomAnchor ,left : view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 40, paddingRight: 40)
+        recieveCodeLabel.anchor(top : phoneWithHandImgVw.bottomAnchor ,left : view.leftAnchor, right: view.rightAnchor, paddingTop: 15, paddingLeft: 40, paddingRight: 40)
         
         phoneNumberView.addSubview(continueButton)
         continueButton.centerY(inView: phoneNumberView)
         continueButton.setDimensions(height: 50, width: 150)
-        continueButton.anchor(right : phoneNumberView.rightAnchor , paddingRight: 10)
+        continueButton.anchor(right : phoneNumberView.rightAnchor , paddingRight: 15)
         continueButton.addTarget(self, action: #selector(continueButtonPushed), for: .touchUpInside)
         
         
@@ -155,10 +174,14 @@ class LoginScreenController: UIViewController {
         
     }
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return range.location < 10
+    }
+    
     //Mark :- Action 
 
     @objc func textDidChange(textfield: UITextField){
-        if let text = numberTextField.text, text.count == 10 {
+        if let text = numberTextField.text?.trimmingCharacters(in: .whitespaces), text.count == 10 {
             textfield.endEditing(true)
             continueButton.backgroundColor = UIColor(named: "mygreen")
             continueButton.isUserInteractionEnabled = true
@@ -176,6 +199,19 @@ class LoginScreenController: UIViewController {
           print("verifying")
           if let error = error {
             print(error.localizedDescription)
+            let alertControler = UIAlertController(title: nil, message: error.localizedDescription , preferredStyle: .alert)
+            let actionTry = UIAlertAction(title: "Try Again", style: .default) { (action) in
+                self.continueButtonPushed()
+            }
+            let actionOk = UIAlertAction(title: "Ok", style: .default) { (action) in
+                alertControler.dismiss(animated: true, completion: nil)
+            }
+            alertControler.addAction(actionOk)
+            alertControler.addAction(actionTry)
+            
+            alertControler.setBackgroundColor(color:.white)
+            
+            self.present(alertControler, animated: true, completion: nil)
             return
           }else{
             guard let verificationID = verificationID else { return }
