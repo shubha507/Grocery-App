@@ -8,15 +8,22 @@
 import UIKit
 import FirebaseAuth
 
-class LoginScreenController: UIViewController {
+class LoginScreenController: UIViewController,UITextFieldDelegate {
     //Mark :- properties
     
     let countryCode = CountryCode()
     
+    private let containerView : UIView = {
+        let vw = UIView()
+        vw.backgroundColor = UIColor.white
+        return vw
+    }()
+    
     private let continueWithPhoneLbl : UILabel = {
         let lbl = UILabel()
         lbl.text = "Continue With Phone"
-        lbl.font = UIFont.boldSystemFont(ofSize: 25)
+        lbl.textColor = UIColor(named: "buttoncolor")
+        lbl.font = UIFont(name: "PTSans-Bold", size: UIScreen.main.bounds.width / 414 * 29 )
         return lbl
     }()
     
@@ -27,11 +34,11 @@ class LoginScreenController: UIViewController {
     
     private let recieveCodeLabel : UILabel = {
         let lbl = UILabel()
-        lbl.text = "You'll receive a 6 digit code to verify next"
+        lbl.text = "You will receive a 6 digit code to verify next"
         lbl.numberOfLines = 2
-        lbl.font = UIFont.systemFont(ofSize: 20)
         lbl.textAlignment = .center
         lbl.textColor = .darkGray
+        lbl.font = UIFont(name: "PTSans-Regular", size: UIScreen.main.bounds.width / 414 * 25 )
         return lbl
     }()
     
@@ -39,10 +46,13 @@ class LoginScreenController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Continue" , for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "PTSans-Bold", size: UIScreen.main.bounds.width / 414 * 25 )
         button.backgroundColor = UIColor(red: 0, green: 255/255, blue: 0, alpha: 0.2)
         button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.isUserInteractionEnabled = false
+        button.layer.shadowOpacity = 1.0
+        button.layer.shadowColor = UIColor.systemGray.cgColor
+        button.layer.shadowOffset = CGSize(width: 3, height: 3)
         return button
     }()
         
@@ -52,7 +62,8 @@ class LoginScreenController: UIViewController {
     numField.borderStyle = .none
     numField.keyboardAppearance = .light
     numField.keyboardType = .phonePad
-    numField.font = UIFont.boldSystemFont(ofSize: 20)
+    numField.font = UIFont(name: "PTSans-Regular", size:UIScreen.main.bounds.width / 414 * 20 )
+    
     return numField
     }()
     
@@ -61,17 +72,18 @@ class LoginScreenController: UIViewController {
         numField.backgroundColor = UIColor(white: 1, alpha: 0.1)
         numField.borderStyle = .none
         numField.textColor = .black
-        numField.font = UIFont.boldSystemFont(ofSize: 20)
+        numField.font = UIFont(name: "PTSans-Bold", size:UIScreen.main.bounds.width / 414 * 20 )
         numField.isUserInteractionEnabled = false
         return numField
     }()
     
     private let enterNumberLabel : UILabel = {
         let lbl = UILabel()
-        lbl.text = "Enter your phone"
+        lbl.text = "Enter your phone no.:"
         lbl.font = UIFont.systemFont(ofSize: 15)
+        lbl.font = UIFont(name: "PTSans-Regular", size:UIScreen.main.bounds.width / 414 * 20 )
         lbl.textAlignment = .left
-        lbl.textColor = .darkGray
+        lbl.textColor = .gray
         return lbl
     }()
     
@@ -89,8 +101,8 @@ class LoginScreenController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = UIColor(named: "mywhite")
+        numberTextField.delegate = self
+        view.backgroundColor = UIColor(named: "mygreen")
         configureUI()
         
     }
@@ -107,21 +119,28 @@ class LoginScreenController: UIViewController {
         
         view.addSubview(continueWithPhoneLbl)
         continueWithPhoneLbl.centerX(inView: view)
-        continueWithPhoneLbl.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 15)
-
-        view.addSubview(phoneWithHandImgVw)
-        phoneWithHandImgVw.centerX(inView: view)
-        phoneWithHandImgVw.anchor(top : continueWithPhoneLbl.bottomAnchor , paddingTop: 15)
-        phoneWithHandImgVw.setDimensions(height: 200, width: 200)
+        continueWithPhoneLbl.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 40)
         
-        view.addSubview(recieveCodeLabel)
+        
+        view.addSubview(containerView)
+        containerView.anchor(top: continueWithPhoneLbl.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 15,paddingLeft: 0, paddingBottom: 0,paddingRight: 0)
+       
+
+        containerView.addSubview(phoneWithHandImgVw)
+        phoneWithHandImgVw.centerX(inView: view)
+        phoneWithHandImgVw.anchor(top : containerView.topAnchor , paddingTop: 30)
+        phoneWithHandImgVw.setHeight(UIScreen.main.bounds.height / 896 * 200)
+        let aspectRatioConstraint = NSLayoutConstraint(item: phoneWithHandImgVw , attribute: .height, relatedBy: .equal , toItem:phoneWithHandImgVw ,attribute: .width, multiplier: (1.0 / 1.0) ,constant: 0)
+        phoneWithHandImgVw.addConstraint(aspectRatioConstraint)
+        
+        containerView.addSubview(recieveCodeLabel)
         recieveCodeLabel.centerX(inView: view)
-        recieveCodeLabel.anchor(top : phoneWithHandImgVw.bottomAnchor ,left : view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 40, paddingRight: 40)
+        recieveCodeLabel.anchor(top : phoneWithHandImgVw.bottomAnchor ,left : view.leftAnchor, right: view.rightAnchor, paddingTop: 15, paddingLeft: 40, paddingRight: 40)
         
         phoneNumberView.addSubview(continueButton)
         continueButton.centerY(inView: phoneNumberView)
         continueButton.setDimensions(height: 50, width: 150)
-        continueButton.anchor(right : phoneNumberView.rightAnchor , paddingRight: 10)
+        continueButton.anchor(right : phoneNumberView.rightAnchor , paddingRight: 15)
         continueButton.addTarget(self, action: #selector(continueButtonPushed), for: .touchUpInside)
         
         
@@ -155,10 +174,14 @@ class LoginScreenController: UIViewController {
         
     }
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return range.location < 10
+    }
+    
     //Mark :- Action 
 
     @objc func textDidChange(textfield: UITextField){
-        if let text = numberTextField.text, text.count == 10 {
+        if let text = numberTextField.text?.trimmingCharacters(in: .whitespaces), text.count == 10 {
             textfield.endEditing(true)
             continueButton.backgroundColor = UIColor(named: "mygreen")
             continueButton.isUserInteractionEnabled = true
@@ -176,14 +199,27 @@ class LoginScreenController: UIViewController {
           print("verifying")
           if let error = error {
             print(error.localizedDescription)
+            let alertControler = UIAlertController(title: nil, message: error.localizedDescription , preferredStyle: .alert)
+            let actionTry = UIAlertAction(title: "Try Again", style: .default) { (action) in
+                self.continueButtonPushed()
+            }
+            let actionOk = UIAlertAction(title: "Ok", style: .default) { (action) in
+                alertControler.dismiss(animated: true, completion: nil)
+            }
+            alertControler.addAction(actionOk)
+            alertControler.addAction(actionTry)
+            
+            alertControler.setBackgroundColor(color:.white)
+            
+            self.present(alertControler, animated: true, completion: nil)
             return
           }else{
             guard let verificationID = verificationID else { return }
             UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
             let controller = VerificationScreenController()
             controller.modalPresentationStyle = .fullScreen
-            controller.mobNo = number
-            self.present(controller, animated: true,completion: nil)
+            controller.mobNo = "+91 \(phnNumber)"
+            self.present(controller, animated: false,completion: nil)
             }
        
         }

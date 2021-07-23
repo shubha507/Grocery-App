@@ -19,8 +19,14 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     var orderDataManager = OrderDataManager()
     @IBOutlet weak var cartTblView: UITableView!
     
+    @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var total: UILabel!
+    
     @IBOutlet weak var totalLabel: UILabel!
+    
     @IBOutlet weak var checkoutButtonView: UIView!
+    
     @IBOutlet weak var backViewInCart: UIView!
     
     private let noProductInCartImageView : UIImageView = {
@@ -66,6 +72,13 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
         cartTblView.delegate = self
         cartTblView.dataSource = self
         cartTblView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+        
+        tableViewHeightConstraint.constant = (UIScreen.main.bounds.height/896)*450
+        
+        total.font = UIFont.systemFont(ofSize: UIScreen.main.bounds.width/414 * 27)
+        
+        totalLabel.font = UIFont.systemFont(ofSize: UIScreen.main.bounds.width/414 * 27)
+        
         configureEmptyCartViewUI()
     }
     
@@ -75,7 +88,7 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
             checkoutButtonView.isHidden = false
             noProductInCartView.isHidden = true
             backViewInCart.backgroundColor = UIColor(named: "buttoncolor")
-            totalLabel.text = "₹\(totalPriceInCart()!)"
+            totalLabel.text = "Rs.\(totalPriceInCart()!)"
         cartTblView.reloadData()
         }else{
             cartTblView.isHidden = true
@@ -131,15 +144,14 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
     func quantityChanged(cellIndex: Int?, quant: Double?, isQuantViewOpen: Bool?) {
         if quant! > 0 {
             AppSharedDataManager.shared.productAddedToCart[cellIndex!].quantity = quant!
-            print(quant!)
             cartTblView.reloadData()
-            totalLabel.text = "₹\(totalPriceInCart()!)"
+            totalLabel.text = "Rs.\(totalPriceInCart()!)"
         }else{
             AppSharedDataManager.shared.productAddedToCart[cellIndex!].quantity = quant!
             AppSharedDataManager.shared.productAddedToCart[cellIndex!].isAddedToCart = false
             AppSharedDataManager.shared.productAddedToCart[cellIndex!].isQuantityViewOpen = false
             AppSharedDataManager.shared.productAddedToCart.remove(at: cellIndex!)
-            totalLabel.text = "₹\(totalPriceInCart()!)"
+            totalLabel.text = "Rs.\(totalPriceInCart()!)"
             if AppSharedDataManager.shared.productAddedToCart.count == 0 {
                 self.cartTblView.isHidden = true
                 self.checkoutButtonView.isHidden = true
@@ -147,6 +159,7 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
                 self.noProductInCartView.isHidden = false
                 NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
             }
+            NotificationCenter.default.post(name: NSNotification.Name("quantityChangedInCart"), object: nil)
             cartTblView.reloadData()
             
         }
@@ -241,7 +254,7 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
                 let orderDetailVC = storyboard.instantiateViewController(withIdentifier: "OrderDetailsViewController") as! OrderDetailsViewController
                 orderDetailVC.modalPresentationStyle = .fullScreen
                 orderDetailVC.index = 0
-                self.present(orderDetailVC, animated: true) {
+                self.present(orderDetailVC, animated: false) {
                     self.tabBarController?.selectedIndex = 1
                 }            }
         }

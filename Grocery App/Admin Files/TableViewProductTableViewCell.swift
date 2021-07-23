@@ -9,6 +9,7 @@ import UIKit
 
 class TableViewProductTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var tableProductDiscountPrice: UILabel!
     @IBOutlet weak var tableViewInnerView: UIView!
     @IBOutlet weak var tableProductImage: UIImageView!
     
@@ -22,7 +23,7 @@ class TableViewProductTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         
-        tableProductImage.layer.cornerRadius = tableProductImage.frame.size.height/2
+      //  tableProductImage.layer.cornerRadius = tableProductImage.frame.size.height/2
         
        tableProductImage.layer.masksToBounds = false
        tableProductImage.clipsToBounds = true

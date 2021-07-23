@@ -14,14 +14,15 @@ class users {
     var phone : String?
     var url : String?
     var fcmToken : String?
-    
-    init(name : String?,id : String?,address : String?,phone : String?,url : String?,fcmToken : String?){
+    var role: String?
+    init(name : String?,id : String?,address : String?,phone : String?,url : String?,fcmToken : String?, role: String?){
         self.name = name
         self.phone = phone
         self.id = id
         self.fcmToken = fcmToken
         self.address = address
         self.url = url
+        self.role = role
     }
     
     func getData()->[String : Any]{
@@ -31,7 +32,8 @@ class users {
             "address":self.address,
             "fcmToken":self.fcmToken,
             "id":self.id,
-            "url":self.url
+            "url":self.url,
+            "role":self.role
         ]
         return dict
     }

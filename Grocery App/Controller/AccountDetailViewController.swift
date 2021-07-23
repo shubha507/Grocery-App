@@ -37,8 +37,10 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
     @IBOutlet weak var nameView: UIView!
     @IBOutlet weak var addressFirstLineView: UIView!
     
+    @IBOutlet weak var mainView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        mainView.layer.maskedCorners = [.layerMaxXMinYCorner,.layerMinXMinYCorner]
         nameTextField.delegate = self
         addressFirstLineTextField.delegate = self
         profileImageView.layer.cornerRadius = profileImageView.frame.width/2
@@ -59,6 +61,9 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
         
         addressFirstLineTextField.addTarget(self, action: #selector(textFieldEditingDidChange(_:)), for: UIControl.Event.editingChanged)
         
+        logOutButton.layer.shadowOpacity = 1.0
+        logOutButton.layer.shadowColor = UIColor.systemGray.cgColor
+        logOutButton.layer.shadowOffset = CGSize(width: 3, height: 3)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,9 +74,9 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
     
     @objc func textFieldEditingDidChange(_ textfield: UITextField){
         if textfield == nameTextField {
-            userDetail.name = nameTextField.text
+            userDetail.name = nameTextField.text?.trimmingCharacters(in: .whitespaces)
         }else{
-            userDetail.address = addressFirstLineTextField.text
+            userDetail.address = addressFirstLineTextField.text?.trimmingCharacters(in: .whitespaces)
         }
         
         if userDetail.canSaveData {
@@ -118,8 +123,8 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
         db.collection("users").document(user.uid).getDocument { (document, error) in
             if let document = document, document.exists {
                 let data =  document.data()
-                self.nameLabel.text = data?["name"] as! String ?? ""
-                self.addressFirstLineLabel.text = data?["address"] as! String ?? ""
+                self.nameLabel.text = data?["name"] as? String ?? ""
+                self.addressFirstLineLabel.text = data?["address"] as? String ?? ""
                 self.imageUrl = data?["url"] as? String
                 self.dataManager.getImageFrom(url: self.imageUrl, imageView: self.profileImageView)
                 self.nameLabel.isHidden = false
@@ -154,7 +159,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
 
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
                     imageController.sourceType = .camera
-                    self.present(imageController, animated: true, completion: nil)
+                    self.present(imageController, animated: false, completion: nil)
                 }else{
                     let alertControler = UIAlertController(title: nil, message: "Camera not available", preferredStyle: .alert)
                     
@@ -166,7 +171,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
                     alertControler.addAction(actionOk)
                     alertControler.setBackgroundColor(color:.white)
                     
-                    self.present(alertControler, animated: true, completion: nil)
+                    self.present(alertControler, animated: false, completion: nil)
                 }
 
 
@@ -174,15 +179,15 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
 
             actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action:UIAlertAction) in
                 imageController.sourceType = .photoLibrary
-                self.present(imageController, animated: true, completion: nil)
+                self.present(imageController, animated: false, completion: nil)
             }))
 
 
             actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
-            self.present(actionSheet, animated: true, completion: nil)
+            self.present(actionSheet, animated: false, completion: nil)
         imageController.allowsEditing = true
-        self.present(imageController, animated: true,completion: nil)
+        self.present(imageController, animated: false,completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -213,12 +218,12 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
             }
             
         }
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
         view.endEditing(true)
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
     
     @IBAction func saveButtonPressed(_ sender: Any) {
@@ -230,16 +235,10 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
                
                 let userCollection = db.collection("users")
                 let id = user.uid
-                let user = users(name: name, id: id, address: addressFirstLine, phone: phoneNumber, url: url ?? nil, fcmToken: nil)
+                    let user = users(name: name, id: id, address: addressFirstLine, phone: phoneNumber, url: url ?? nil, fcmToken: nil, role: nil)
                 let userDocument = userCollection.document(id)
                 userDocument.setData(
                     user.getData()
-//                    "name": name,
-//                    "address": addressFirstLine,
-//                    "id" : id,
-//                    "phone" : phoneNumber,
-//                    "url" : url,
-//                    "fcmToken" : nil
                 ){ err in
                     if let err = err {
                         print("Error adding document: \(err)")
@@ -264,23 +263,38 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
            
         }
         }else{
-                if let nameEdit = nameEdited, let addressEdit = addressEdited, (addressEdit != true && nameEdit == true){
+                if let nameEdit = nameEdited, let addressEdit = addressEdited, (addressEdit == false  && nameEdit == true){
                     db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["name" : nameTextField.text])
                     defaults.setValue(nameTextField.text, forKey: "name")
+                    print("only name edited ")
                     configureUserDetails()
                     nameEdited = false
                     
+                }else if let nameEdit = nameEdited, (addressEdited == nil && nameEdit == true){
+                    db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["name" : nameTextField.text])
+                    defaults.setValue(nameTextField.text, forKey: "name")
+                    print("only name edited ")
+                    configureUserDetails()
+                    nameEdited = false
                 }else if let addressEdit = addressEdited,let nameEdit = nameEdited, (addressEdit == true && nameEdit != true) {
                     db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["address" : addressFirstLineTextField.text])
                     defaults.setValue(addressFirstLineTextField.text, forKey: "address")
+                    print("only address edited ")
                     configureUserDetails()
                     addressEdited = false
-                    
+                }
+                else if let addressEdit = addressEdited,(nameEdited == nil && addressEdit == true) {
+                    db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["address" : addressFirstLineTextField.text])
+                    defaults.setValue(addressFirstLineTextField.text, forKey: "address")
+                    print("only address edited ")
+                    configureUserDetails()
+                    addressEdited = false
                 }else if  let nameEdit = nameEdited, let addressEdit = addressEdited, (addressEdit == true && nameEdit == true) {
                     db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["name" : nameTextField.text])
                     db.collection("users").document(Auth.auth().currentUser!.uid).updateData(["address" : addressFirstLineTextField.text])
                     defaults.setValue(addressFirstLineTextField.text, forKey: "address")
                     defaults.setValue(nameTextField.text, forKey: "name")
+                    print("both edited ")
                     configureUserDetails()
                     nameEdited = false
                     addressEdited = false
@@ -298,6 +312,9 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
             } catch let signOutError as NSError {
                 print ("Error signing out: %@", signOutError)
             }
+            let loginController = LoginScreenController()
+            loginController.modalPresentationStyle = .fullScreen
+            self.present(loginController, animated: false, completion: nil)
         }
         
         let actionNo = UIAlertAction(title: "No", style: .default) { (action) in
@@ -308,7 +325,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
         alertControler.addAction(actionNo)
         alertControler.setBackgroundColor(color:.white)
         
-        self.present(alertControler, animated: true, completion: nil)
+        self.present(alertControler, animated: false, completion: nil)
     }
 }
 

@@ -21,7 +21,9 @@ class CartTableViewCell: UITableViewCell {
     
     @IBOutlet weak var productNameLabel: UILabel!
     
-    @IBOutlet weak var pricePerPeiceLabel: UILabel!
+    @IBOutlet weak var discountedPriceLabel: UILabel!
+    
+    @IBOutlet weak var discountLabel: UILabel!
     
     @IBOutlet weak var productQuantityLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
@@ -43,7 +45,7 @@ class CartTableViewCell: UITableViewCell {
 
     @IBAction func plusButtonPressed(_ sender: Any) {
         quantity = quantity! + 1
-        productQuantityLabel.text = "\(quantity!)"
+        productQuantityLabel.text = "\(Int(quantity!))"
         delegate?.quantityChanged(cellIndex: cellIndex, quant: quantity!, isQuantViewOpen: nil)
     }
     
@@ -52,7 +54,7 @@ class CartTableViewCell: UITableViewCell {
         
         if quantity! > 1 {
             quantity = quantity! - 1
-            productQuantityLabel.text = "\(quantity!)"
+            productQuantityLabel.text = "\(Int(quantity!))"
             delegate?.quantityChanged(cellIndex: cellIndex, quant: quantity!, isQuantViewOpen: nil)
         }else{
             quantity = 0
@@ -63,10 +65,15 @@ class CartTableViewCell: UITableViewCell {
     func configureCellUI(product : Product){
         productNameLabel.text = "\(product.name!)"
         quantity = product.quantity
-        productQuantityLabel.text = "\(product.quantity)"
-        pricePerPeiceLabel.text = "₹\(product.price!)"
-        priceLabel.text = "₹\(product.price! * product.quantity)"
+        print("cart \(quantity!)")
+        productQuantityLabel.text = "\(Int(product.quantity))"
         dataManager.getImageFrom(url: product.url!, imageView: productImageView)
+        if let discount = product.discount {
+            discountedPriceLabel.text = "Rs.\(Int(product.price!-(product.price!*(product.discount!/100))))"
+            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "Rs.\(Int(product.price!))")
+                attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: NSMakeRange(0, attributeString.length))
+            priceLabel.attributedText = attributeString
+        }
         
     }
 }

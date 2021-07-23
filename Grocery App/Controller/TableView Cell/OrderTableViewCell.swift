@@ -29,7 +29,6 @@ class OrderTableViewCell: UITableViewCell {
         orderStatusLabel.layer.borderWidth = 2
         orderStatusLabel.layer.cornerRadius = 10
         orderStatusLabel.layer.masksToBounds = true
-       // orderStatusLabel.con
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -50,7 +49,7 @@ class OrderTableViewCell: UITableViewCell {
         
         if  order.currentStatus! == "placed"{
             orderStatusLabel.text = "Placed"
-            self.deliveryStatusDateLbl.text = "Order Placed On: \(orderDataManager.changeTimeFormat(date: order.updatedAt!,format : "dd MMMM,yyyy hh:mm:s"))"
+            self.deliveryStatusDateLbl.text = "Order Placed On: \(orderDataManager.changeTimeFormat(date: order.updatedAt!,format : "dd MMMM,yyyy"))"
             orderStatusLabel.layer.borderColor = UIColor.systemBlue.cgColor
             orderStatusLabel.textColor = .systemBlue
         }else if order.currentStatus! == "pending"{

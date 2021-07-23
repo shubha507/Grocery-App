@@ -20,6 +20,7 @@ class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITable
     
     var orderDataManager = OrderDataManager()
     
+    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var descriptionTableViewHeightConstraint: NSLayoutConstraint!
@@ -34,10 +35,12 @@ class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITable
         statusTableView.dataSource = self
         descriptionTableView.delegate = self
         descriptionTableView.dataSource = self
+        descriptionTableView.backgroundColor = UIColor(named: "buttoncolor")
         
         descriptionTableView.register(CustomHeaderView.self,
                forHeaderFooterViewReuseIdentifier: "sectionHeader")
         
+        contentView.layer.maskedCorners = [.layerMaxXMinYCorner,.layerMinXMinYCorner]
         descriptionTableView.register(CustomFooterView.self,
                forHeaderFooterViewReuseIdentifier: "sectionFooter")
         
@@ -53,7 +56,7 @@ class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITable
     
         
     @IBAction func backButtonPressed(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
         
     }
     

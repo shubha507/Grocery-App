@@ -7,7 +7,9 @@
 
 import UIKit
 import FirebaseAuth
-
+import FirebaseCore
+import FirebaseFirestore
+import FirebaseStorage
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
@@ -20,25 +22,37 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
        
        guard let scene = (scene as? UIWindowScene) else { return }
               window = UIWindow(windowScene: scene)
-                let listenHandler = Auth.auth().addStateDidChangeListener { (auth, user) in
-                    if user == nil {
+        if (Auth.auth().currentUser?.uid == nil) {
                         self.window?.rootViewController = LoginScreenController()
-                    }else{
-                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                            let tabBarController = storyboard.instantiateViewController(identifier: "CustomTabBarViewController") as? CustomTabBarViewController
-                           self.window?.rootViewController = tabBarController
-                        }
-                }
-//                        else {
-//                            let storyboard = UIStoryboard(name: "Admin", bundle: nil)
-//                            let tabBarController = storyboard.instantiateViewController(identifier: "AdminTabBarController") as? UITabBarController
-//                            self.window?.rootViewController = tabBarController
-//                        }
-  //                  }
- //               }
-       // self.window?.rootViewController = tabBarController
+                    }
+                      else {
+                        print("home screen")
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let launchScreenController = storyboard.instantiateViewController(identifier: "LaunchScreenViewController") as? LaunchScreenViewController
+                       self.window?.rootViewController = launchScreenController
+                        var role : String?
+                        let db = Firestore.firestore()
+                        guard let user = Auth.auth().currentUser else {return}
+                        db.collection("users").document(user.uid).getDocument { (document, error) in
+                            if let document = document, document.exists {
+                                let data =  document.data()
+                                role = data?["role"] as? String ?? ""
+                                if role == "admin"
+                                {
+                                  let storyboard = UIStoryboard(name: "Admin", bundle: nil)
+                                  let tabBarController = storyboard.instantiateViewController(identifier: "AdminTabBarController") as? UITabBarController
+                                 self.window?.rootViewController = tabBarController
+                                }
+                                else{
+                                  let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                        let tabBarController = storyboard.instantiateViewController(identifier: "CustomTabBarViewController") as? CustomTabBarViewController
+                                       self.window?.rootViewController = tabBarController
+                                }
+                                }
+                            }
+                      }
      window?.makeKeyAndVisible()
-    }
+   }
     
 
     func sceneDidDisconnect(_ scene: UIScene) {

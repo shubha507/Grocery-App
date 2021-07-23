@@ -13,13 +13,14 @@ import FirebaseFirestoreSwift
 class CellClass: UITableViewCell {
     
 }
-class AdminProductViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AdminProductViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate {
  private let Button = UIButton()
     let dataManager = DataManager()
     
     @IBOutlet weak var productTableView: UITableView!
     
    
+    let searchController = UISearchController(searchResultsController: nil)
     private var product = [Product]()
     var categoryDropDown = [Categories]()
     let transparentView = UIView()
@@ -79,6 +80,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
             
         
         
+        
         productTableView.delegate = self
         productTableView.dataSource = self
       
@@ -94,6 +96,9 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         rightBarButtonItem2.image = buttonIcon2
         self.navigationItem.rightBarButtonItems = [rightBarButtonItem, rightBarButtonItem2]
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
+        searchBarSetup()
+       // searchController.isActive = false
+        
         self.productTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
      
         tableView.delegate = self
@@ -105,6 +110,14 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         
         
        
+    }
+    private func searchBarSetup()
+    {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        navigationItem.searchController = nil
+       // searchController.hidesNavigationBarDuringPresentation = false
+        //searchController.isActive = false
     }
     let label = UILabel()
     let clearButton = UIButton()
@@ -265,14 +278,18 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
     
     @objc private func filter()
     {
+        //searchController.isActive = true
         print("tapped")
-        print(categoryDict)
+        //print(categoryDict)
+        navigationItem.searchController = searchController
+        searchController.isActive = true
        // fetchCategory()
         
      //   print("category count is" , categoryDict[0].count)
         
-        addTranparentView(frames: view.frame )
+        //addTranparentView(frames: view.frame )
         
+        //self.navigationItem.rightBarButtonItems = [searchController]
      
     }
     
@@ -299,7 +316,14 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         }
         return 2
     }
-    
+    func strikeThrough() -> NSAttributedString {
+        let attributeString =  NSMutableAttributedString()
+        attributeString.addAttribute(
+            NSAttributedString.Key.strikethroughStyle,
+               value: NSUnderlineStyle.single.rawValue,
+                   range:NSMakeRange(0,attributeString.length))
+        return attributeString
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             if tableView == self.productTableView
             {
@@ -307,8 +331,20 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellProduct", for: indexPath) as! TableViewProductTableViewCell
                cell.tableProductName.text = "\(product[indexPath.row].name!)"
             cell.tableProductDescription.text = " \(product[indexPath.row].description!)"
-                cell.tableProductPrice.text = "Price:  " + "\(product[indexPath.row].price ?? 0)"
-                
+                if self.product[indexPath.row].discount ?? 0 > 0
+                {
+                    var priceAfterDiscount = (self.product[indexPath.row].discount ?? 0) * (self.product[indexPath.row].price ?? 0) / 100
+                    priceAfterDiscount = ((self.product[indexPath.row].price ?? 0) - priceAfterDiscount)
+                cell.tableProductPrice.text = "Rs. " + "\(Int(priceAfterDiscount))"
+                    cell.tableProductDiscountPrice.text = "Rs. " + "\(Int(self.product[indexPath.row].price ?? 0))"
+                    cell.tableProductDiscountPrice.attributedText = cell.tableProductDiscountPrice.text?.strikeThrough()
+                }
+                else
+                {
+                    cell.tableProductPrice.text = "Rs. " + "\(Int(self.product[indexPath.row].price ?? 0))"
+                        cell.tableProductDiscountPrice.text = ""
+                    
+                }
                 dataManager.getImageFrom(url: "\(product[indexPath.row].url!)", imageView: cell.tableProductImage)
                // TableViewProductTableViewCell.init(style: UITableViewCell.CellStyle, reuseIdentifier: "tableViewCellProduct" )
                 /*cell.tableProductImage.layer.cornerRadius = cell.tableProductImage.frame.size.height/2
@@ -406,6 +442,27 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         }
     }
     }
+    func productsMatchingWithSearch(searchedText : String?){
+        
+        let db = Firestore.firestore()
+        db.collection("products").whereField("search_keys", arrayContains: searchedText!).getDocuments() {  (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                self.product = []
+                for document in querySnapshot!.documents {
+                    let newProduct = Product(data : document.data())
+                    self.stringTags = newProduct.tags ?? []
+                    self.product.append(newProduct)
+                    
+                }
+                self.productTableView.reloadData()
+                print(self.product)
+            }
+           
+
+        }
+    }
     
 }
 extension AdminProductViewController: PassActionProtocol
@@ -419,3 +476,21 @@ extension AdminProductViewController: PassActionProtocol
     
 }
 
+extension AdminProductViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else {return}
+        if searchText == ""
+        {
+           fetchData()
+        }
+        else
+        {
+            print("search text is:" , searchText.lowercased())
+            productsMatchingWithSearch(searchedText: searchText.lowercased())
+        }
+        self.productTableView.reloadData()
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        navigationItem.searchController = nil
+    }
+}

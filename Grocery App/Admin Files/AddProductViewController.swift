@@ -32,11 +32,11 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         imagecontroller.sourceType = UIImagePickerController.SourceType.photoLibrary
         
 
-        self.present(imagecontroller, animated: true, completion: nil)
+        self.present(imagecontroller, animated: false, completion: nil)
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         addProductImage.image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
     
     @IBOutlet weak var productImage: UIImageView!
@@ -100,7 +100,15 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
 
+       
       
+        productDiscount.keyboardType = UIKeyboardType.decimalPad
+        productPrice.keyboardType = UIKeyboardType.decimalPad
+        productName.keyboardType = UIKeyboardType.default
+        productDescription.keyboardType = UIKeyboardType.default
+        productActiveStatus.keyboardType = UIKeyboardType.default
+        productCategory.keyboardType = UIKeyboardType.default
+        productTags.keyboardType = UIKeyboardType.default
       //  fetchCategory()
       //  print("category count is" , productCategoryDict[0].count)
       
@@ -127,7 +135,10 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Product", style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem?.tintColor = UIColor.white
+        if productImageid != ""
+        {
         dataManager.getImageFrom(url: "\(productImageid)", imageView: addProductImage)
+        }
        // print("category count is" , productCategoryDict[0].count)
        // print("category id is:", categoryIdd)
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Product", style: .plain, target: nil, action: nil)
@@ -236,39 +247,42 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         if textField == productName {
             productName.layer.borderWidth = 2
             productName.layer.borderColor = UIColor.systemGreen.cgColor
-            textField.keyboardType = UIKeyboardType.default
+         //   textField.keyboardType = UIKeyboardType.default
            
            
         }
         else if textField == productDescription {
+           
             productDescription.layer.borderWidth = 2
             productDescription.layer.borderColor = UIColor.systemGreen.cgColor
-            textField.keyboardType = UIKeyboardType.default
+           // textField.keyboardType = UIKeyboardType.default
             //scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
         }
          else if textField == productCategory {
             productCategory.layer.borderWidth = 2
             productCategory.layer.borderColor = UIColor.systemGreen.cgColor
-            textField.keyboardType = UIKeyboardType.default
+           // textField.keyboardType = UIKeyboardType.default
             scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
         }
         else if textField == productPrice {
             productPrice.layer.borderWidth = 2
             productPrice.layer.borderColor = UIColor.systemGreen.cgColor
-            textField.keyboardType = UIKeyboardType.numbersAndPunctuation
+           // textField.keyboardType = UIKeyboardType.decimalPad
             
          
         }
        else if textField == productTags {
-            productTags.layer.borderWidth = 2
-            productTags.layer.borderColor = UIColor.systemGreen.cgColor
-        textField.keyboardType = UIKeyboardType.default
+        
+        productTags.layer.borderWidth = 2
+        productTags.layer.borderColor = UIColor.systemGreen.cgColor
+       // textField.keyboardType = UIKeyboardType.default
         scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
         }
         else if textField == productActiveStatus {
+          
             productActiveStatus.layer.borderWidth = 2
             productActiveStatus.layer.borderColor = UIColor.systemGreen.cgColor
-            textField.keyboardType = UIKeyboardType.default
+            //textField.keyboardType = UIKeyboardType.default
             
             scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
             
@@ -276,7 +290,7 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         else if textField == productDiscount {
             productDiscount.layer.borderWidth = 2
             productDiscount.layer.borderColor = UIColor.systemGreen.cgColor
-            textField.keyboardType = UIKeyboardType.numbersAndPunctuation
+            
             
             scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
         }
@@ -619,40 +633,40 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         {
             productName.layer.borderWidth = 2
             productName.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product name")
             print("input field/fields missing")
         }
         else if productDescription.text!.isEmpty {
             productDescription.layer.borderWidth = 2
             productDescription.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product description")
         }
         else if productPrice.text!.isEmpty {
             productPrice.layer.borderWidth = 2
             productPrice.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product price")
         }
         else if productCategory.text!.isEmpty {
             productCategory.layer.borderWidth = 2
             productCategory.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product category")
         }
        
         
         else if productActiveStatus.text!.isEmpty {
             productActiveStatus.layer.borderWidth = 2
             productActiveStatus.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product status")
         }
         else if productDiscount.text!.isEmpty {
             productDiscount.layer.borderWidth = 2
             productDiscount.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product discount")
         }
         else if tag.isEmpty {
             productTags.layer.borderWidth = 2
             productTags.layer.borderColor = UIColor.systemRed.cgColor
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product tags")
         }
         else if productName.text?.count ?? 0 >= 200
         {

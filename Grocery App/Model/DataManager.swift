@@ -44,7 +44,7 @@ class DataManager {
             
             URLSession.shared.dataTask(with: posterImageUrl) { (data, response, error) in
                 if let error = error {
-                    print("DataTask error: \(error.localizedDescription)")
+                    print("DataTask error1: \(error.localizedDescription)")
                     DispatchQueue.main.async(execute: {
                         self.activityIndicator.stopAnimating()
                     })
@@ -75,8 +75,8 @@ class DataManager {
         let db = Firestore.firestore()
         
         guard let id = matchId else {return}
-        
-        db.collection("products").whereField(id, isEqualTo: selectedId).getDocuments() { [self] (querySnapshot, err) in
+        productArray = []
+        db.collection("products").whereField(id, isEqualTo: selectedId).order(by: "discount", descending: true).getDocuments() { [self] (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
@@ -99,6 +99,33 @@ class DataManager {
         }
         
     }
+    
+    func getSimilarProducts(tags : [String]?,callback: @escaping(_ error : Bool)-> Void){
+        let db = Firestore.firestore()
+        if let tags = tags {
+            productArray = []
+            db.collection("products").whereField("tags", arrayContainsAny: tags).getDocuments() { [self] (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents : \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        let newProduct = Product(data : document.data())
+                        if newProduct.active == true {
+                          self.productArray.append(newProduct)
+                          
+                        }
+                    }
+                    if productArray.count > 0{
+                        callback(false)
+                    }else{
+                        callback(true)
+                    }
+                }
+            }
+        }
+       
+            
+        }
     
     func requestOTPAgain(number : String?){
         guard let number = number else {return}

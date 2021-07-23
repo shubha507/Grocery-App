@@ -17,8 +17,10 @@ class AdminOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     let dataManager = DataManager()
     private var order = [Order]()
 
+    var selectedStatus = ""
     var imageid = String()
     var sortedOrder = [Order]()
+    
     func fetchData(){
        
         let db = Firestore.firestore()
@@ -34,12 +36,7 @@ class AdminOrderViewController: UIViewController, UITableViewDelegate, UITableVi
                // print("document is" , document)
                 var item = newOrder.items
                 
-                if item?.count ?? 0 > 0 {
-                    print("uid is", newOrder.id)
-                    self.imageid = item?[0].url ?? ""
-                    print("image is:" , self.imageid)
-                print("name is" , item?[0].name ?? "")
-                }
+               
                 //print(newOrder.name)
                 
              self.order.append(newOrder)
@@ -55,7 +52,93 @@ class AdminOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
 }
-    
+    func fetchDataAccordingToValue(val : String){
+       order = []
+        let db = Firestore.firestore()
+        db.collection("orders").getDocuments() { (querySnapshot, err) in
+        if let err = err {
+            print("Error getting documents: \(err)")
+        } else {
+            
+            for document in querySnapshot!.documents {
+                
+               let newOrder = Order(data: document.data())
+              // let newCategory = Categories1(docId: data)
+               // print("document is" , document)
+                var item = newOrder.items
+                
+               
+                //print(newOrder.name)
+                if newOrder.currentStatus == val
+                {
+             self.order.append(newOrder)
+                }
+            }
+          
+            
+           
+            self.sortedOrder = self.order.sorted(by: { $0.createdAt?.dateValue() ?? NSDate.distantPast > $1.createdAt?.dateValue() ?? NSDate.distantPast })
+            
+            self.orderTableView.reloadData()
+           
+           
+        }
+    }
+}
+    @IBAction func searchFilterTapped(_ sender: Any) {
+        
+        self.showAlert()
+    }
+            
+    func showAlert()
+            {
+                
+                let alert = UIAlertController(title: "Filter By Status", message: nil, preferredStyle: .alert)
+       
+        
+                alert.view.tintColor = UIColor.green
+                alert.addAction(UIAlertAction(title: "Placed", style: .default, handler: { (handle) in
+                    self.fetchDataAccordingToValue(val: "placed")
+                    
+                    
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "Confirmed", style: .default, handler: { (handle) in
+                    self.fetchDataAccordingToValue(val: "confirmed")
+                    
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "Processing", style: .default, handler: { (handle) in
+                    self.fetchDataAccordingToValue(val: "processing")
+                    
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "Decined", style: .default, handler: { (handle) in
+                    self.fetchDataAccordingToValue(val: "declined")
+                    
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "Delivered", style: .default, handler: { (handle) in
+                    self.fetchDataAccordingToValue(val: "delivered")
+                   
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "Clear Fields", style: .default, handler: { (handle) in
+                    self.order = []
+                    self.fetchData()
+                    
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "CANCEL", style: .destructive, handler: { (handle) in
+                    
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+        
+        self.present(alert, animated: true, completion: {
+            alert.view.tintColor = UIColor.red
+         })
+           
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -66,7 +149,9 @@ class AdminOrderViewController: UIViewController, UITableViewDelegate, UITableVi
         self.orderTableView.rowHeight = UITableView.automaticDimension
         self.orderTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         self.orderTableView.estimatedRowHeight = 100
+        
         fetchData()
+        
         self.orderTableView.allowsSelection = true
        // self.orderTableView.selectionFollowsFocus = false
         
@@ -74,6 +159,7 @@ class AdminOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.tabBarController?.tabBar.isHidden = false
+        //fetchData()
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -108,6 +194,12 @@ class AdminOrderViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.orderStatusLabel.text = "Placed"
             cell.orderStatusLabel.layer.borderColor = UIColor.systemIndigo.cgColor
         }
+        else if "\(sortedOrder[indexPath.row].currentStatus!)" == "processing"
+        {
+            cell.orderStatusLabel.textColor = UIColor.systemOrange
+            cell.orderStatusLabel.text = "Processing"
+            cell.orderStatusLabel.layer.borderColor = UIColor.systemOrange.cgColor
+        }
         else if "\(sortedOrder[indexPath.row].currentStatus!)" == "confirmed"
         {
             cell.orderStatusLabel.textColor = UIColor.systemYellow
@@ -131,15 +223,33 @@ class AdminOrderViewController: UIViewController, UITableViewDelegate, UITableVi
     var i = 0
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let adminOrderObject:OrderDescriptionAdminViewController = self.storyboard?.instantiateViewController(identifier: "OrderDescriptionAdminViewController") as! OrderDescriptionAdminViewController
-        
+        adminOrderObject.confirmTappedProtocol = self
         adminOrderObject.id = sortedOrder[indexPath.row].id ?? ""
+        adminOrderObject.presentState = sortedOrder[indexPath.row].currentStatus ?? ""
         adminOrderObject.order = sortedOrder
          
         i = i + 1
         adminOrderObject.indexSelected = indexPath.row
         print("order status array:" , order[indexPath.row].allStatus ?? "")
         self.navigationController?.pushViewController(adminOrderObject, animated: true)
+       
         
     }
    
+}
+extension AdminOrderViewController: MoveToNextStateProtocol
+{
+    func confirmTapped(index: Int) {
+        order = []
+       fetchData()
+        
+        
+        self.orderTableView.reloadData()
+        
+       //orderTableView.reloadRows(at: IndexPath(index: index), with: .none)
+    }
+    
+    
+    
+    
 }

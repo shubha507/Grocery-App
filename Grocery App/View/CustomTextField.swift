@@ -21,15 +21,15 @@ class CustomTextField : UITextField {
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
-        layer.cornerRadius = 10
         keyboardAppearance = .light
         keyboardType = .numberPad
         backgroundColor = UIColor(named: "buttoncolor")
         textAlignment = .center
         setDimensions(height: 50, width: 50)
-        layer.shadowOpacity = 0.5
-        layer.shadowColor = UIColor(named: "mygreen")?.cgColor
-        layer.shadowOffset = CGSize(width: 2, height: 3)
+        layer.borderColor = UIColor.black.cgColor
+        layer.borderWidth = 2
+        textContentType = .oneTimeCode
+        tintColor = .black
     }
     
     required init?(coder: NSCoder) {

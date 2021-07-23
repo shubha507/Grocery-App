@@ -29,7 +29,7 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
     }()
 
     @objc func showCategoryScreen(){
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: false)
     }
     
     let productCellCollectionVw: UICollectionView = {
@@ -48,7 +48,7 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
     private let productLabel : UILabel = {
         let lbl = UILabel()
         lbl.textColor = .white
-        lbl.font = UIFont.boldSystemFont(ofSize: 25)
+        lbl.font = UIFont(name: "PTSans-Bold", size: 30)
         lbl.textAlignment = .center
         return lbl
     }()
@@ -99,25 +99,23 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         view.backgroundColor = UIColor(named: "mygreen")
         productCellCollectionVw.delegate = self
         productCellCollectionVw.dataSource = self
-        
-        
-        
-        
+        configureUI()
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name("quantityChangedInCart"), object: nil)
+        }
+    
+    override func viewWillAppear(_ animated: Bool) {
         self.dataManager.searchData(selectedId: productId, matchId: "category_id") { (error) in
            self.productCellCollectionVw.reloadData()
             self.productCellCollectionVw.layoutIfNeeded()
             self.configureView()
                     }
-        configureUI()
-        }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        productCellCollectionVw.reloadData()
-        productCellCollectionVw.layoutIfNeeded()
     }
     
     //Mark :- Helper Function
     
+    @objc func reloadData(){
+        self.productCellCollectionVw.reloadData()
+    }
     
     func configureView(){
         if self.dataManager.productArray.count > 0{
@@ -161,6 +159,7 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         guard let cellIndex = cellIndex, let quant = quant, let isQuantViewOpen = isQuantViewOpen else {return}
         dataManager.productArray[cellIndex].isQuantityViewOpen = isQuantViewOpen
         dataManager.productArray[cellIndex].quantity = quant
+        print(quant)
         if quant > 0 && dataManager.productArray[cellIndex].isAddedToCart == false{
             AppSharedDataManager.shared.productAddedToCart.append(dataManager.productArray[cellIndex])
             dataManager.productArray[cellIndex].isAddedToCart = true
@@ -178,21 +177,26 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
                 }
             }
             
+        }else if quant > 0 && dataManager.productArray[cellIndex].isAddedToCart == true {
+            for products in AppSharedDataManager.shared.productAddedToCart {
+                if products.id == dataManager.productArray[cellIndex].id {
+                    products.quantity = quant
+                }
         }
+      }
         
     }
    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let productDetailVC = storyboard.instantiateViewController(identifier: "ProductDetailViewController") as! ProductDetailViewController
         // let productDetailVC = ProductDetailViewController()
         productDetailVC.id  = dataManager.productArray[indexPath.row].id
         productDetailVC.product = dataManager.productArray[indexPath.row]
         productDetailVC.modalPresentationStyle = .fullScreen
-        productDetailVC.productArray = dataManager.productArray
-        self.present(productDetailVC, animated: true, completion: nil)
+        productDetailVC.tags = dataManager.productArray[indexPath.row].tags
+        self.present(productDetailVC, animated: false, completion: nil)
     }
 
 }

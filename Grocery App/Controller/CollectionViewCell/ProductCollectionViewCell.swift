@@ -72,7 +72,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
     
     let nameLabel : UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 20)
+        lbl.font = UIFont(name: "PTSans-Bold", size: 20)
         lbl.textColor = .black
         lbl.textAlignment = .left
         lbl.numberOfLines = 0
@@ -89,7 +89,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
     
     let priceLabel : UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 20)
+        lbl.font = UIFont.systemFont(ofSize: 20)
         lbl.textColor = UIColor(named: "mygreen")
         lbl.textAlignment = .left
         return lbl
@@ -97,8 +97,8 @@ class ProductCollectionViewCell : UICollectionViewCell {
     
     let discountLabel : UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 20)
-        lbl.textColor = UIColor(named: "mygreen")
+        lbl.font = UIFont.systemFont(ofSize: 16)
+        lbl.textColor = .systemRed
         lbl.textAlignment = .left
         return lbl
     }()
@@ -134,16 +134,15 @@ class ProductCollectionViewCell : UICollectionViewCell {
         
         contentView.addSubview(nameLabel)
         nameLabel.anchor(top: cellImage.bottomAnchor, left: leftAnchor, paddingTop:5, paddingLeft: 10, width: frame.width-37)
-//        nameLabel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
         
         contentView.addSubview(priceLabel)
-        priceLabel.anchor(top: nameLabel.bottomAnchor, left: leftAnchor,  paddingTop: 5, paddingLeft: 10, width: frame.width-37)
+        priceLabel.anchor(top: nameLabel.bottomAnchor, left: leftAnchor,  paddingTop: 5, paddingLeft: 10)
         
         contentView.addSubview(strikeOutPriceLabel)
-        strikeOutPriceLabel.anchor(top: priceLabel.bottomAnchor, left: leftAnchor,bottom: bottomAnchor,  paddingTop: 5, paddingLeft: 10,paddingBottom: 5)
+        strikeOutPriceLabel.anchor(top: priceLabel.bottomAnchor, left: leftAnchor,bottom: bottomAnchor,  paddingTop: 5, paddingLeft: 10,paddingBottom: 5,width: frame.width-37)
         
         contentView.addSubview(discountLabel)
-        discountLabel.anchor(top: priceLabel.bottomAnchor, left: strikeOutPriceLabel.rightAnchor,bottom: bottomAnchor,  paddingTop: 5, paddingLeft: 10,paddingBottom: 5)
+        discountLabel.anchor(top: nameLabel.bottomAnchor, left: priceLabel.rightAnchor,bottom: strikeOutPriceLabel.topAnchor,  paddingTop: 5, paddingLeft: 5,paddingBottom:5)
         
         contentView.addSubview(plusButton)
         plusButton.anchor( bottom: bottomAnchor, right: rightAnchor, paddingBottom: 0, paddingRight: 0, width: 35, height: 35)
@@ -218,18 +217,18 @@ class ProductCollectionViewCell : UICollectionViewCell {
             discountLabel.isHidden = false
             strikeOutPriceLabel.isHidden = false
        let exactPriceAfterDiscount = product.price!-(product.price!*(product.discount!/100))
-        priceLabel.text = "₹\(Int(exactPriceAfterDiscount))"
-        let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "₹\(Int(product.price!))")
+        priceLabel.text = "Rs.\(Int(exactPriceAfterDiscount))"
+        let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "Rs.\(Int(product.price!))")
             attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: NSMakeRange(0, attributeString.length))
         discountLabel.text = "\(Int(product.discount!))% off"
         strikeOutPriceLabel.attributedText = attributeString
         }else {
-            priceLabel.text = "₹\(Int(product.price!))"
+            priceLabel.text = "Rs.\(Int(product.price!))"
             discountLabel.isHidden = true
             strikeOutPriceLabel.isHidden = true
         }
-       
         quantity = product.quantity
+        
         quantityLabel.text = "\(Int(product.quantity))"
         isQuantityViewOpen = product.isQuantityViewOpen
         dataManager.getImageFrom(url: product.url!, imageView: cellImage)

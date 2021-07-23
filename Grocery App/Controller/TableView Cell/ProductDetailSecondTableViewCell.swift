@@ -28,7 +28,7 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
     let productDescriptionLabel : UILabel = {
         let pDL = UILabel()
         pDL.textColor = .white
-        pDL.font = UIFont.systemFont(ofSize: 21)
+        pDL.font = UIFont(name: "PTSans-Regular", size: 21)
         pDL.numberOfLines = 0
         pDL.textAlignment = .justified
         return pDL
@@ -37,8 +37,6 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
  @IBOutlet weak var detailsButton: UIButton!
     
  @IBOutlet weak var reviewsButton: UIButton!
-    
- @IBOutlet weak var reviewsNumberLabel: UILabel!
     
  @IBOutlet weak var belowDetailsView: UIView!
     
@@ -50,14 +48,18 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
  override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+    
+    self.reviewsButton.isHidden = true
+    self.belowDetailsView.isHidden = true
+    
     belowDetailsView.layer.cornerRadius = 25
     belowReviewView.layer.cornerRadius = 25
     
     curvedView.layer.cornerRadius = 30
     curvedView.layer.masksToBounds = true
     
-        curvedView.addSubview(productDescriptionLabel)
-    productDescriptionLabel.anchor(top: curvedView.topAnchor, left: curvedView.leftAnchor,bottom: curvedView.bottomAnchor, right: curvedView.rightAnchor, paddingTop: 25, paddingLeft: 15,paddingBottom: 25, paddingRight: 15)
+    curvedView.addSubview(productDescriptionLabel)
+    productDescriptionLabel.anchor(top: curvedView.topAnchor, left: curvedView.leftAnchor,bottom: curvedView.bottomAnchor, right: curvedView.rightAnchor, paddingTop: 20, paddingLeft: 15,paddingBottom: 20, paddingRight: 15)
     
     curvedView.addSubview(productReviewTableView)
     productReviewTableView.anchor(top: curvedView.topAnchor, left: curvedView.leftAnchor, bottom: curvedView.bottomAnchor, right: curvedView.rightAnchor, paddingTop: 25, paddingLeft: 15, paddingBottom: 25, paddingRight: 15)
@@ -93,7 +95,7 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
         if isDetailButtonSelected! {
             detailsButton.tintColor = .black
             reviewsButton.tintColor = .gray
-            belowDetailsView.isHidden = false
+            belowDetailsView.isHidden = true
             belowReviewView.isHidden = true
         productDescriptionLabel.isHidden = false
         productReviewTableView.isHidden = true

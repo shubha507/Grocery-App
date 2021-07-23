@@ -19,18 +19,16 @@ class DiscountCollectionViewCell : UICollectionViewCell {
     
      private let discountLabel : UILabel = {
         let lbl = UILabel()
-        lbl.text = "30% Discount"
-        lbl.font = UIFont.boldSystemFont(ofSize: 30)
+        lbl.font = UIFont.boldSystemFont(ofSize: UIScreen.main.bounds.width / 414 * 23)
         lbl.textColor = UIColor(named: "mygreen")
         lbl.numberOfLines = 0
-        lbl.textAlignment = .left
+        lbl.textAlignment = .center
         return lbl
     }()
     
      private let discountDescriptionLabel : UILabel = {
         let lbl = UILabel()
-        lbl.text = "Order any food from app and get the discount"
-        lbl.font = UIFont.systemFont(ofSize: 15)
+        lbl.font = UIFont.systemFont(ofSize:UIScreen.main.bounds.width / 414 * 17)
         lbl.textColor = .black
         lbl.textAlignment = .left
         lbl.numberOfLines = 0
@@ -41,8 +39,8 @@ class DiscountCollectionViewCell : UICollectionViewCell {
         let lbl = UILabel()
         lbl.text = "Order Now"
         lbl.textColor = UIColor(named: "mygreen")
-        lbl.font = UIFont.boldSystemFont(ofSize: 15)
-        lbl.textAlignment = .left
+        lbl.font = UIFont.boldSystemFont(ofSize: UIScreen.main.bounds.width / 414 * 19)
+        lbl.textAlignment = .center
         return lbl
     }()
 
@@ -52,23 +50,21 @@ class DiscountCollectionViewCell : UICollectionViewCell {
         super.init(frame: frame)
         
         backgroundColor = UIColor(named: "discountCellGreen")
-        layer.cornerRadius = 30
+        layer.cornerRadius = 15
         
-        addSubview(basketImageView)
-        basketImageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor,paddingTop: 15, paddingLeft: 10, paddingBottom: 15,width: 110)
+        contentView.addSubview(basketImageView)
+        basketImageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor,paddingTop: 15, paddingLeft: 10, paddingBottom: 10,width: 110)
         
-        configureStack()
-    }
-    
-    func configureStack(){
-        let stack = UIStackView(arrangedSubviews: [discountLabel,discountDescriptionLabel,orderNowLabel])
-        stack.axis = .vertical
-        stack.spacing = 10
+        contentView.addSubview(discountLabel)
+        discountLabel.anchor(top: topAnchor, left: basketImageView.rightAnchor, right: rightAnchor, paddingTop: 25, paddingLeft: 10, paddingRight: 10)
         
-        addSubview(stack)
-
-        stack.anchor(top: topAnchor,left: basketImageView.rightAnchor, paddingTop: 15,paddingLeft: 10)
-        stack.setDimensions(height: 135, width: 200)
+        contentView.addSubview(discountDescriptionLabel)
+        discountDescriptionLabel.anchor(top: discountLabel.bottomAnchor, left: basketImageView.rightAnchor, right: rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10)
+        
+        contentView.addSubview(orderNowLabel)
+        orderNowLabel.anchor(top: discountDescriptionLabel.bottomAnchor, left: basketImageView.rightAnchor, right: rightAnchor, paddingTop: 20, paddingLeft: 10, paddingRight: 10)
+        orderNowLabel.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor, constant: 5)
+        
     }
     
     required init?(coder: NSCoder) {

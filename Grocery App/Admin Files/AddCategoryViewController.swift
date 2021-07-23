@@ -22,7 +22,7 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
         imagecontroller.sourceType = UIImagePickerController.SourceType.photoLibrary
         
 
-        self.present(imagecontroller, animated: true, completion: nil)
+        self.present(imagecontroller, animated: false, completion: nil)
     }
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == newCategoryTxtField {
@@ -77,16 +77,17 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
             newRankTxtField.layer.borderColor = UIColor.white.cgColor
         }
     }
+    
     func imagePicker()
     {
         let imagecontroller = UIImagePickerController()
         imagecontroller.delegate = self
         imagecontroller.sourceType = UIImagePickerController.SourceType.photoLibrary
-        self.present(imagecontroller, animated: true, completion: nil)
+        self.present(imagecontroller, animated: false, completion: nil)
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         addCategoryImage.image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
     
     
@@ -139,7 +140,10 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
  
         addButton.layer.cornerRadius = 5
         addCategoryImage.layer.cornerRadius = addCategoryImage.frame.size.height/2
+        if imageurl != ""
+        {
         dataManager.getImageFrom(url: "\(imageurl)", imageView: addCategoryImage)
+        }
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Add Category", style: .plain, target: nil, action: nil)
         newCategoryTxtField.delegate = self
         newRankTxtField.delegate = self
@@ -161,7 +165,7 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (handle) in
             alert.dismiss(animated: true, completion: nil)
         }))
-        self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: false, completion: nil)
     }
     
     func showCompletion( messageValue: String  )
@@ -183,13 +187,13 @@ class AddCategoryViewController: UIViewController, UITextFieldDelegate, UINaviga
     @IBAction func addButtonTapped(_ sender: Any) {
         if newCategoryTxtField.text!.isEmpty {
             print("input field/fields missing")
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input category name")
             newCategoryTxtField.layer.borderWidth = 2
             newCategoryTxtField.layer.borderColor = UIColor.systemRed.cgColor
         }
         else if newRankTxtField.text!.isEmpty  {
             print("input field/fields missing")
-            showAlert(messageValue: "Value of field missing")
+            showAlert(messageValue: "Please input product rank")
             newRankTxtField.layer.borderWidth = 2
             newRankTxtField.layer.borderColor = UIColor.systemRed.cgColor
         }

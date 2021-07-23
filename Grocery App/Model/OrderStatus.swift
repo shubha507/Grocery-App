@@ -28,6 +28,17 @@ class OrderStatus {
         self.title = data["title"] as? String ?? ""
         self.description = data["description"] as? String ?? ""
     }
+    func getData()->[String : Any]{
+        let dict:[String : Any] = [
+            "completed":self.completed,
+            "createdAt":self.createdAt,
+            "description":self.description,
+            "status":self.status,
+            "updatedAt":self.updatedAt,
+            "title":self.title
+        ]
+        return dict
+    }
 }
 
 

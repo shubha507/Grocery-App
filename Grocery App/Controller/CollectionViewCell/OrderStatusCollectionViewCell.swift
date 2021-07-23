@@ -19,7 +19,6 @@ class OrderStatusCollectionViewCell: UICollectionViewCell {
     
     override class func awakeFromNib() {
         super.awakeFromNib()
-        
     }
     
     override func layoutSubviews() {
