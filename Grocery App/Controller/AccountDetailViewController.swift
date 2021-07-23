@@ -123,8 +123,8 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
         db.collection("users").document(user.uid).getDocument { (document, error) in
             if let document = document, document.exists {
                 let data =  document.data()
-                self.nameLabel.text = data?["name"] as! String ?? ""
-                self.addressFirstLineLabel.text = data?["address"] as! String ?? ""
+                self.nameLabel.text = data?["name"] as? String ?? ""
+                self.addressFirstLineLabel.text = data?["address"] as? String ?? ""
                 self.imageUrl = data?["url"] as? String
                 self.dataManager.getImageFrom(url: self.imageUrl, imageView: self.profileImageView)
                 self.nameLabel.isHidden = false
@@ -159,7 +159,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
 
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
                     imageController.sourceType = .camera
-                    self.present(imageController, animated: true, completion: nil)
+                    self.present(imageController, animated: false, completion: nil)
                 }else{
                     let alertControler = UIAlertController(title: nil, message: "Camera not available", preferredStyle: .alert)
                     
@@ -171,7 +171,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
                     alertControler.addAction(actionOk)
                     alertControler.setBackgroundColor(color:.white)
                     
-                    self.present(alertControler, animated: true, completion: nil)
+                    self.present(alertControler, animated: false, completion: nil)
                 }
 
 
@@ -179,15 +179,15 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
 
             actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action:UIAlertAction) in
                 imageController.sourceType = .photoLibrary
-                self.present(imageController, animated: true, completion: nil)
+                self.present(imageController, animated: false, completion: nil)
             }))
 
 
             actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
-            self.present(actionSheet, animated: true, completion: nil)
+            self.present(actionSheet, animated: false, completion: nil)
         imageController.allowsEditing = true
-        self.present(imageController, animated: true,completion: nil)
+        self.present(imageController, animated: false,completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -218,12 +218,12 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
             }
             
         }
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
         view.endEditing(true)
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
     
     @IBAction func saveButtonPressed(_ sender: Any) {
@@ -312,6 +312,9 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
             } catch let signOutError as NSError {
                 print ("Error signing out: %@", signOutError)
             }
+            let loginController = LoginScreenController()
+            loginController.modalPresentationStyle = .fullScreen
+            self.present(loginController, animated: false, completion: nil)
         }
         
         let actionNo = UIAlertAction(title: "No", style: .default) { (action) in
@@ -322,7 +325,7 @@ class AccountDetailViewController : UIViewController,UIGestureRecognizerDelegate
         alertControler.addAction(actionNo)
         alertControler.setBackgroundColor(color:.white)
         
-        self.present(alertControler, animated: true, completion: nil)
+        self.present(alertControler, animated: false, completion: nil)
     }
 }
 

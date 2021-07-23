@@ -26,7 +26,7 @@ class CategoriesViewController : UIViewController {
     }()
     
     @objc func showHomeScreen(){
-        navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: false)
     }
     
     private let categoryLabel : UILabel = {
@@ -91,7 +91,7 @@ extension CategoriesViewController : UICollectionViewDelegate{
         controller.pageTitle = dataArray[indexPath.row].name!
 
         controller.productId = dataArray[indexPath.row].id
-        self.navigationController?.pushViewController(controller, animated: true)
+        self.navigationController?.pushViewController(controller, animated: false)
         
        }
 }

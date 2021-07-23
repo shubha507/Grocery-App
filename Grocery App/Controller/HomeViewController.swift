@@ -9,11 +9,10 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 
-class HomeViewController : UIViewController, UITableViewDelegate, PerformAction, UITextFieldDelegate, passQuantityChangeData {
+class HomeViewController : UIViewController, UITableViewDelegate, PerformAction, UITextFieldDelegate {
     
     
     //Mark :- Properties
-    var searchedProduct = [Product]()
     var dataManager = DataManager()
     var productArray = [Product]()
     var category = [Categories]()
@@ -34,27 +33,17 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
     
     private let hiLabel : UILabel = {
         let lbl = UILabel()
-        lbl.text = "Hey,"
         lbl.textColor = .white
-        lbl.font = UIFont.systemFont(ofSize: 18)
+        lbl.font = UIFont(name: "PTSans-Regular", size: 18)
         lbl.textAlignment = .left
         return lbl
     }()
-    
-    private let nameLabel : UILabel = {
-        let lbl = UILabel()
-        lbl.textColor = .white
-        lbl.font = UIFont.systemFont(ofSize: 18)
-        lbl.textAlignment = .left
-        return lbl
-    }()
-    
     
     private let searchFoodLabel : UILabel = {
         let lbl = UILabel()
-        lbl.text = "Lets search your grocery food."
+        lbl.text = "Welcome to the grocery store"
         lbl.textColor = .white
-        lbl.font = UIFont.systemFont(ofSize: 18)
+        lbl.font = UIFont(name: "PTSans-Regular", size: 18)
         lbl.textAlignment = .left
         return lbl
     }()
@@ -69,7 +58,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
     private let searchTextField : UISearchTextField = {
         let stf = UISearchTextField()
         stf.layer.cornerRadius = 20
-        stf.placeholder = "Search your daily grocery food..."
+        
         stf.backgroundColor = .white
         stf.autocapitalizationType = .none
         return stf
@@ -79,7 +68,6 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         let tv = UITableView()
         tv.backgroundColor = UIColor(named: "buttoncolor")
         tv.register(CategoriesTableViewCell.self, forCellReuseIdentifier: "cell")
-        tv.layer.cornerRadius = 30
         tv.register(DiscountTableViewCell.self, forCellReuseIdentifier: "cell1")
         tv.register(PopularDealsTableViewCell.self,forCellReuseIdentifier: "cell2")
         tv.showsVerticalScrollIndicator = false
@@ -87,50 +75,25 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         return tv
     }()
     
-    private let searchView : UIView = {
-        let vw = UIView()
-        vw.backgroundColor = UIColor(named: "buttoncolor")
-        vw.layer.cornerRadius = 30
-        return vw
-    }()
-    
-    let searchCellCollectionVw: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        let fc = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        fc.register(ProductCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionCell1")
-        fc.backgroundColor = .white
-        fc.showsVerticalScrollIndicator = false
-        fc.layer.cornerRadius = 30
-        fc.bounces = false
-        return fc
-    }()
-    
     
     //Mark :- Lifecycle Method
     override func viewDidLoad() {
         super .viewDidLoad()
-        searchCellCollectionVw.delegate = self
-        searchCellCollectionVw.dataSource = self
+        
         searchTextField.delegate = self
         view.backgroundColor = UIColor(named: "mygreen")
         tblView.delegate = self
         tblView.dataSource = self
         configureUI()
         self.navigationController?.navigationBar.isHidden = true
-        searchView.isHidden = true
-        searchTextField.addTarget(self, action: #selector(textFieldEditingDidChange(_:)), for: UIControl.Event.editingChanged)
-        searchCellCollectionVw.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
-        isHidden = false
         tblView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom:UIScreen.main.bounds.height/896 * 60, right: 0)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(selectCartIndex), name: NSNotification.Name(rawValue: "selectIndex"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureProfilePicture()
-        if let searchViewVisible = isHidden , searchViewVisible{
-            productsMatchingWithSearch(searchedText: searchTextField.text)
-        }
         fetchDealsData()
         fetchCategoryData()
         fetchDiscountData()
@@ -149,28 +112,18 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         view.addSubview(hiLabel)
         hiLabel.anchor(top: view.topAnchor, left: view.leftAnchor, paddingTop: 60, paddingLeft: 30, height: 25)
         
-        view.addSubview(nameLabel)
-        nameLabel.anchor(top: view.topAnchor, left: hiLabel.rightAnchor,  paddingTop: 60, paddingLeft: 5, height: 25)
-        
         view.addSubview(searchFoodLabel)
         searchFoodLabel.anchor(top: hiLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 0, paddingLeft: 30, width: view.frame.width - 90, height: 25)
         
         view.addSubview(searchTextField)
-        searchTextField.anchor(top: searchFoodLabel.bottomAnchor, left: view.leftAnchor, paddingTop : 25, paddingLeft: 30, width: view.frame.width - 60, height: 55)
+        searchTextField.anchor(top: searchFoodLabel.bottomAnchor, left: view.leftAnchor, paddingTop : 15, paddingLeft: 30, width: view.frame.width - 60, height: 45)
+        searchTextField.attributedPlaceholder = NSAttributedString(string: "Search your daily grocery food...", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
         
         view.addSubview(tblView)
-        tblView.anchor(top: searchTextField.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
+        tblView.anchor(top: searchTextField.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
         tblView.separatorStyle = .none
         tblView.allowsSelection = false
         
-    }
-    
-    func configureSearchView(){
-        view.addSubview(searchView)
-        searchView.anchor(top: searchTextField.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0)
-        
-        searchView.addSubview(searchCellCollectionVw)
-        searchCellCollectionVw.anchor(top: self.searchView.topAnchor, left: self.searchView.leftAnchor,bottom: self.searchView.bottomAnchor, right: self.searchView.rightAnchor, paddingTop: 15, paddingLeft: 10,paddingBottom: 0, paddingRight: 10)
     }
     
     func configureProfilePicture(){
@@ -179,13 +132,12 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         db.collection("users").document(user.uid).getDocument { (document, error) in
             if let error = error {
                 print("profile picture error \(error.localizedDescription)")
-                self.nameLabel.isHidden = true
+                self.hiLabel.text = "Hey,"
                 self.imageView.image = UIImage(named: "profile")
             }else if let document = document, document.exists {
-                self.nameLabel.isHidden = false
                 let data =  document.data()
-                self.nameLabel.text = data?["name"] as? String
-                if let url = data?["url"] as? String {
+                if let name = data?["name"] as? String, let url = data?["url"] as? String {
+                    self.hiLabel.text = "Hey \(String(describing: name)),"
                     self.imageUrl = url
                 self.dataManager.getImageFrom(url: self.imageUrl, imageView: self.imageView)
                 }else{
@@ -195,33 +147,7 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         }
     }
     
-    func quantityChanged(cellIndex: Int?, quant: Double?, isQuantViewOpen: Bool?) {
-        searchedProduct[cellIndex!].isQuantityViewOpen = isQuantViewOpen!
-        searchedProduct[cellIndex!].quantity = quant!
-        if quant! > 0 && searchedProduct[cellIndex!].isAddedToCart == false{
-            AppSharedDataManager.shared.productAddedToCart.append(searchedProduct[cellIndex!])
-            searchedProduct[cellIndex!].isAddedToCart = true
-            NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
-        }else if quant! == 0 && searchedProduct[cellIndex!].isAddedToCart == true {
-            var index = 0
-            for products in AppSharedDataManager.shared.productAddedToCart {
-                if products.id == searchedProduct[cellIndex!].id {
-                    AppSharedDataManager.shared.productAddedToCart.remove(at: index)
-                    searchedProduct[cellIndex!].isAddedToCart = false
-                    NotificationCenter.default.post(name: NSNotification.Name("NumberOfProductsAddedToCart"), object: nil)
-                    return
-                }else{
-                    index = index + 1
-                }
-            }
-        }else if quant! > 0 && searchedProduct[cellIndex!].isAddedToCart == true {
-            for products in AppSharedDataManager.shared.productAddedToCart {
-                if products.id == searchedProduct[cellIndex!].id {
-                    products.quantity = quant!
-                }
-        }
-      }
-    }
+    
     
     //fetching categories data(First tbl cell)
     func fetchCategoryData(){
@@ -282,36 +208,6 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         }
     }
     
-    func productsMatchingWithSearch(searchedText : String?){
-        searchedProduct.removeAll()
-        let db = Firestore.firestore()
-        db.collection("products").whereField("search_keys", arrayContains: searchedText!).getDocuments() { [self] (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in querySnapshot!.documents {
-                    let newProduct = Product(data : document.data())
-                    if newProduct.active == true {
-                        self.searchedProduct.append(newProduct)
-                        self.searchCellCollectionVw.reloadData()
-                    }
-                }
-            }
-        }
-        db.collection("products").whereField("tags", arrayContains: searchedText!).getDocuments() { [self] (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in querySnapshot!.documents {
-                    let newProduct = Product(data : document.data())
-                    if newProduct.active == true {
-                        self.searchedProduct.append(newProduct)
-                        self.searchCellCollectionVw.reloadData()
-                    }
-                }
-            }
-        }
-    }
     
     
     //Mark :- action Method
@@ -320,48 +216,37 @@ class HomeViewController : UIViewController, UITableViewDelegate, PerformAction,
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let accountVC = storyboard.instantiateViewController(identifier: "AccountDetailViewController") as! AccountDetailViewController
         accountVC.modalPresentationStyle = .fullScreen
-        self.present(accountVC, animated: true, completion: nil)
+        self.present(accountVC, animated: false, completion: nil)
     }
     
     @objc func seeDetailView(){
         let categoryVC = CategoriesViewController()
         categoryVC.dataArray = sortedCategory
-        self.navigationController?.pushViewController(categoryVC, animated: true)
+        self.navigationController?.pushViewController(categoryVC, animated: false)
+    }
+    
+    @objc func selectCartIndex(){
+        self.tabBarController?.selectedIndex = 2
     }
     
     //Mark :- perform action delegate method
     func pushViewController(controller: UIViewController) {
-        self.navigationController?.pushViewController(controller, animated: true)
+        self.navigationController?.pushViewController(controller, animated: false)
     }
     
     func presentViewController(controller: UIViewController) {
-        self.present(controller, animated: true)
+        self.present(controller, animated: false)
     }
     
     //Mark :- searchTextField delegate method
-    @objc func textFieldEditingDidChange(_ textField: UITextField){
-        isHidden = true
-        if let text = textField.text {
-            if text.count > 0 {
-                searchCellCollectionVw.reloadData()
-                tblView.isHidden = true
-                searchView.isHidden = false
-                configureSearchView()
-                self.productsMatchingWithSearch(searchedText: text)
-            }else{
-                searchedProduct = []
-                searchCellCollectionVw.reloadData()
-                tblView.isHidden = false
-                searchView.isHidden = true
-                textField.endEditing(true)
-            }
-        }
-    }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.endEditing(true)
-        return true
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let searchVC = storyboard.instantiateViewController(identifier: "SearchViewController") as! SearchViewController
+        searchVC.modalPresentationStyle = .fullScreen
+        self.present(searchVC, animated: false, completion: nil)
     }
+
 }
 
 extension HomeViewController : UITableViewDataSource {
@@ -393,70 +278,13 @@ extension HomeViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0{
-            return UIScreen.main.bounds.height/896 * 440
+            return UIScreen.main.bounds.height/896 * 448
         }else if indexPath.row == 1{
             return 180
         }else{
             return 300
         }
         
-    }
-    
-}
-
-extension HomeViewController : UICollectionViewDelegate , UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if self.searchedProduct.count > 0{
-            return self.searchedProduct.count
-        }else{
-            return 0
-        }
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell1", for: indexPath) as? ProductCollectionViewCell else {return UICollectionViewCell()}
-        cell.delegate = self
-        cell.cellNumber = indexPath.row
-        cell.addHorizontalView()
-        if indexPath.row % 2 == 0{
-            cell.addVerticalView()
-            
-        }
-        cell.configureCellUI(product: searchedProduct[indexPath.row])
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let productDetailVC = storyboard.instantiateViewController(identifier: "ProductDetailViewController") as! ProductDetailViewController
-        productDetailVC.id  = searchedProduct[indexPath.row].id!
-        productDetailVC.product = searchedProduct[indexPath.row]
-        productDetailVC.modalPresentationStyle = .fullScreen
-        productDetailVC.tags = searchedProduct[indexPath.row].tags
-        self.present(productDetailVC, animated: true, completion: nil)
-    }
-    
-}
-
-extension HomeViewController : UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width/2, height: 300 )
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
     }
     
 }

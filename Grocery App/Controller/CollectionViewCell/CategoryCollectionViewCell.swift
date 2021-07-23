@@ -16,7 +16,6 @@ class CategoryCollectionViewCell : UICollectionViewCell {
      let cellImage : UIImageView = {
         let iv = UIImageView()
         iv.backgroundColor = UIColor(named: "cellgreen")
-        iv.layer.cornerRadius = 20
         iv.clipsToBounds = true
         iv.contentMode = .scaleAspectFill
         return iv
@@ -24,7 +23,7 @@ class CategoryCollectionViewCell : UICollectionViewCell {
     
     let cellLabel : UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.systemFont(ofSize: 15)
+        lbl.font = UIFont.systemFont(ofSize: 17)
         lbl.textColor = .black
         lbl.textAlignment = .center
         return lbl
@@ -36,10 +35,10 @@ class CategoryCollectionViewCell : UICollectionViewCell {
         contentView.addSubview(cellImage)
           
         addSubview(cellImage)
-        cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0, width: 110, height : 110)
+        cellImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0, width: 95, height : 120)
         
         contentView.addSubview(cellLabel)
-        cellLabel.anchor(top: cellImage.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 110, height: 25)
+        cellLabel.anchor(top: cellImage.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 95, height: 25)
         
     }
     

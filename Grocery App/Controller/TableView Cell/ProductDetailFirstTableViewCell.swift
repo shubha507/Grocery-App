@@ -15,7 +15,7 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
     
     private let addToCartButton : UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Add to Cart" , for: .normal)
+        button.setTitle("ADD TO CART" , for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor(named: "mygreen")
         button.layer.cornerRadius = 5
@@ -48,7 +48,7 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         contentView.addSubview(addToCartButton)
-        addToCartButton.anchor(top: perPeicePriceLabel.bottomAnchor, left: contentView.leftAnchor, bottom: contentView.bottomAnchor, right: contentView.rightAnchor, paddingTop: 30, paddingLeft: 108, paddingBottom: 24.5, paddingRight: 108)
+        addToCartButton.anchor(top: perPeicePriceLabel.bottomAnchor, left: contentView.leftAnchor, bottom: contentView.bottomAnchor, right: contentView.rightAnchor, paddingTop: 20, paddingLeft: 108, paddingBottom: 24.5, paddingRight: 108)
         addToCartButton.addTarget(self, action: #selector(addToCartButtonPressed), for: .touchUpInside)
     }
     
@@ -59,11 +59,11 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
     }
     
     @objc func addToCartButtonPressed(){
-        priceIntoQuantity.text = "₹\(Int(self.price ?? 0.0))/kg"
+        priceIntoQuantity.text = "Rs.\(Int(self.price ?? 0.0))"
         addToCartButton.isHidden = true
         quantityStackView.isHidden = false
         quantity = 1
-        quantityLabel.text = "\(Int(quantity!)) kg"
+        quantityLabel.text = "\(Int(quantity!))"
         delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: true)
     }
     
@@ -72,23 +72,23 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
         if quantity! > 1 {
             quantity = quantity! - 1
             quantityLabel.text = "\(Int(quantity!)) kg"
-            priceIntoQuantity.text = "₹\(Int((self.price ?? 0.0) * (quantity ?? 0.0)) )/kg"
+            priceIntoQuantity.text = "Rs.\(Int((self.price ?? 0.0) * (quantity ?? 0.0)) )"
 
             delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: true)
         }else if quantity! == 1{
             quantity = quantity! - 1
             addToCartButton.isHidden = false
             quantityStackView.isHidden = true
-            quantityLabel.text = "\(Int(quantity!)) kg"
-            priceIntoQuantity.text = "₹\(Int((self.price ?? 0.0) * (quantity ?? 0.0)) )/kg"
+            quantityLabel.text = "\(Int(quantity!))"
+            priceIntoQuantity.text = "Rs.\(Int((self.price ?? 0.0) * (quantity ?? 0.0)) )"
             delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: false)
         }
     }
     
     @IBAction func increaseQuantityPressed(_ sender: Any) {
         quantity = quantity! + 1
-        quantityLabel.text = "\(Int(quantity!)) kg"
-        priceIntoQuantity.text = "₹\(Int((self.price ?? 0.0) * (quantity ?? 0.0)) )/kg"
+        quantityLabel.text = "\(Int(quantity!))"
+        priceIntoQuantity.text = "Rs.\(Int((self.price ?? 0.0) * (quantity ?? 0.0)) )"
         delegate?.quantityChanged(cellIndex: nil, quant: quantity!, isQuantViewOpen: true)
     }
     
@@ -96,7 +96,7 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
         if let product = product {
         self.product = product
         nameLabel.text = product.name
-        quantityLabel.text = "\(Int(product.quantity)) kg"
+        quantityLabel.text = "\(Int(product.quantity))"
         quantity = product.quantity
         if product.isAddedToCart {
                 addToCartButton.isHidden = true
@@ -106,19 +106,19 @@ class ProductDetailFirstTableViewCell: UITableViewCell {
                 quantityStackView.isHidden = true
             }
         if let discount = product.discount , discount > 0 {
-            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "₹\(Int(product.price!))/kg")
+            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "Rs.\(Int(product.price!))")
                 attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: NSMakeRange(0, attributeString.length))
             perPeicePriceLabel.attributedText = attributeString
-            discountedPrice.text = "₹\(Int(product.price!-(product.price!*(product.discount!/100))))/kg"
+            discountedPrice.text = "Rs.\(Int(product.price!-(product.price!*(product.discount!/100))))"
             discountLbl.text = "\(Int(product.discount!))%off"
-            priceIntoQuantity.text = "₹\(Int(product.price!-(product.price!*(product.discount!/100))))/kg"
+            priceIntoQuantity.text = "Rs.\(Int(product.price!-(product.price!*(product.discount!/100))))"
             price = product.price!-(product.price!*(product.discount!/100))
         }else{
             discountLbl.isHidden = true
             discountedPrice.isHidden = true
-            perPeicePriceLabel.text = "₹\(Int(product.price!))/kg"
+            perPeicePriceLabel.text = "Rs.\(Int(product.price!))"
             perPeicePriceLabel.textColor = UIColor(named: "mygreen")
-            priceIntoQuantity.text = "₹\(Int(product.price! * product.quantity))/kg"
+            priceIntoQuantity.text = "Rs.\(Int(product.price! * product.quantity))"
             price = product.price!
         }
     }

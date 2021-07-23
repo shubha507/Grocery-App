@@ -29,7 +29,7 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
     }()
 
     @objc func showCategoryScreen(){
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: false)
     }
     
     let productCellCollectionVw: UICollectionView = {
@@ -48,7 +48,7 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
     private let productLabel : UILabel = {
         let lbl = UILabel()
         lbl.textColor = .white
-        lbl.font = UIFont.boldSystemFont(ofSize: 25)
+        lbl.font = UIFont(name: "PTSans-Bold", size: 30)
         lbl.textAlignment = .center
         return lbl
     }()
@@ -189,7 +189,6 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let productDetailVC = storyboard.instantiateViewController(identifier: "ProductDetailViewController") as! ProductDetailViewController
         // let productDetailVC = ProductDetailViewController()
@@ -197,7 +196,7 @@ class ProductsViewController : UIViewController,UICollectionViewDelegate, passQu
         productDetailVC.product = dataManager.productArray[indexPath.row]
         productDetailVC.modalPresentationStyle = .fullScreen
         productDetailVC.tags = dataManager.productArray[indexPath.row].tags
-            self.present(productDetailVC, animated: true, completion: nil)
+        self.present(productDetailVC, animated: false, completion: nil)
     }
 
 }

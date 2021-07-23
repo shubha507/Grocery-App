@@ -117,6 +117,11 @@ protocol filterSelected {
     func selectedFilterName(item: String)
 }
 
+protocol PerformAction {
+    func pushViewController(controller : UIViewController)
+    func presentViewController(controller : UIViewController)
+}
+
 class AppSharedDataManager{
     
  static let shared = AppSharedDataManager()

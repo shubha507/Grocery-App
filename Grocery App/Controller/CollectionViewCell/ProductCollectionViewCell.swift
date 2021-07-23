@@ -72,7 +72,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
     
     let nameLabel : UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 20)
+        lbl.font = UIFont(name: "PTSans-Bold", size: 20)
         lbl.textColor = .black
         lbl.textAlignment = .left
         lbl.numberOfLines = 0
@@ -89,7 +89,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
     
     let priceLabel : UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 20)
+        lbl.font = UIFont.systemFont(ofSize: 20)
         lbl.textColor = UIColor(named: "mygreen")
         lbl.textAlignment = .left
         return lbl
@@ -97,7 +97,7 @@ class ProductCollectionViewCell : UICollectionViewCell {
     
     let discountLabel : UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.systemFont(ofSize: 18)
+        lbl.font = UIFont.systemFont(ofSize: 16)
         lbl.textColor = .systemRed
         lbl.textAlignment = .left
         return lbl
@@ -217,13 +217,13 @@ class ProductCollectionViewCell : UICollectionViewCell {
             discountLabel.isHidden = false
             strikeOutPriceLabel.isHidden = false
        let exactPriceAfterDiscount = product.price!-(product.price!*(product.discount!/100))
-        priceLabel.text = "₹\(Int(exactPriceAfterDiscount))"
-        let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "₹\(Int(product.price!))")
+        priceLabel.text = "Rs.\(Int(exactPriceAfterDiscount))"
+        let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "Rs.\(Int(product.price!))")
             attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: NSMakeRange(0, attributeString.length))
         discountLabel.text = "\(Int(product.discount!))% off"
         strikeOutPriceLabel.attributedText = attributeString
         }else {
-            priceLabel.text = "₹\(Int(product.price!))"
+            priceLabel.text = "Rs.\(Int(product.price!))"
             discountLabel.isHidden = true
             strikeOutPriceLabel.isHidden = true
         }

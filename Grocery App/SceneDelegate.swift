@@ -22,20 +22,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
        
        guard let scene = (scene as? UIWindowScene) else { return }
               window = UIWindow(windowScene: scene)
-                let listenHandler = Auth.auth().addStateDidChangeListener { (auth, user) in
-                    if (user == nil)  {
+        if (Auth.auth().currentUser?.uid == nil) {
                         self.window?.rootViewController = LoginScreenController()
                     }
-                   // else{
-                      //      let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                      //      let tabBarController = storyboard.instantiateViewController(identifier: "CustomTabBarViewController") as? CustomTabBarViewController
-                      //     self.window?.rootViewController = tabBarController
-                      //  }
-               // }
                       else {
-                     //   let storyboard = UIStoryboard(name: "Admin", bundle: nil)
-                      //  let tabBarController = storyboard.instantiateViewController(identifier: "AdminTabBarController") as? UITabBarController
-                      //self.window?.rootViewController = tabBarController
+                        print("home screen")
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let launchScreenController = storyboard.instantiateViewController(identifier: "LaunchScreenViewController") as? LaunchScreenViewController
+                       self.window?.rootViewController = launchScreenController
                         var role : String?
                         let db = Firestore.firestore()
                         guard let user = Auth.auth().currentUser else {return}
@@ -55,18 +49,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                        self.window?.rootViewController = tabBarController
                                 }
                                 }
-                            
-                            
-                            
                             }
-                       
-                     
                       }
-                    }
-              }
-       // self.window?.rootViewController = tabBarController
-    // window?.makeKeyAndVisible()
-   // }
+     window?.makeKeyAndVisible()
+   }
     
 
     func sceneDidDisconnect(_ scene: UIScene) {

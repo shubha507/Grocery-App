@@ -56,7 +56,7 @@ class OrderDetailsViewController: UIViewController, UITableViewDelegate, UITable
     
         
     @IBAction func backButtonPressed(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
         
     }
     

@@ -32,11 +32,11 @@ class AddProductViewController: UIViewController, UITableViewDelegate, UITableVi
         imagecontroller.sourceType = UIImagePickerController.SourceType.photoLibrary
         
 
-        self.present(imagecontroller, animated: true, completion: nil)
+        self.present(imagecontroller, animated: false, completion: nil)
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         addProductImage.image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
     
     @IBOutlet weak var productImage: UIImageView!

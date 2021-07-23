@@ -16,16 +16,14 @@ class LoginScreenController: UIViewController,UITextFieldDelegate {
     private let containerView : UIView = {
         let vw = UIView()
         vw.backgroundColor = UIColor.white
-        vw.layer.cornerRadius = 30
-        vw.layer.maskedCorners = [.layerMaxXMinYCorner,.layerMinXMinYCorner]
         return vw
     }()
     
     private let continueWithPhoneLbl : UILabel = {
         let lbl = UILabel()
         lbl.text = "Continue With Phone"
-        lbl.font = UIFont.boldSystemFont(ofSize: UIScreen.main.bounds.width / 414 * 29)
         lbl.textColor = UIColor(named: "buttoncolor")
+        lbl.font = UIFont(name: "PTSans-Bold", size: UIScreen.main.bounds.width / 414 * 29 )
         return lbl
     }()
     
@@ -36,11 +34,11 @@ class LoginScreenController: UIViewController,UITextFieldDelegate {
     
     private let recieveCodeLabel : UILabel = {
         let lbl = UILabel()
-        lbl.text = "You'll receive a 6 digit code to verify next"
+        lbl.text = "You will receive a 6 digit code to verify next"
         lbl.numberOfLines = 2
-        lbl.font = UIFont.systemFont(ofSize: 20)
         lbl.textAlignment = .center
         lbl.textColor = .darkGray
+        lbl.font = UIFont(name: "PTSans-Regular", size: UIScreen.main.bounds.width / 414 * 25 )
         return lbl
     }()
     
@@ -48,9 +46,9 @@ class LoginScreenController: UIViewController,UITextFieldDelegate {
         let button = UIButton(type: .system)
         button.setTitle("Continue" , for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "PTSans-Bold", size: UIScreen.main.bounds.width / 414 * 25 )
         button.backgroundColor = UIColor(red: 0, green: 255/255, blue: 0, alpha: 0.2)
         button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.isUserInteractionEnabled = false
         button.layer.shadowOpacity = 1.0
         button.layer.shadowColor = UIColor.systemGray.cgColor
@@ -64,7 +62,8 @@ class LoginScreenController: UIViewController,UITextFieldDelegate {
     numField.borderStyle = .none
     numField.keyboardAppearance = .light
     numField.keyboardType = .phonePad
-    numField.font = UIFont.boldSystemFont(ofSize: 20)
+    numField.font = UIFont(name: "PTSans-Regular", size:UIScreen.main.bounds.width / 414 * 20 )
+    
     return numField
     }()
     
@@ -73,17 +72,18 @@ class LoginScreenController: UIViewController,UITextFieldDelegate {
         numField.backgroundColor = UIColor(white: 1, alpha: 0.1)
         numField.borderStyle = .none
         numField.textColor = .black
-        numField.font = UIFont.boldSystemFont(ofSize: 20)
+        numField.font = UIFont(name: "PTSans-Bold", size:UIScreen.main.bounds.width / 414 * 20 )
         numField.isUserInteractionEnabled = false
         return numField
     }()
     
     private let enterNumberLabel : UILabel = {
         let lbl = UILabel()
-        lbl.text = "Enter your phone"
+        lbl.text = "Enter your phone no.:"
         lbl.font = UIFont.systemFont(ofSize: 15)
+        lbl.font = UIFont(name: "PTSans-Regular", size:UIScreen.main.bounds.width / 414 * 20 )
         lbl.textAlignment = .left
-        lbl.textColor = .darkGray
+        lbl.textColor = .gray
         return lbl
     }()
     
@@ -218,8 +218,8 @@ class LoginScreenController: UIViewController,UITextFieldDelegate {
             UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
             let controller = VerificationScreenController()
             controller.modalPresentationStyle = .fullScreen
-            controller.mobNo = number
-            self.present(controller, animated: true,completion: nil)
+            controller.mobNo = "+91 \(phnNumber)"
+            self.present(controller, animated: false,completion: nil)
             }
        
         }

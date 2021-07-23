@@ -22,6 +22,7 @@ class OfferDetailTableViewHeader: UITableViewHeaderFooterView, UITextFieldDelega
         super.init(reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .white
         dropDown.anchorView = dropdownAnchorView
+        dropDown.backgroundColor = .white
         dropDown.dataSource = [ "Lowest Price", "Highest Price"]
         configureContents()
         
@@ -58,7 +59,6 @@ required init?(coder: NSCoder) {
     }
     
     @objc func showDropdown(){
-        filterTextField.text = ""
         dropDown.show()
     }
 }

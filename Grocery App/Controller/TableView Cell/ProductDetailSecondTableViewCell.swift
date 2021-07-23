@@ -28,7 +28,7 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
     let productDescriptionLabel : UILabel = {
         let pDL = UILabel()
         pDL.textColor = .white
-        pDL.font = UIFont.systemFont(ofSize: 21)
+        pDL.font = UIFont(name: "PTSans-Regular", size: 21)
         pDL.numberOfLines = 0
         pDL.textAlignment = .justified
         return pDL
@@ -59,7 +59,7 @@ class ProductDetailSecondTableViewCell: UITableViewCell, UITableViewDelegate, UI
     curvedView.layer.masksToBounds = true
     
     curvedView.addSubview(productDescriptionLabel)
-    productDescriptionLabel.anchor(top: curvedView.topAnchor, left: curvedView.leftAnchor,bottom: curvedView.bottomAnchor, right: curvedView.rightAnchor, paddingTop: 25, paddingLeft: 15,paddingBottom: 25, paddingRight: 15)
+    productDescriptionLabel.anchor(top: curvedView.topAnchor, left: curvedView.leftAnchor,bottom: curvedView.bottomAnchor, right: curvedView.rightAnchor, paddingTop: 20, paddingLeft: 15,paddingBottom: 20, paddingRight: 15)
     
     curvedView.addSubview(productReviewTableView)
     productReviewTableView.anchor(top: curvedView.topAnchor, left: curvedView.leftAnchor, bottom: curvedView.bottomAnchor, right: curvedView.rightAnchor, paddingTop: 25, paddingLeft: 15, paddingBottom: 25, paddingRight: 15)

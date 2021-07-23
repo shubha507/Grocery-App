@@ -88,7 +88,7 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
             checkoutButtonView.isHidden = false
             noProductInCartView.isHidden = true
             backViewInCart.backgroundColor = UIColor(named: "buttoncolor")
-            totalLabel.text = "₹\(totalPriceInCart()!)"
+            totalLabel.text = "Rs.\(totalPriceInCart()!)"
         cartTblView.reloadData()
         }else{
             cartTblView.isHidden = true
@@ -145,13 +145,13 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
         if quant! > 0 {
             AppSharedDataManager.shared.productAddedToCart[cellIndex!].quantity = quant!
             cartTblView.reloadData()
-            totalLabel.text = "₹\(totalPriceInCart()!)"
+            totalLabel.text = "Rs.\(totalPriceInCart()!)"
         }else{
             AppSharedDataManager.shared.productAddedToCart[cellIndex!].quantity = quant!
             AppSharedDataManager.shared.productAddedToCart[cellIndex!].isAddedToCart = false
             AppSharedDataManager.shared.productAddedToCart[cellIndex!].isQuantityViewOpen = false
             AppSharedDataManager.shared.productAddedToCart.remove(at: cellIndex!)
-            totalLabel.text = "₹\(totalPriceInCart()!)"
+            totalLabel.text = "Rs.\(totalPriceInCart()!)"
             if AppSharedDataManager.shared.productAddedToCart.count == 0 {
                 self.cartTblView.isHidden = true
                 self.checkoutButtonView.isHidden = true
@@ -254,7 +254,7 @@ class CartViewController : UIViewController, UITableViewDelegate, UITableViewDat
                 let orderDetailVC = storyboard.instantiateViewController(withIdentifier: "OrderDetailsViewController") as! OrderDetailsViewController
                 orderDetailVC.modalPresentationStyle = .fullScreen
                 orderDetailVC.index = 0
-                self.present(orderDetailVC, animated: true) {
+                self.present(orderDetailVC, animated: false) {
                     self.tabBarController?.selectedIndex = 1
                 }            }
         }

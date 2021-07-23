@@ -19,8 +19,7 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
     
     private let contentView : UIView = {
         let vw = UIView()
-        vw.layer.cornerRadius = 30
-        vw.layer.maskedCorners = [.layerMaxXMinYCorner,.layerMinXMinYCorner]
+
         vw.backgroundColor = UIColor(named: "buttoncolor")
         return vw
     }()
@@ -41,24 +40,24 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
     @objc func showLoginScreen(){
         let controller = LoginScreenController()
         controller.modalPresentationStyle = .fullScreen
-        self.present(controller, animated: true, completion: nil)
+        self.present(controller, animated: false, completion: nil)
     }
     
     
     private let verifyPhoneLbl : UILabel = {
         let lbl = UILabel()
         lbl.text = "Verify Phone"
-        lbl.font = UIFont.boldSystemFont(ofSize: UIScreen.main.bounds.width / 414 * 29)
+        lbl.font = UIFont(name: "PTSans-Bold",size: UIScreen.main.bounds.width / 414 * 29)
         lbl.textColor = .white
         return lbl
     }()
     
     private let codeSentLbl : UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.boldSystemFont(ofSize: 20)
+        lbl.font = UIFont(name: "PTSans-Regular", size: UIScreen.main.bounds.width / 414 * 18)
         lbl.textAlignment = .center
         lbl.textColor = .darkGray
-        
+        lbl.numberOfLines = 0
         return lbl
     }()
     
@@ -74,11 +73,14 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
         
         let button = UIButton(type: .system)
         
-        let atts: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 16)]
-        let attributedTitle = NSMutableAttributedString(string: "Didn't recieve code?", attributes: atts)
+        let atts: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.gray, .font: UIFont(name: "PTSans-Regular", size: 20)]
+        let attributedTitle = NSMutableAttributedString(string: "Didn't recieve code? ", attributes: atts)
 
-        let boldAtts: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.black, .font: UIFont.systemFont(ofSize: 16)]
-        attributedTitle.append(NSAttributedString(string: " Request again", attributes: boldAtts))
+        let boldAtts: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.blue, .font: UIFont(name: "PTSans-Regular", size: 20)]
+        let attributedRequestTitle = NSMutableAttributedString(string: "Request again", attributes: boldAtts)
+        attributedRequestTitle.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSMakeRange(0, attributedRequestTitle.length))
+        attributedTitle.append(attributedRequestTitle)
+        
 
         button.setAttributedTitle(attributedTitle, for: .normal)
         button.addTarget(self, action: #selector(sendOTPAgain), for: .touchUpInside)
@@ -99,11 +101,11 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
     
     private let verifyButton : UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Verify and Create Account" , for: .normal)
+        button.setTitle("Verify and Proceed" , for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor(red: 0, green: 255/255, blue: 0, alpha: 0.2)
         button.layer.cornerRadius = 20
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        button.titleLabel?.font = UIFont(name: "PTSans-Bold", size: 23)
         button.isUserInteractionEnabled = false
         button.layer.shadowOpacity = 1.0
         button.layer.shadowColor = UIColor.systemGray.cgColor
@@ -135,7 +137,15 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
         view.backgroundColor = UIColor(named: "mygreen")
         configureUI()
     
+    let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+           tap.cancelsTouchesInView = false
+           self.view.addGestureRecognizer(tap)
+    
  }
+    
+    @objc func dismissKeyboard(){
+            self.view.endEditing(true)
+        }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -157,9 +167,10 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
     
     contentView.addSubview(codeSentLbl)
         codeSentLbl.centerX(inView: contentView)
+    codeSentLbl.setWidth(UIScreen.main.bounds.width/414 * 400)
         codeSentLbl.anchor(top:contentView.topAnchor, paddingTop: 50)
         if let mobNo = mobNo {
-            codeSentLbl.text = "Code is sent to \(mobNo.suffix(10))"
+            codeSentLbl.text = "Verification code is sent to \(mobNo)"
         }
     setupStack()
         
@@ -169,7 +180,7 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
         
     contentView.addSubview(verifyButton)
         verifyButton.setDimensions(height: 50, width: view.frame.width - 30)
-        verifyButton.anchor(top : getCallButton.bottomAnchor, left : view.leftAnchor,right : view.rightAnchor, paddingTop: 10 , paddingLeft: 15, paddingRight: 15)
+        verifyButton.anchor(top : getCallButton.bottomAnchor, left : view.leftAnchor,right : view.rightAnchor, paddingTop: 2 , paddingLeft: 15, paddingRight: 15)
 
     }
     
@@ -181,147 +192,107 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
         
 
         contentView.addSubview(stack)
-        stack.anchor(top : codeSentLbl.bottomAnchor ,  paddingTop: UIScreen.main.bounds.height / 10.5)
+        stack.anchor(top : codeSentLbl.bottomAnchor ,  paddingTop: UIScreen.main.bounds.height/896 * 50)
         stack.centerX(inView: view)
         
         contentView.addSubview(dontRecieveCodeButton)
         dontRecieveCodeButton.centerX(inView: view)
-        dontRecieveCodeButton.anchor(top : stack.bottomAnchor, paddingTop: 20)
+        dontRecieveCodeButton.anchor(top : stack.bottomAnchor, paddingTop: UIScreen.main.bounds.height/896 * 45)
     }
+    
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        if string.count == 1 {
+        if range.length == 0{
             print(string)
                     switch textField {
 
                     case firstNumberTxtField:
-                        firstNumberTxtField.text = "\(string) "
-                        firstNumberTxtField.resignFirstResponder()
+                        firstNumberTxtField.text = "\(string)"
                         secondNumberTxtField.becomeFirstResponder()
                         break
 
                     case secondNumberTxtField:
-                        secondNumberTxtField.text = "\(string) "
-                        secondNumberTxtField.resignFirstResponder()
+                        secondNumberTxtField.text = "\(string)"
                         thirdNumberTxtField.becomeFirstResponder()
                         break
 
                     case thirdNumberTxtField:
-                        thirdNumberTxtField.text = "\(string) "
-                        thirdNumberTxtField.resignFirstResponder()
+                        thirdNumberTxtField.text = "\(string)"
                         fourthNumberTxtField.becomeFirstResponder()
                         break
 
                     case fourthNumberTxtField:
-                        fourthNumberTxtField.text = "\(string) "
-                        fourthNumberTxtField.resignFirstResponder()
+                        fourthNumberTxtField.text = "\(string)"
                         fifthNumberTxtField.becomeFirstResponder()
                         break
 
                     case fifthNumberTxtField:
-                        fifthNumberTxtField.text = "\(string) "
-                        fifthNumberTxtField.resignFirstResponder()
+                        fifthNumberTxtField.text = "\(string)"
                         sixthNumberTxtField.becomeFirstResponder()
                         break
-
+ 
                     case sixthNumberTxtField:
-                        sixthNumberTxtField.text = "\(string) "
+                        sixthNumberTxtField.text = "\(string)"
                         sixthNumberTxtField.resignFirstResponder()
                         sixthNumberTxtField.endEditing(true)
+                        break
+
 
                     default:
                         break
                     }
-            return true
-        } else {
-            switch textField{
-                       case sixthNumberTxtField:
-                        sixthNumberTxtField.text = ""
-                        sixthNumberTxtField.resignFirstResponder()
-                        fifthNumberTxtField.becomeFirstResponder()
-                           break
-
-
-
-                       case fifthNumberTxtField:
-                        fifthNumberTxtField.text = ""
-                           fifthNumberTxtField.resignFirstResponder()
-                           fourthNumberTxtField.becomeFirstResponder()
-                           break
-
-
-                       case fourthNumberTxtField:
-                        fourthNumberTxtField.text = ""
-                        fourthNumberTxtField.resignFirstResponder()
-                           thirdNumberTxtField.becomeFirstResponder()
-                           break
-
-
-                       case thirdNumberTxtField:
-                        thirdNumberTxtField.text = ""
-                        thirdNumberTxtField.resignFirstResponder()
-                          secondNumberTxtField.becomeFirstResponder()
-                           break
-
-
-                       case secondNumberTxtField:
-                        secondNumberTxtField.text = ""
-                        secondNumberTxtField.resignFirstResponder()
-                           firstNumberTxtField.becomeFirstResponder()
-                           break
-
-                        case  firstNumberTxtField:
-                            firstNumberTxtField.text = ""
-
-                       default:
-                           break
-                }
             return false
-            }
-        
+        }else if (range.length == 1){
+            print("range.length \(range.length)")
+            textField.text = ""
+            return false
+        }
+        return true
     }
     
-    func didPressBackspace(textField: CustomTextField) {
+   func didPressBackspace(textField: CustomTextField) {
+    print("back \(textField.text?.count)")
+    if textField.text?.utf8.count == 0 {
         switch textField {
         case sixthNumberTxtField:
-         sixthNumberTxtField.resignFirstResponder()
          fifthNumberTxtField.becomeFirstResponder()
+            fifthNumberTxtField.text = ""
             break
 
 
 
         case fifthNumberTxtField:
-            fifthNumberTxtField.resignFirstResponder()
             fourthNumberTxtField.becomeFirstResponder()
+            fourthNumberTxtField.text = ""
             break
 
 
         case fourthNumberTxtField:
-         fourthNumberTxtField.resignFirstResponder()
             thirdNumberTxtField.becomeFirstResponder()
+            thirdNumberTxtField.text = ""
             break
 
 
         case thirdNumberTxtField:
-         thirdNumberTxtField.resignFirstResponder()
            secondNumberTxtField.becomeFirstResponder()
+            secondNumberTxtField.text = ""
             break
 
 
         case secondNumberTxtField:
-         secondNumberTxtField.resignFirstResponder()
             firstNumberTxtField.becomeFirstResponder()
+            firstNumberTxtField.text = ""
             break
 
-         case  firstNumberTxtField:
-             break
-            
         default:
             break
  }
+    }
 }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+        print("\(firstNumberTxtField.text!)\(secondNumberTxtField.text!)\(thirdNumberTxtField.text!)\(fourthNumberTxtField.text!)\(fifthNumberTxtField.text!)\(sixthNumberTxtField.text!)")
         if let text1 = firstNumberTxtField.text, let text2 = secondNumberTxtField.text, let text3 = thirdNumberTxtField.text, let  text4 = fourthNumberTxtField.text, let text5 = fifthNumberTxtField.text ,let text6 = sixthNumberTxtField.text, !text1.trimmingCharacters(in: .whitespaces).isEmpty && !text2.trimmingCharacters(in: .whitespaces).isEmpty && !text3.trimmingCharacters(in: .whitespaces).isEmpty && !text4.trimmingCharacters(in: .whitespaces).isEmpty && !text5.trimmingCharacters(in: .whitespaces).isEmpty && !text6.trimmingCharacters(in: .whitespaces).isEmpty {
             verifyButton.backgroundColor = UIColor(named: "mygreen")
             verifyButton.isUserInteractionEnabled = true
@@ -339,7 +310,7 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
         let otpText = "\(firstNumberTxtField.text!)\(secondNumberTxtField.text!)\(thirdNumberTxtField.text!)\(fourthNumberTxtField.text!)\(fifthNumberTxtField.text!)\(sixthNumberTxtField.text!)"
         let otp = otpText.replacingOccurrences(of: " ", with: "")
         print(otp)
-        let verificationID = UserDefaults.standard.string(forKey: "authVerificationID") as! String
+        let verificationID = UserDefaults.standard.string(forKey: "authVerificationID")!
         
         let credential = PhoneAuthProvider.provider().credential(
             withVerificationID: verificationID,
@@ -351,12 +322,20 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
             loadingIndicator.startAnimating();
 
         signinAlert.view.addSubview(loadingIndicator)
-            self.present(signinAlert, animated: true)
+            self.present(signinAlert, animated: false)
         
         Auth.auth().signIn(with: credential) { (authResult, error) in
             if let error = error {
                 if error.localizedDescription == "The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code SMS and be sure to use the verification code provided by the user." {
             self.signinAlert.dismiss(animated: true) {
+                
+                self.firstNumberTxtField.text = ""
+                self.secondNumberTxtField.text = ""
+                self.thirdNumberTxtField.text = ""
+                self.fourthNumberTxtField.text = ""
+                self.fifthNumberTxtField.text = ""
+                self.sixthNumberTxtField.text = ""
+
                 let alert  = UIAlertController(title: "Incorrect Otp Entered", message: nil, preferredStyle: .alert)
                 
                 let actionOk = UIAlertAction(title: "Ok", style: .default) { (action) in
@@ -384,10 +363,15 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
                     }
                 }
           }else{
-            if let mobNo = self.mobNo {
+            self.signinAlert.dismiss(animated: true)
+            if let mobNo = self.mobNo?.trimmingCharacters(in: .whitespaces) {
             AppSharedDataManager.shared.phnNo = mobNo
-            }
-            self.present(HomeViewController(), animated: true, completion: nil)
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                      let tabBarController = storyboard.instantiateViewController(identifier: "CustomTabBarViewController") as? CustomTabBarViewController
+                tabBarController?.modalPresentationStyle = .fullScreen
+                self.present(tabBarController!, animated: false, completion: nil)
+            
+           }
           }
     }
     }
@@ -399,7 +383,7 @@ class VerificationScreenController : UIViewController,CustomTexFieldDelegate {
         fourthNumberTxtField.text = ""
         fifthNumberTxtField.text = ""
         sixthNumberTxtField.text = ""
-        dataManager.requestOTPAgain(number: mobNo)
+        dataManager.requestOTPAgain(number: mobNo?.trimmingCharacters(in: .whitespaces))
     }
 }
 

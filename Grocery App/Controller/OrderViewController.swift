@@ -109,7 +109,7 @@ class OrderViewController : UIViewController, UICollectionViewDelegate, UICollec
         }else if indexPath.row == 6 {
             fetchOrder(status: "declined")
         }
-        orderStatusCollectionView.scrollToItem(at: IndexPath(item: index ?? 0, section: 0), at: .centeredHorizontally, animated: true)
+        orderStatusCollectionView.scrollToItem(at: IndexPath(item: index ?? 0, section: 0), at: .centeredHorizontally, animated: false)
         orderStatusCollectionView.reloadData()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.orderStatusCollectionView.contentOffset.x = self.currentOffset ?? 0
@@ -197,7 +197,7 @@ extension OrderViewController : UITableViewDelegate, UITableViewDataSource {
         let orderDetailVC = storyboard.instantiateViewController(withIdentifier: "OrderDetailsViewController") as! OrderDetailsViewController
         orderDetailVC.index = indexPath.row
         orderDetailVC.modalPresentationStyle = .fullScreen
-        self.present(orderDetailVC, animated: true, completion: nil)
+        self.present(orderDetailVC, animated: false, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -69,8 +69,8 @@ class CartTableViewCell: UITableViewCell {
         productQuantityLabel.text = "\(Int(product.quantity))"
         dataManager.getImageFrom(url: product.url!, imageView: productImageView)
         if let discount = product.discount {
-            discountedPriceLabel.text = "₹\(Int(product.price!-(product.price!*(product.discount!/100))))"
-            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "₹\(Int(product.price!))")
+            discountedPriceLabel.text = "Rs.\(Int(product.price!-(product.price!*(product.discount!/100))))"
+            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "Rs.\(Int(product.price!))")
                 attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: NSMakeRange(0, attributeString.length))
             priceLabel.attributedText = attributeString
         }

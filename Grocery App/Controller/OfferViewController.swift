@@ -62,7 +62,7 @@ class OfferViewController : UIViewController,UITableViewDelegate,UITableViewData
         offerDetailController.modalPresentationStyle = .fullScreen
         offerDetailController.titl = discountArray[indexPath.row].offerTitle!
         offerDetailController.discount = discountArray[indexPath.row].discount!
-        self.present(offerDetailController, animated: true, completion: nil)
+        self.present(offerDetailController, animated: false, completion: nil)
     }
     
 }

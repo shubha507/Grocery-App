@@ -74,7 +74,7 @@ class OfferDiscountDetailViewController: UIViewController,filterSelected {
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
     
 }
@@ -88,7 +88,7 @@ extension OfferDiscountDetailViewController : UITableViewDelegate {
         productDetailVC.product = discountProductArray[indexPath.row]
         productDetailVC.modalPresentationStyle = .fullScreen
         productDetailVC.tags = discountProductArray[indexPath.row].tags
-        self.present(productDetailVC, animated: true, completion: nil)
+        self.present(productDetailVC, animated: false, completion: nil)
     }
 }
 
