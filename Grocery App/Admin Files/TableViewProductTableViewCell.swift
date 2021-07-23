@@ -32,9 +32,17 @@ class TableViewProductTableViewCell: UITableViewCell {
         tableViewInnerView.layer.borderWidth = 0.0
         tableViewInnerView.layer.shadowColor = UIColor.black.cgColor
         tableViewInnerView.layer.shadowOffset = CGSize(width: 0, height: 0)
-        tableViewInnerView.layer.shadowRadius = 5.0
-        tableViewInnerView.layer.shadowOpacity = 0.4
+        tableViewInnerView.layer.shadowRadius = 4.0
+        tableViewInnerView.layer.shadowOpacity = 0.3
         tableViewInnerView.layer.masksToBounds = false
+        tableProductName.font = UIFont(name: "PTSans-Regular.ttf", size: 16)
+
+        tableProductDescription.font = UIFont(name: "PTSans-Regular.ttf", size: 15)
+
+        tableProductPrice.font = UIFont(name: "PTSans-Regular.ttf", size: 15)
+
+        tableProductDiscountPrice.font = UIFont(name: "PTSans-Regular.ttf", size: 15)
+
         
     }
     

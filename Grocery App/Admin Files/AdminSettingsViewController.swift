@@ -45,7 +45,9 @@ class AdminSettingsViewController: UIViewController, UITextFieldDelegate {
          if let document = document, document.exists {
              let data =  document.data()
            print("user data is:" , data)
+            print("url is:" , data?["url"] ?? "")
             self.dataManager.getImageFrom(url: "\(data?["url"] ?? "")", imageView: self.profileImage )
+            
             self.profileNumberTextField.text = data?["phone"] as? String ?? ""
             self.profileNameTextField.text = data?["name"] as? String ?? ""
             self.profileAddressTextField.text = data?["address"] as? String ?? ""

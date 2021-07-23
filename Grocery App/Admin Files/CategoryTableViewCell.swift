@@ -16,4 +16,17 @@ class CategoryTableViewCell: UITableViewCell {
     @IBOutlet weak var categoryNameLabel: UILabel!
     @IBOutlet weak var categoryPriceLabel: UILabel!
     @IBOutlet weak var editCategoryTableView: UIButton!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        
+      //  tableProductImage.layer.cornerRadius = tableProductImage.frame.size.height/2
+        
+        categoryNameLabel.font = UIFont(name: "PTSans-Regular.ttf", size: 17)
+        categoryPriceLabel.font = UIFont(name: "PTSans-Regular.ttf", size: 17)
+        
+
+        
+        
+    }
 }

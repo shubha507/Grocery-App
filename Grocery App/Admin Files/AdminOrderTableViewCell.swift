@@ -42,9 +42,19 @@ class AdminOrderTableViewCell: UITableViewCell {
         orderTableViewInnerView.layer.borderWidth = 0.0
         orderTableViewInnerView.layer.shadowColor = UIColor.black.cgColor
         orderTableViewInnerView.layer.shadowOffset = CGSize(width: 0, height: 0)
-        orderTableViewInnerView.layer.shadowRadius = 5.0
-        orderTableViewInnerView.layer.shadowOpacity = 0.4
+        orderTableViewInnerView.layer.shadowRadius = 4.0
+        orderTableViewInnerView.layer.shadowOpacity = 0.5
         orderTableViewInnerView.layer.masksToBounds = false
+        orderDateLabel.font = UIFont(name: "PTSans-Regular.ttf", size: 12)
+
+        orderNameLabel.font = UIFont(name: "PTSans-Regular.ttf", size: 18)
+
+        orderItemsLabel.font = UIFont(name: "PTSans-Regular.ttf", size: 17)
+
+        orderStatusLabel.font = UIFont(name: "PTSans-Regular.ttf", size: 15)
+        orderAddressLabel.font = UIFont(name: "PTSans-Regular.ttf", size: 15)
+
+
         
     }
 }

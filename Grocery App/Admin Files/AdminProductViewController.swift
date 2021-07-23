@@ -23,9 +23,9 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
     let searchController = UISearchController(searchResultsController: nil)
     private var product = [Product]()
     var categoryDropDown = [Categories]()
-    let transparentView = UIView()
-    let tableView = UITableView()
-    let alertView = UIView()
+  //  let transparentView = UIView()
+  //  let tableView = UITableView()
+  //  let alertView = UIView()
    
     
   
@@ -64,7 +64,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
             //self.tableView.reloadData()
             self.dictCat.append(row1)
             self.dictCat.append(row2)
-            self.tableView.reloadData()
+           // self.tableView.reloadData()
            
         }
     }
@@ -76,7 +76,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
     
-       
+        //productTableView.isUserInteractionEnabled = false
             
         
         
@@ -100,11 +100,11 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
        // searchController.isActive = false
         
         self.productTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-     
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(CellClass.self, forCellReuseIdentifier: "Productcell1")
-       
+//
+//        tableView.delegate = self
+//        tableView.dataSource = self
+//        tableView.register(CellClass.self, forCellReuseIdentifier: "Productcell1")
+//
         fetchData()
         fetchCategory()
         
@@ -119,74 +119,74 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
        // searchController.hidesNavigationBarDuringPresentation = false
         //searchController.isActive = false
     }
-    let label = UILabel()
-    let clearButton = UIButton()
+//    let label = UILabel()
+//    let clearButton = UIButton()
+//
+//
+//    func addalertView()
+//    {
+//        let window = UIApplication.shared.keyWindow
+//        alertView.frame = window?.frame ??  self.view.frame
+//        self.view.addSubview(alertView)
+//
+//        label.frame = CGRect(x: 120, y: 350 , width: 300, height: 40)
+//        self.view.addSubview(label)
+//        label.text = "No Products Found....."
+//
+//    }
+//    func removeAlertView()
+//    {
+//
+//        label.frame = CGRect(x: 0, y: 0 , width: 0, height: 0)
+//
+//            }
+//    func addTranparentView(frames: CGRect) {
+//        let window = UIApplication.shared.keyWindow
+//        transparentView.frame = window?.frame ??  self.view.frame
+//        self.view.addSubview(transparentView)
+//        tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y , width: frames.width, height: 0)
+//        self.view.addSubview(tableView)
+//        categoryDict = dictCat
+//        clearButton.frame = CGRect(x: 270, y: CGFloat( (self.categoryDict[0].count  ) * 50) , width: 100, height: 50)
+//        tableView.layer.cornerRadius = 5
+//
+//        clearButton.setTitle("Clear", for: .normal)
+//        clearButton.tintColor = UIColor.systemGreen
+//        clearButton.setTitleColor(UIColor.systemGreen, for: .normal)
+//        clearButton.layer.borderColor = UIColor.black.cgColor
+//        self.tableView.addSubview(clearButton)
+//        clearButton.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
+//        transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
+//       // let tapgesture = UITapGestureRecognizer(target: self, action: #selector(removeTranparentView))
+//        //transparentView.addGestureRecognizer(tapgesture)
+//        transparentView.alpha = 0
+//        UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
+//
+//            self.tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y , width: frames.width, height: CGFloat( (self.categoryDict[0].count + 3 ) * 50))
+//            self.transparentView.alpha = 0.5
+//        }, completion: nil)
+//    }
     
+//    @objc func clearButtonTapped()
+//    {
+//        fetchData()
+//       // tableView.backgroundColor = UIColor.white
+//        removeTranparentView()
+//        removeAlertView()
+//        tableView.layer.backgroundColor = UIColor.white.cgColor
+//        tableView.reloadData()
+//
+//    }
     
-    func addalertView()
-    {
-        let window = UIApplication.shared.keyWindow
-        alertView.frame = window?.frame ??  self.view.frame
-        self.view.addSubview(alertView)
-        
-        label.frame = CGRect(x: 120, y: 350 , width: 300, height: 40)
-        self.view.addSubview(label)
-        label.text = "No Products Found....."
-        
-    }
-    func removeAlertView()
-    {
-        
-        label.frame = CGRect(x: 0, y: 0 , width: 0, height: 0)
-      
-            }
-    func addTranparentView(frames: CGRect) {
-        let window = UIApplication.shared.keyWindow
-        transparentView.frame = window?.frame ??  self.view.frame
-        self.view.addSubview(transparentView)
-        tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y , width: frames.width, height: 0)
-        self.view.addSubview(tableView)
-        categoryDict = dictCat
-        clearButton.frame = CGRect(x: 270, y: CGFloat( (self.categoryDict[0].count  ) * 50) , width: 100, height: 50)
-        tableView.layer.cornerRadius = 5
-       
-        clearButton.setTitle("Clear", for: .normal)
-        clearButton.tintColor = UIColor.systemGreen
-        clearButton.setTitleColor(UIColor.systemGreen, for: .normal)
-        clearButton.layer.borderColor = UIColor.black.cgColor
-        self.tableView.addSubview(clearButton)
-        clearButton.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
-        transparentView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
-        let tapgesture = UITapGestureRecognizer(target: self, action: #selector(removeTranparentView))
-        transparentView.addGestureRecognizer(tapgesture)
-        transparentView.alpha = 0
-        UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
-            
-            self.tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y , width: frames.width, height: CGFloat( (self.categoryDict[0].count + 3 ) * 50))
-            self.transparentView.alpha = 0.5
-        }, completion: nil)
-    }
-    
-    @objc func clearButtonTapped()
-    {
-        fetchData()
-       // tableView.backgroundColor = UIColor.white
-        removeTranparentView()
-        removeAlertView()
-        tableView.layer.backgroundColor = UIColor.white.cgColor
-        tableView.reloadData()
-        
-    }
-    
-    @objc func removeTranparentView() {
-        let frames = view.frame
-        UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
-            self.tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y , width: frames.width, height: 0)
-            self.transparentView.alpha = 0
-           
-        }, completion: nil)
-       // tableView.backgroundColor = UIColor.white
-    }
+//    @objc func removeTranparentView() {
+//        let frames = view.frame
+//        UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
+//            self.tableView.frame = CGRect(x: frames.origin.x, y: frames.origin.y , width: frames.width, height: 0)
+//            self.transparentView.alpha = 0
+//
+//        }, completion: nil)
+//       // tableView.backgroundColor = UIColor.white
+//    }
     private var sortedDict = [Dict]()
     var arrayCategories = [String]()
     struct Dict {
@@ -203,7 +203,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
                print("Error getting documents: \(err)")
            } else {
             
-            
+            self.stringTags = []
             self.product = []
                for document in querySnapshot!.documents {
                 print("\(document.documentID) => \(document.data()["price"] as! Double)")
@@ -304,17 +304,17 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == self.productTableView
-        {
+//        if tableView == self.productTableView
+//        {
             
             return product.count
-        }
-        else if tableView == self.tableView
-        {
-         
-        return dictCat[0].count + 1
-        }
-        return 2
+//        }
+//        else if tableView == self.tableView
+//        {
+//
+//        return dictCat[0].count + 1
+//        }
+//        return 2
     }
     func strikeThrough() -> NSAttributedString {
         let attributeString =  NSMutableAttributedString()
@@ -325,8 +325,8 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
         return attributeString
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            if tableView == self.productTableView
-            {
+//            if tableView == self.productTableView
+//            {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCellProduct", for: indexPath) as! TableViewProductTableViewCell
                cell.tableProductName.text = "\(product[indexPath.row].name!)"
@@ -364,84 +364,87 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
                 cell.tableEditButton.addTarget(self, action: #selector(editProductClicked(_:)), for: .touchUpInside)
                 return cell
                 
-            }
-            else if tableView == self.tableView
-            {
-       
-                let cellP = tableView.dequeueReusableCell(withIdentifier: "Productcell1", for: indexPath)
-            if indexPath.row < categoryDict[0].count {
-            cellP.textLabel?.text = categoryDict[0][indexPath.row]
-                
-            }
-            else if indexPath.row == categoryDict[0].count {
-                cellP.textLabel?.text = ""
-                
-               
-            }
-                
-            return cellP
-            }
-            return UITableViewCell()
+//            }
+//            else if tableView == self.tableView
+//            {
+//
+//                let cellP = tableView.dequeueReusableCell(withIdentifier: "Productcell1", for: indexPath)
+//            if indexPath.row < categoryDict[0].count {
+//            cellP.textLabel?.text = categoryDict[0][indexPath.row]
+//
+//            }
+//            else if indexPath.row == categoryDict[0].count {
+//                cellP.textLabel?.text = ""
+//
+//
+//            }
+//
+//            return cellP
+//            }
+//            return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if tableView == self.productTableView
-     {
+//        if tableView == self.productTableView
+//     {
         return 130
         
-     }
-     else if tableView == self.tableView
-     {
-        return 50
-    }
-        return 10
+//     }
+//     else if tableView == self.tableView
+//     {
+//        return 50
+//    }
+//        return 10
     }
     
     var i = 0
     var categoryUid: String = ""
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        categoryUid = categoryDict[1][indexPath.row]
-        print(categoryUid)
-        let db = Firestore.firestore()
-        db.collection("products").getDocuments() { (querySnapshot, err) in
-        if let err = err {
-            print("Error getting documents: \(err)")
-        } else {
-            self.product = []
-            for document in querySnapshot!.documents {
-                             
-             
-                var catId: String = ""
-              
-                catId = document.get("category_id") as! String
-                
-                print("cat id:" , document.get("category_id") ?? "")
-                if self.categoryUid == catId {
-                    self.removeAlertView()
-                    let newProduct = Product(data: document.data())
-                    print(" price:" , newProduct.price ?? 0 )
-                    self.stringTags = newProduct.tags ?? []
-             self.product.append(newProduct)
-                    self.i = self.i+1
-                }
-                else {
-                    if self.i == 0 {
-                    print("No products")
-                    self.addalertView()
-                    }
-                    else{
-                        
-                    }
-                                    }
-            }
-            self.productTableView.reloadData()
-            self.removeTranparentView()
-            self.i = 0
-            
-        }
-    }
-    }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        categoryUid = categoryDict[1][indexPath.row]
+//        print(categoryUid)
+//        let db = Firestore.firestore()
+//        db.collection("products").getDocuments() { (querySnapshot, err) in
+//        if let err = err {
+//            print("Error getting documents: \(err)")
+//        } else {
+//            self.product = []
+//            self.stringTags = []
+//            for document in querySnapshot!.documents {
+//
+//
+//                var catId: String = ""
+//
+//                catId = document.get("category_id") as! String
+//
+//                print("cat id:" , document.get("category_id") ?? "")
+//                if self.categoryUid == catId {
+//                    self.removeAlertView()
+//                    let newProduct = Product(data: document.data())
+//                    print(" price:" , newProduct.price ?? 0 )
+//                    self.stringTags = newProduct.tags ?? []
+//             self.product.append(newProduct)
+//                    self.i = self.i+1
+//                }
+//                else {
+//                    if self.i == 0 {
+//                    print("No products")
+//                    self.addalertView()
+//                    }
+//                    else{
+//
+//                    }
+//                                    }
+//            }
+//            self.productTableView.reloadData()
+//            self.removeTranparentView()
+//            self.i = 0
+//
+//        }
+//    }
+   
+//}
+
     func productsMatchingWithSearch(searchedText : String?){
         
         let db = Firestore.firestore()
@@ -453,6 +456,7 @@ class AdminProductViewController: UIViewController, UITableViewDelegate, UITable
                 for document in querySnapshot!.documents {
                     let newProduct = Product(data : document.data())
                     self.stringTags = newProduct.tags ?? []
+                    print("string tag",self.stringTags)
                     self.product.append(newProduct)
                     
                 }
@@ -492,5 +496,10 @@ extension AdminProductViewController: UISearchResultsUpdating {
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         navigationItem.searchController = nil
+    }
+    func searchBarResultsListButtonClicked(_ searchBar: UISearchBar) {
+       // navigationItem.searchController = nil
+        let searchText = searchController.searchBar.text
+        productsMatchingWithSearch(searchedText: searchText?.lowercased())
     }
 }
